@@ -1,0 +1,131 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:endColor="#00FFFFFF"
+                android:startColor="#0DE46E60"
+                android:centerColor="#00FFFFFF"/>
+
+            <padding
+                android:bottom="@dimen/marign_1"
+                android:right="@dimen/marign_1" />
+
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:endColor="#00FFFFFF"
+                android:startColor="#1AE46E60"
+                android:centerColor="#00FFFFFF"/>
+
+            <padding
+                android:bottom="@dimen/marign_1"
+                android:right="@dimen/marign_1" />
+
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:endColor="#00FFFFFF"
+                android:startColor="#33E46E60"
+                android:centerColor="#00FFFFFF"/>
+
+            <padding
+                android:bottom="@dimen/marign_1"
+                android:right="@dimen/marign_1" />
+
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:endColor="#00FFFFFF"
+                android:startColor="#4DE46E60"
+                android:centerColor="#00FFFFFF"/>
+
+            <padding
+                android:bottom="@dimen/marign_1"
+                android:right="@dimen/marign_1" />
+
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:endColor="#00FFFFFF"
+                android:startColor="#66E46E60"
+                android:centerColor="#00FFFFFF"/>
+
+            <padding
+                android:bottom="@dimen/marign_1"
+                android:right="@dimen/marign_1" />
+
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:endColor="#00FFFFFF"
+                android:startColor="#99E46E60"
+                android:centerColor="#00FFFFFF"/>
+
+            <padding
+                android:bottom="@dimen/marign_1"
+                android:right="@dimen/marign_1" />
+
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:endColor="#00FFFFFF"
+                android:startColor="#CCE46E60"
+                android:centerColor="#00FFFFFF"/>
+
+            <padding
+                android:bottom="@dimen/marign_1"
+                android:right="@dimen/marign_1" />
+
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:endColor="#00FFFFFF"
+                android:startColor="#E6E46E60"
+                android:centerColor="#00FFFFFF"/>
+
+            <padding
+                android:bottom="@dimen/marign_1"
+                android:right="@dimen/marign_1" />
+
+        </shape>
+    </item>
+
+    <!-- Background -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/google"/>
+            <size
+                android:height="50dp"
+                android:width="50dp" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_google"
+        android:bottom="15dp"
+        android:left="15dp"
+        android:right="15dp"
+        android:top="15dp"/>
+
+</layer-list>

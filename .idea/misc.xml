@@ -3,7 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/bg_linearlayout.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_done_background.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_email.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_facebook_background.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_google_background.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1455" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background_original.xml" value="0.1455" />
+        <entry key="app/src/main/res/drawable/ic_next_background.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_password_lock.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_twitter_background.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_upload_background.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/rect.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/rectsignin.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/splash_screen_bg.xml" value="0.2035" />
+        <entry key="app/src/main/res/layout/activity_about_you.xml" value="0.20425724637681159" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.20425724637681159" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.20425724637681159" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.20425724637681159" />
         <entry key="app/src/main/res/layout/frag__home.xml" value="0.35643115942028986" />
         <entry key="app/src/main/res/layout/frag_graph.xml" value="0.35643115942028986" />
         <entry key="app/src/main/res/layout/frag_history.xml" value="0.35643115942028986" />

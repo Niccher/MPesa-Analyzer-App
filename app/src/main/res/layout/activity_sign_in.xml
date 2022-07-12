@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroud"
+    android:clipToPadding="false"
+    tools:ignore="HardcodedText">
+
+    <TextView
+        android:id="@+id/id_SignIn_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="76dp"
+        android:text="@string/sign_in"
+        android:textColor="@color/signupsignintextcolor"
+        android:textSize="@dimen/textsize_28"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_SignIn_TextView"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/rect"
+        android:orientation="vertical">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/id_Email_textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginLeft="@dimen/marign_23"
+            android:layout_marginTop="@dimen/marign_33"
+            android:layout_marginRight="@dimen/marign_23"
+            android:background="@null">
+
+            <EditText
+                android:id="@+id/id_email_EditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="@string/email"
+                android:textColor="@color/primarytext"
+                android:textSize="@dimen/textsize_18" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/id_view_1"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginLeft="@dimen/marign_23"
+            android:layout_marginTop="@dimen/marign_2"
+            android:layout_marginRight="@dimen/marign_23"
+            android:background="@color/linecolor" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/id_Password_textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginLeft="@dimen/marign_23"
+            android:layout_marginTop="@dimen/marign_4"
+            android:layout_marginRight="@dimen/marign_23"
+            android:background="@null">
+
+            <EditText
+                android:id="@+id/id_password_EditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColor="@color/primarytext"
+                android:textSize="@dimen/textsize_18"
+                tools:ignore="ContentDescription" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/id_view_2"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginLeft="@dimen/marign_23"
+            android:layout_marginTop="@dimen/marign_2"
+            android:layout_marginRight="@dimen/marign_23"
+            android:background="@color/linecolor" />
+
+        <TextView
+            android:id="@+id/id_forgetPassword_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginStart="@dimen/marign_8"
+            android:layout_marginLeft="@dimen/marign_8"
+            android:layout_marginEnd="@dimen/marign_10"
+            android:layout_marginRight="@dimen/marign_10"
+            android:layout_marginBottom="@dimen/marign_4"
+            android:text="@string/forgot_password"
+            android:textColor="@color/secondarytext"
+            android:textSize="@dimen/textsize_18" />
+
+        <Button
+            android:id="@+id/btn_signIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marign_23"
+            android:layout_marginTop="@dimen/marign_16"
+            android:layout_marginRight="@dimen/marign_23"
+            android:background="@drawable/rectsignin"
+            android:text="@string/sign_in"
+            android:textAllCaps="false"
+            android:textColor="@color/thirdtext"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_signUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marign_23"
+            android:layout_marginTop="@dimen/marign_16"
+            android:layout_marginRight="@dimen/marign_23"
+            android:background="@drawable/rectsignin"
+            android:text="Sign Up"
+            android:textAllCaps="false"
+            android:textColor="@color/thirdtext"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_sign_proceed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marign_23"
+            android:layout_marginTop="@dimen/marign_16"
+            android:layout_marginRight="@dimen/marign_23"
+            android:background="@drawable/rectsignin"
+            android:text="Proceed Anyway"
+            android:textAllCaps="false"
+            android:textColor="@color/thirdtext"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginLeft="@dimen/marign_23"
+            android:layout_marginTop="@dimen/marign_2"
+            android:layout_marginRight="@dimen/marign_23"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

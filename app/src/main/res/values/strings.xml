@@ -1,5 +1,38 @@
 <resources>
     <string name="app_name">MPesa Analyzer</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="set_password">Set Password</string>
+    <string name="full_name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enteryourname">Enter your Name</string>
+    <string name="validemail">Enter a valid email address</string>
+    <string name="validpassword">Between 6 and 12 alphanumeric characters</string>
+    <string name="privacypolicy">Privacy policy</string>
+    <string name="forgot_password">Forgot ?  </string>
+    <string name="by_using_this_ui_ux_you_agree">by using this ui/ux you agree to our</string>
+    <string name="title_activity_sign_up">SignUp</string>
+    <string name="privacypolicyterms">
+
+        <b>FREE</b> \nEach download allows the buyer to use the product for personal use only. You’ll need to purchase a commercial license if you’re not willing to make the modified version public. \n\n
+
+        <b>SINGLE</b> \nEach purchase allows the buyer to use the product, for one project and for commercial use but end users cannot be charged for. This license allows you to keep your project private and use it in only one project.\n\n
+
+        <b>EXTENDED</b> \nEach purchase allows the buyer to use the product, for an unlimited amount of projects, for commercial use, within the same company.\n\n
+
+    </string>
+    <string name="OK">OK</string>
+    <string name="orsigninusing">Or sign in using</string>
+    <string name="orsignupusing">Or sign up using</string>
+    <string name="aboutyou">About You</string>
+    <string name="uploadphoto">Upload your best recent picture</string>
+    <string name="pickYourDate">Pick your date of birth</string>
+    <string name="username">Username</string>
+    <string name="iam">I\'m</string>
+    <string name="validusername">Enter Username</string>
+    <string name="designed">Designed by \n matirialuiux.com</string>
+
 </resources>

@@ -1,10 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <color name="bg_green">#6dc77a</color>
+    <color name="bg_green_light">#a7ddae</color>
+    <color name="bg_grey_light">#dbdce2</color>
+    <color name="colorPrimary">#e6e6e6</color>
+    <color name="colorPrimaryDark">#d6d6d6</color>
+    <color name="colorAccent">#796eee</color>
+
+
+    <color name="primarytext">#6f6f6f</color>
+    <color name="secondarytext">#a6a6a6</color>
+    <color name="signupsignintextcolor">#4c1a63</color>
+
+
+    <color name="nextbuttongrediantright">#9287f0</color>
+    <color name="nextbuttongrediantleft">#776beb</color>
+
+    <color name="switchmale">#dcdcdc</color>
+    <color name="femalecolors">#dcdcdc</color>
+
+    <color name="mainlinerlayoutcolor">#e7e7e7</color>
+    <color name="crosscolor">#b9b9b9</color>
+
+
+    <color name="twitter">#74bdf4</color>
+    <color name="google">#e46e60</color>
+    <color name="facebook">#6885c1</color>
+    <color name="thirdtext">#FFF</color>
+    <color name="white">#FFF</color>
+    <color name="isw_defaultBg">#60FFFFFF</color>
+
+    <color name="spineractivecolor">#4836ac</color>
+    <color name="spinerunfocusedcolor">#c1c1c1</color>
+    <color name="underline">#00000000</color>
+
+    <color name="linecolor">#d2d2d2</color>
+    <color name="black">#000</color>
+
 </resources>

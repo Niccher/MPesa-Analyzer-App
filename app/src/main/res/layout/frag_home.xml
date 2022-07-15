@@ -3,14 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#B1B8ED">
 
-    <TextView
-        android:gravity="center"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        android:text="HOME Frag"/>
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="40dp"
+            android:layout_centerInParent="true"
+            android:background="#B1B8ED">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:background="#B1B8ED">
+
+                <Button
+                    android:id="@+id/home_req_perm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/marign_23"
+                    android:layout_marginTop="@dimen/marign_16"
+                    android:layout_marginRight="@dimen/marign_23"
+                    android:background="@drawable/rectsignin"
+                    android:text="Request Permision"
+                    android:textAllCaps="false"
+                    android:textColor="@color/thirdtext"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/home_fetch_sync"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/marign_23"
+                    android:layout_marginTop="@dimen/marign_16"
+                    android:layout_marginRight="@dimen/marign_23"
+                    android:background="@drawable/rectsignin"
+                    android:text="Fetch and Sync"
+                    android:textAllCaps="false"
+                    android:textColor="@color/thirdtext"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 
 </FrameLayout>

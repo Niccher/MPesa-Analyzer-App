@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.auth.Auth_Signin;
+import com.niccher.mpesa_analyzer.auth.Auth_Signup;
 
 public class Splash extends AppCompatActivity {
     private ProgressBar mProgressBar;
@@ -20,9 +21,7 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         mProgressBar = (ProgressBar) findViewById (R.id.progress_bar);
-
     }
-
 
     @Override
     protected void onStart() {
@@ -34,17 +33,13 @@ public class Splash extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startloading();
-
     }
 
     private void startloading() {
-        // Start long running operation in a background thread
         new Thread(new Runnable() {
             public void run() {
                 while (progressStatus < 100) {
                     progressStatus += 4;
-                    // Update the progress bar and display the
-                    //current value in the text view
                     handler.post(new Runnable() {
                         public void run() {
                             mProgressBar.setProgress(progressStatus);
@@ -56,7 +51,6 @@ public class Splash extends AppCompatActivity {
                         }
                     });
                     try {
-                        // Sleep for 200 milliseconds.
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();

@@ -1,10 +1,16 @@
 package com.niccher.mpesa_analyzer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 
@@ -19,6 +25,7 @@ import kotlin.jvm.functions.Function1;
 public class MainActivity extends AppCompatActivity {
 
     MeowBottomNavigation meow;
+    int perm_sms = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +62,41 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reqPermission(Manifest.permission.READ_SMS, perm_sms);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        reqPermission(Manifest.permission.READ_SMS, perm_sms);
     }
 
     public void changeFragment(Fragment new_frag){
         FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
         trans.replace(R.id.frame, new_frag);
         trans.commit();
+    }
+
+    public void reqPermission(String permission, int requestCode){
+        if (ContextCompat.checkSelfPermission(MainActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[] { permission }, requestCode);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == perm_sms) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            }
+            else {
+                Toast.makeText(MainActivity.this, "Permissions regarding SMS needs to be granted for the app to work as designed", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

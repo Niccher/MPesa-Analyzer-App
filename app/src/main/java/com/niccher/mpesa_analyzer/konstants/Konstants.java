@@ -6,7 +6,7 @@ public class Konstants {
     public int Splash_Time = 1500;
     public String string_ip = "https://mympesa.chegecache.co.ke";
     public String upload_file_url = string_ip+"/process/upload/";
-    public String upload_auth_url = string_ip+"/token/";
+    public String upload_auth_url = string_ip+"/auth/";
     public String upload_print = string_ip+"/process/";
 
     public String shared_auth_token = "auth_token";

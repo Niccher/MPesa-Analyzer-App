@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import com.niccher.mpesa_analyzer.BuildConfig;
 import com.niccher.mpesa_analyzer.MainActivity;
 import com.niccher.mpesa_analyzer.R;
+import com.niccher.mpesa_analyzer.interfaces.JsonAuthUser;
 import com.niccher.mpesa_analyzer.interfaces.JsonFonePrint;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_Fone_Id;
@@ -43,8 +46,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Auth_Signin extends AppCompatActivity {
 
     Button btn_signin, btn_signup, btn_proceed;
+    EditText lg_eml, lg_pwd;
 
-    //private JsonAuthUser jsonAuthUser;
     private JsonFonePrint jsonFonePrint;
     Konstants kon;
 
@@ -63,6 +66,9 @@ public class Auth_Signin extends AppCompatActivity {
         btn_signup = findViewById(R.id.btn_signUp);
         btn_proceed = findViewById(R.id.btn_sign_proceed);
 
+        lg_eml = findViewById(R.id.id_email_EditText);
+        lg_pwd = findViewById(R.id.id_password_EditText);
+
         kon = new Konstants();
 
         pref_Auth = getSharedPreferences(kon.shared_auth_token, Context.MODE_PRIVATE);
@@ -77,6 +83,26 @@ public class Auth_Signin extends AppCompatActivity {
         btn_signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String lg_emls = lg_eml.getText().toString().trim();
+                String lg_pwds = lg_pwd.getText().toString().trim();
+
+                if (lg_emls.isEmpty() || lg_pwds.isEmpty()) {
+                    Toast.makeText(Auth_Signin.this, "Both fields have to be filled", Toast.LENGTH_SHORT).show();
+                }else{
+                    if (!Patterns.EMAIL_ADDRESS.matcher(lg_emls).matches()) {
+                        Toast.makeText(Auth_Signin.this, "Email is not valid, please enter a valid email", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(kon.upload_auth_url)
+                                .addConverterFactory(GsonConverterFactory.create(gson))
+                                .client(getUnsafeOkHttpClient())
+                                .build();
+
+                        jsonAuthUser = retrofit.create(JsonAuthUser.class);
+                        createPost();
+                    }
+                }
+
                 /*Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(kon.upload_auth_url)
                         .addConverterFactory(GsonConverterFactory.create(gson))
@@ -85,9 +111,11 @@ public class Auth_Signin extends AppCompatActivity {
 
                 jsonAuthUser = retrofit.create(JsonAuthUser.class);
                 createPost();*/
-                Intent intent = new Intent(Auth_Signin.this, MainActivity.class);
+                Log.e(kon.TAGGED, "onClick: Email as " + lg_emls);
+                Log.e(kon.TAGGED, "onClick: Passwd as " + lg_pwds);
+                /*Intent intent = new Intent(Auth_Signin.this, MainActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out);
+                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out);*/
             }
         });
 
@@ -198,18 +226,18 @@ public class Auth_Signin extends AppCompatActivity {
         call.enqueue(new Callback<Mod_Fone_Id>() {
             @Override
             public void onResponse(Call<Mod_Fone_Id> call, Response<Mod_Fone_Id> response) {
-                Log.e(kon.TAGGED, "Mod_Fone_Print onResponse: " + response.message() );
-
-
-
-                //Mod_Fone_Id postResponse = response.body();
-                /*String p_id = postResponse.getPd_id();
+                Mod_Fone_Id postResponse = response.body();
+                String p_id = postResponse.getPd_id();
+                String p_status = postResponse.getStatus();
+                String p_message = postResponse.getMessage();
 
                 sharedEditor = pref_Device.edit();
-
                 sharedEditor.putString("print_id", postResponse.getPd_id());
-                sharedEditor.apply();*
-                Log.e(kon.TAGGED, "Mod_Fone_Print Assigned Print_id: " + postResponse.getPd_id());*/
+                sharedEditor.apply();
+
+                Log.e(kon.TAGGED, "Mod_Fone_Print Assigned Print_id: " + p_id);
+                Log.e(kon.TAGGED, "Mod_Fone_Print Assigned p_status: " + p_status);
+                Log.e(kon.TAGGED, "Mod_Fone_Print Assigned p_message: " + p_message);
             }
 
             @Override

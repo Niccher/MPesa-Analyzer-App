@@ -46,6 +46,7 @@
                 android:id="@+id/id_email_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:inputType="textEmailAddress"
                 android:background="@null"
                 android:hint="@string/email"
                 android:textColor="@color/primarytext"

@@ -19,15 +19,7 @@ public interface JsonAuthUser {
             @Field("varUsername") String varUsername,
             @Field("varEmail") String varEmail,
             @Field("varPassword") String varPassword
-    );
-
-    @FormUrlEncoded
-    @POST("login")
-    Call<Mod_User_Auth> createLogin(
-            @Field("varUsername") String varUsername,
-            @Field("varEmail") String varEmail,
-            @Field("varPassword") String varPassword
-    );*/
+    );;*/
 
     @FormUrlEncoded
     @POST("register")

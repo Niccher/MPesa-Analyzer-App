@@ -20,13 +20,10 @@ import com.niccher.mpesa_analyzer.BuildConfig;
 import com.niccher.mpesa_analyzer.MainActivity;
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.interfaces.JsonAuthUser;
-import com.niccher.mpesa_analyzer.interfaces.JsonFonePrint;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_User_Auth;
 
 import java.security.cert.CertificateException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +71,7 @@ public class Auth_Signup extends AppCompatActivity {
 
         kon = new Konstants();
 
-        pref_Auth = getSharedPreferences(kon.shared_auth_token, Context.MODE_PRIVATE);
+        pref_Auth = getSharedPreferences(kon.shared_auth_register, Context.MODE_PRIVATE);
 
         gson = new GsonBuilder()
                 .setLenient()
@@ -213,10 +210,10 @@ public class Auth_Signup extends AppCompatActivity {
                     try {
                         if (status.equals("0") || status.equals('2')){
                             Toast.makeText(Auth_Signup.this, message, Toast.LENGTH_LONG).show();
-                        }else {
+                        }else if (status.equals("1")){
                             sharedEditor.putString("status", status);
                             sharedEditor.putString("message", message);
-                            sharedEditor.putString("time", time);
+                            sharedEditor.putString("time", ""+time);
                             sharedEditor.putString("userid", userid);
                             sharedEditor.apply();
 

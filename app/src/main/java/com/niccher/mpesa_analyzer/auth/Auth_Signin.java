@@ -23,6 +23,7 @@ import com.niccher.mpesa_analyzer.interfaces.JsonAuthUser;
 import com.niccher.mpesa_analyzer.interfaces.JsonFonePrint;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_Fone_Id;
+import com.niccher.mpesa_analyzer.models.Mod_User_Auth;
 
 import java.security.cert.CertificateException;
 import java.util.HashMap;
@@ -49,6 +50,7 @@ public class Auth_Signin extends AppCompatActivity {
     EditText lg_eml, lg_pwd;
 
     private JsonFonePrint jsonFonePrint;
+    private JsonAuthUser jsonAuthUser;
     Konstants kon;
 
     Gson gson = null;
@@ -71,7 +73,7 @@ public class Auth_Signin extends AppCompatActivity {
 
         kon = new Konstants();
 
-        pref_Auth = getSharedPreferences(kon.shared_auth_token, Context.MODE_PRIVATE);
+        pref_Auth = getSharedPreferences(kon.shared_auth_login, Context.MODE_PRIVATE);
         pref_Device = getSharedPreferences(kon.shared_device_id, Context.MODE_PRIVATE);
 
         gson = new GsonBuilder()
@@ -99,23 +101,9 @@ public class Auth_Signin extends AppCompatActivity {
                                 .build();
 
                         jsonAuthUser = retrofit.create(JsonAuthUser.class);
-                        createPost();
+                        createLogin(lg_emls, lg_pwds);
                     }
                 }
-
-                /*Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(kon.upload_auth_url)
-                        .addConverterFactory(GsonConverterFactory.create(gson))
-                        .client(getUnsafeOkHttpClient())
-                        .build();
-
-                jsonAuthUser = retrofit.create(JsonAuthUser.class);
-                createPost();*/
-                Log.e(kon.TAGGED, "onClick: Email as " + lg_emls);
-                Log.e(kon.TAGGED, "onClick: Passwd as " + lg_pwds);
-                /*Intent intent = new Intent(Auth_Signin.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out);*/
             }
         });
 
@@ -227,17 +215,13 @@ public class Auth_Signin extends AppCompatActivity {
             @Override
             public void onResponse(Call<Mod_Fone_Id> call, Response<Mod_Fone_Id> response) {
                 Mod_Fone_Id postResponse = response.body();
-                String p_id = postResponse.getPd_id();
-                String p_status = postResponse.getStatus();
-                String p_message = postResponse.getMessage();
 
                 sharedEditor = pref_Device.edit();
-                sharedEditor.putString("print_id", postResponse.getPd_id());
+                sharedEditor.putString("status", postResponse.getStatus());
+                sharedEditor.putString("message", postResponse.getMessage());
+                sharedEditor.putString("print_id", postResponse.getPrint_id());
                 sharedEditor.apply();
-
-                Log.e(kon.TAGGED, "Mod_Fone_Print Assigned Print_id: " + p_id);
-                Log.e(kon.TAGGED, "Mod_Fone_Print Assigned p_status: " + p_status);
-                Log.e(kon.TAGGED, "Mod_Fone_Print Assigned p_message: " + p_message);
+                sharedEditor.commit();
             }
 
             @Override
@@ -257,6 +241,55 @@ public class Auth_Signin extends AppCompatActivity {
 
         jsonFonePrint = retrof.create(JsonFonePrint.class);
         createPrint();
+    }
+
+    private void createLogin(String new_eml, String new_pwd) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("varEmail", new_eml);
+        parameters.put("varPassword", new_pwd);
+
+        Call<Mod_User_Auth> call = jsonAuthUser.createLogin(parameters);
+
+        call.enqueue(new Callback<Mod_User_Auth>() {
+            @Override
+            public void onResponse(Call<Mod_User_Auth> call, Response<Mod_User_Auth> response) {
+                Mod_User_Auth postResponse = response.body();
+                String message, status, time, userid;
+
+                if (postResponse.getMessage().isEmpty() || postResponse.getMessage().isEmpty() || postResponse.getMessage().isEmpty()){
+                }else {
+                    message = postResponse.getMessage();
+                    status = postResponse.getStatus();
+                    time = postResponse.getTime();
+                    userid = postResponse.getUserid();
+
+                    try {
+                        if (status.equals("0") || status.equals('2')){
+                            Toast.makeText(Auth_Signin.this, message, Toast.LENGTH_LONG).show();
+                        }else if (status.equals("1")){
+                            sharedEditor = pref_Auth.edit();
+                            sharedEditor.putString("status", status);
+                            sharedEditor.putString("message", message);
+                            sharedEditor.putString("time", ""+time);
+                            sharedEditor.putString("userid", userid);
+                            sharedEditor.apply();
+
+                            Intent to_home = new Intent(Auth_Signin.this, MainActivity.class);
+                            //to_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out);
+                            //startActivity(to_home);
+                            //Auth_Signin.this.finish();
+                        }
+                    }catch (Exception ex){
+                        Toast.makeText(Auth_Signin.this,  ex.getMessage()+"\nUnknown error occurred", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<Mod_User_Auth> call, Throwable t) {
+                Toast.makeText(Auth_Signin.this,  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }

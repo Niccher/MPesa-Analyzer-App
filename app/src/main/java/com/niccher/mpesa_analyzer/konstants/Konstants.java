@@ -9,7 +9,8 @@ public class Konstants {
     public String upload_auth_url = string_ip+"/auth/";
     public String upload_print = string_ip+"/process/";
 
-    public String shared_auth_token = "auth_token";
+    public String shared_auth_login = "auth_login";
+    public String shared_auth_register = "auth_register";
     public String shared_device_id = "pref_device_id";
 
 }

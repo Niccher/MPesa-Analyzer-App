@@ -217,7 +217,7 @@ public class Auth_Signup extends AppCompatActivity {
                             sharedEditor.putString("userid", userid);
                             sharedEditor.apply();
 
-                            Intent to_home = new Intent(Auth_Signup.this, MainActivity.class);
+                            Intent to_home = new Intent(Auth_Signup.this, Auth_Signin.class);
                             to_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out);
                             startActivity(to_home);

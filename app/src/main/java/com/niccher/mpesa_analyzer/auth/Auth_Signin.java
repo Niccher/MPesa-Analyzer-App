@@ -24,6 +24,7 @@ import com.niccher.mpesa_analyzer.interfaces.JsonFonePrint;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_Fone_Id;
 import com.niccher.mpesa_analyzer.models.Mod_User_Auth;
+import com.niccher.mpesa_analyzer.splash.Splash;
 
 import java.security.cert.CertificateException;
 import java.util.HashMap;
@@ -80,7 +81,7 @@ public class Auth_Signin extends AppCompatActivity {
                 .setLenient()
                 .create();
 
-        Tag_Device();
+        checkPrint();
 
         btn_signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,38 +177,22 @@ public class Auth_Signin extends AppCompatActivity {
     }
 
     private void createPrint() {
-        String pr_board = String.valueOf(Build.BOARD);
-        String pr_bootloader = String.valueOf(Build.BOOTLOADER );
-        String pr_brand = String.valueOf(Build.BRAND );
-        String pr_device = String.valueOf(Build.DEVICE );
-        String pr_display = String.valueOf(Build.DISPLAY );
-        String pr_finger = String.valueOf(Build.FINGERPRINT );
-        String pr_hardware = String.valueOf(Build.HARDWARE );
-        String pr_host = String.valueOf(Build.HOST );
-        String pr_manufacturer = String.valueOf(Build.MANUFACTURER );
-        String pr_model = String.valueOf(Build.MODEL );
-        String pr_product = String.valueOf(Build.PRODUCT );
-        String pr_tags = String.valueOf(Build.TAGS );
-        String pr_type = String.valueOf(Build.TYPE );
-        String pr_user = String.valueOf(Build.USER );
-        String pr_time = String.valueOf(Build.TIME );
-
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("p_Board", pr_board);
-        parameters.put("p_Bootloader", pr_bootloader);
-        parameters.put("p_Brand", pr_brand);
-        parameters.put("p_Device", pr_device);
-        parameters.put("p_Display", pr_display);
-        parameters.put("p_Fingerprint", pr_finger);
-        parameters.put("p_Hardware", pr_hardware);
-        parameters.put("p_Host", pr_host);
-        parameters.put("p_Manufacturer", pr_manufacturer);
-        parameters.put("p_Model", pr_model);
-        parameters.put("p_Product", pr_product);
-        parameters.put("p_Tags", pr_tags);
-        parameters.put("p_Type", pr_type);
-        parameters.put("p_User", pr_user);
-        parameters.put("p_Time", pr_time);
+        parameters.put("p_Board", String.valueOf(Build.BOARD)+"");
+        parameters.put("p_Bootloader", String.valueOf(Build.BOOTLOADER)+"");
+        parameters.put("p_Brand", String.valueOf(Build.BRAND)+"");
+        parameters.put("p_Device", String.valueOf(Build.DEVICE)+"");
+        parameters.put("p_Display", String.valueOf(Build.DISPLAY)+"");
+        parameters.put("p_Fingerprint", String.valueOf(Build.FINGERPRINT)+"");
+        parameters.put("p_Hardware", String.valueOf(Build.HARDWARE)+"");
+        parameters.put("p_Host", String.valueOf(Build.HOST)+"");
+        parameters.put("p_Manufacturer", String.valueOf(Build.MANUFACTURER)+"");
+        parameters.put("p_Model", String.valueOf(Build.MODEL)+"");
+        parameters.put("p_Product", String.valueOf(Build.PRODUCT)+"");
+        parameters.put("p_Tags", String.valueOf(Build.TAGS)+"");
+        parameters.put("p_Type", String.valueOf(Build.TYPE)+"");
+        parameters.put("p_User", String.valueOf(Build.USER)+"");
+        parameters.put("p_Time", String.valueOf(Build.TIME)+"");
 
         Call<Mod_Fone_Id> call = jsonFonePrint.createPrint(parameters);
 
@@ -218,10 +203,10 @@ public class Auth_Signin extends AppCompatActivity {
 
                 sharedEditor = pref_Device.edit();
                 sharedEditor.putString("status", postResponse.getStatus());
+                sharedEditor.putString("time", postResponse.getTime());
                 sharedEditor.putString("message", postResponse.getMessage());
                 sharedEditor.putString("print_id", postResponse.getPrint_id());
                 sharedEditor.apply();
-                sharedEditor.commit();
             }
 
             @Override
@@ -232,15 +217,20 @@ public class Auth_Signin extends AppCompatActivity {
         });
     }
 
-    private void Tag_Device(){
-        Retrofit retrof = new Retrofit.Builder()
-                .baseUrl(kon.upload_print)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(getUnsafeOkHttpClient())
-                .build();
+    public void checkPrint(){
+        SharedPreferences sharedPreferences = getSharedPreferences(kon.shared_device_id, Context.MODE_PRIVATE);
+        String state = sharedPreferences.getString("status","3");
+        if (Integer.parseInt(state) == 1){
+        }else {
+            Retrofit retrof = new Retrofit.Builder()
+                    .baseUrl(kon.upload_print)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClient())
+                    .build();
 
-        jsonFonePrint = retrof.create(JsonFonePrint.class);
-        createPrint();
+            jsonFonePrint = retrof.create(JsonFonePrint.class);
+            createPrint();
+        }
     }
 
     private void createLogin(String new_eml, String new_pwd) {
@@ -275,10 +265,10 @@ public class Auth_Signin extends AppCompatActivity {
                             sharedEditor.apply();
 
                             Intent to_home = new Intent(Auth_Signin.this, MainActivity.class);
-                            //to_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            to_home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out);
-                            //startActivity(to_home);
-                            //Auth_Signin.this.finish();
+                            startActivity(to_home);
+                            Auth_Signin.this.finish();
                         }
                     }catch (Exception ex){
                         Toast.makeText(Auth_Signin.this,  ex.getMessage()+"\nUnknown error occurred", Toast.LENGTH_LONG).show();

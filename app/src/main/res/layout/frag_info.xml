@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     android:background="#B1B8ED">
 
-    <TextView
-        android:gravity="center"
+    <ListView
+        android:id="@+id/account_list"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        android:text="INFO Frag"/>
+        android:layout_height="wrap_content">
+    </ListView>
 
 </FrameLayout>

@@ -6,19 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.niccher.mpesa_analyzer.R;
+import com.niccher.mpesa_analyzer.adapter.Info_adapter;
 
 public class Frag_History extends Fragment {
+
+    private RecyclerView recyclerView;
 
     public Frag_History() {
         // Required empty public constructor
     }
 
-    public static Frag_History newInstance(String param1, String param2) {
-        Frag_History fragment = new Frag_History();
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,14 @@ public class Frag_History extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.frag_history, container, false);
+        View view = inflater.inflate(R.layout.frag_history, container, false);
+
+        // Add the following lines to create RecyclerView
+        recyclerView = view.findViewById(R.id.recy_history);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setAdapter(new Info_adapter(getContext()));
+
+        return view;
     }
 }

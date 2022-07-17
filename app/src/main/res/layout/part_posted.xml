@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    tools:ignore="HardcodedText">
+    android:layout_marginTop="4dp"
+    tools:ignore="HardcodedText"
+    android:padding="@dimen/margin_15">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             tools:ignore="UselessParent">
 
             <RelativeLayout
@@ -24,8 +25,8 @@
                 android:layout_marginLeft="35dp"
                 android:background="@drawable/bg_rect_frame">
 
-                <TextView
-                    android:id="@+id/id_postText_TextView"
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="45dp"
@@ -36,13 +37,30 @@
                     android:layout_marginBottom="40dp"
                     android:gravity="center|left"
                     android:maxLines="3"
-                    android:text="From error to error, one discovers the entire truth.” “From error to error, one discovers the entire truth.” Sigmund Freud."
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    tools:ignore="RtlHardcoded" />
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="From error to."
+                        android:textColor="@color/black"
+                        android:textSize="16sp"/>
 
-                <!-- Post Number -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="From error to."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="From error to."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/id_postNumber_TextView"
                     android:layout_width="wrap_content"
@@ -55,8 +73,6 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-
-                <!-- Like, Comment and seen Layout  -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,7 +90,6 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         tools:ignore="UseCompoundDrawables">
-
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -114,26 +129,23 @@
 
                     </LinearLayout>
 
-
                 </LinearLayout>
 
             </RelativeLayout>
 
-            <!-- Profile Image  -->
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerVertical="true"
-                app:civ_border_width="@dimen/marign_2"
-                app:civ_circle_background_color="#C3C3C3"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/ic_home" />
+                android:src="@drawable/ic_home"
+                app:civ_border_width="@dimen/marign_2"
+                app:civ_circle_background_color="#C3C3C3" />
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-    <!-- post Date -->
     <RelativeLayout
         android:layout_width="154dp"
         android:layout_height="30dp"
@@ -141,6 +153,7 @@
         android:background="@drawable/bg_rectangle">
 
         <TextView
+            android:id="@+id/part_txt_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"

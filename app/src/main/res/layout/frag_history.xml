@@ -5,12 +5,10 @@
     android:layout_height="match_parent"
     android:background="#B1B8ED">
 
-    <TextView
-        android:gravity="center"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        android:text="HISTORY Frag"/>
+        android:id="@+id/recy_history"
+        android:layout_marginBottom="@dimen/height_50"/>
 
 </FrameLayout>

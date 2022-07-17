@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawableEnd="@drawable/ic_next"
+    android:textColor="@color/bg_green"
+    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+    android:textStyle="bold"
+    android:textSize="24dp"
+    android:text="Dope"
+    android:id="@+id/acc_item"
+    android:padding="10dp" />

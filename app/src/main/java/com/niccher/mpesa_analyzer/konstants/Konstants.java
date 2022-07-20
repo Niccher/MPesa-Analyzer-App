@@ -8,6 +8,7 @@ public class Konstants {
     public String upload_file_url = string_ip+"/process/";
     public String upload_auth_url = string_ip+"/auth/";
     public String upload_print = string_ip+"/process/";
+    public String upload_summaries = string_ip+"/process/";
 
     public String shared_auth_login = "auth_login";
     public String shared_auth_register = "auth_register";
@@ -22,10 +23,6 @@ public class Konstants {
 
     public String string_enc_b64_file = "enc_b64_";
     public String string_enc_aes_files = "enc_aes_";
-
-    public String string_upload_sms = "pref_upload_sms";
-
-    public String shared_last_sms = "last_upload_sms";
 
     public String shared_last_time = "last_upload_time";
 }

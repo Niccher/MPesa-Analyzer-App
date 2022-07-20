@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.niccher.mpesa_analyzer.R;
@@ -47,6 +48,7 @@ import java.io.InputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.crypto.NoSuchPaddingException;
@@ -71,6 +73,7 @@ public class Frag_Home extends Fragment {
     StringBuffer sbsent;
 
     Button btn_fetch;
+    TextView last_time;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +91,7 @@ public class Frag_Home extends Fragment {
         View solv = inflater.inflate(R.layout.frag_home, container, false);
 
         btn_fetch = solv.findViewById(R.id.home_fetch_sync);
+        last_time = solv.findViewById(R.id.home_last_upload);
 
         btn_fetch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +100,7 @@ public class Frag_Home extends Fragment {
                 init.Parser_SMS(getActivity());
             }
         });
-
+        last_time.setText(prefs.get_TimeStamp(getActivity()));
         return  solv;
     }
 
@@ -254,6 +258,7 @@ public class Frag_Home extends Fragment {
                         enc_b64.delete();
                         enc_aes.delete();
                         prefs.get_FileType(filename, String.valueOf(System.currentTimeMillis()), getActivity());
+                        last_time.setText(prefs.get_TimeStamp(getActivity()));
                     }catch (Exception es){
                         Log.e(kon.TAGGED, "Delete Files error\n"+es.getMessage());
                     }

@@ -22,7 +22,7 @@ public class Prefs {
         kon = new Konstants();
 
         if (fileName.startsWith("sms_All_",0)){
-            pref_sms = cntt.getSharedPreferences(kon.string_upload_sms, MODE_PRIVATE);
+            pref_sms = cntt.getSharedPreferences(kon.shared_last_time, MODE_PRIVATE);
             sharedEditor = pref_sms.edit();
             sharedEditor.putString("last_upload_name", fileName);
             sharedEditor.putString("last_upload_time", timeAt);
@@ -32,16 +32,14 @@ public class Prefs {
 
     }
 
-    public String get_TimeStamp(String category, Context cnt){
+    public String get_TimeStamp(Context cnt){
         kon = new Konstants();
         String timestamp = "";
         SharedPreferences pref_read = null;
         String value = "";
 
-        if (category.startsWith("SMS",0)){
-            pref_read = cnt.getSharedPreferences(kon.string_upload_sms, MODE_PRIVATE);
-            value = pref_read.getString(kon.shared_last_time, "0000000");
-        }
+        pref_read = cnt.getSharedPreferences(kon.shared_last_time, MODE_PRIVATE);
+        value = pref_read.getString(kon.shared_last_time, "0000000");
 
         try{
             Long Timestamp = Long.parseLong(value);

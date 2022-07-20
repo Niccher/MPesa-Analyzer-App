@@ -11,17 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.niccher.mpesa_analyzer.R;
+import com.niccher.mpesa_analyzer.models.Mod_Summaries;
 
 public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> {
 
-    List<String> itemList1;
+    List<Mod_Summaries> summariesList;
     Context context;
 
-    public Info_adapter(Context context) {
-        this.context=context;
+    public Info_adapter(List<Mod_Summaries> summariesList, Context context) {
+        this.summariesList = summariesList;
+        this.context = context;
     }
 
     @NonNull
@@ -37,9 +40,10 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
         holder.part_date.setText("fgfgfg");
     }
 
+
     @Override
     public int getItemCount() {
-        return 10;//itemList1.size();
+        return summariesList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

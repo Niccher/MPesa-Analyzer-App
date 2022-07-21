@@ -18,16 +18,15 @@ import com.google.gson.GsonBuilder;
 import com.niccher.mpesa_analyzer.BuildConfig;
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.adapter.Info_adapter;
+import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_Summaries;
 
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
@@ -52,7 +51,8 @@ public class Frag_History extends Fragment {
     JsonProcesses jsonProcesses;
     Konstants kon;
     Gson gson = null;
-    ArrayList<Mod_Summaries> summariesList = new ArrayList<>();
+    //ArrayList<Mod_Summaries> summariesList = new ArrayList<>();
+    ArrayList<Mod_Summaries> summariesList;;// = new ArrayList<>();
     Info_adapter summariesAdapter;
 
     public Frag_History() {
@@ -78,8 +78,8 @@ public class Frag_History extends Fragment {
         recyclerView = view.findViewById(R.id.recy_history);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        summariesAdapter = new Info_adapter(summariesList, getActivity());
-        recyclerView.setAdapter(summariesAdapter);
+        //summariesAdapter = new Info_adapter(summariesList, getActivity());
+        //recyclerView.setAdapter(summariesAdapter);
         getSummaries();
         return view;
     }
@@ -158,18 +158,21 @@ public class Frag_History extends Fragment {
         parameters.put("varUsername", get_prefs_auth("auth"));
         parameters.put("varEmail", get_prefs_auth("print"));
 
-        Call<Mod_Summaries> call = jsonProcesses.getSummary(parameters);
-        call.enqueue(new Callback<Mod_Summaries>() {
+        Call <SummaryResponse> call = jsonProcesses.getSummary(parameters);
+        call.enqueue(new Callback<SummaryResponse>() {
             @Override
-            public void onResponse(Call<Mod_Summaries> call, Response<Mod_Summaries> response) {
+            public void onResponse(Call<SummaryResponse> call, Response<SummaryResponse> response) {
                 if(response.isSuccessful() && response.body()!=null){
-                    summariesList.addAll(Collections.singletonList(response.body()));
+                    SummaryResponse summaryResponse = response.body();
+                    summariesList = new ArrayList<>(Arrays.asList(summaryResponse.getSummarizer()));
+                    summariesAdapter = new Info_adapter(summariesList, getActivity());
+                    recyclerView.setAdapter(summariesAdapter);
                     summariesAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onFailure(Call<Mod_Summaries> call, Throwable t) {
+            public void onFailure(Call<SummaryResponse> call, Throwable t) {
                 Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
                 Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again");
                 Log.e(kon.TAGGED, t.getMessage());

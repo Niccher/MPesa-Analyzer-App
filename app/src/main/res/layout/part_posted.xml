@@ -40,13 +40,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="From error to."
-                        android:textColor="@color/black"
-                        android:textSize="16sp"/>
-
-                    <TextView
+                        android:id="@+id/part_txt_incoming"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="From error to."
@@ -54,6 +48,15 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/part_txt_sent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="From error to."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/part_txt_unknown"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="From error to."
@@ -62,7 +65,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/id_postNumber_TextView"
+                    android:id="@+id/part_txt_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"

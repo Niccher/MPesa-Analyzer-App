@@ -1,8 +1,7 @@
 package com.niccher.mpesa_analyzer.interfaces;
 
 
-import com.niccher.mpesa_analyzer.models.Mod_Summaries;
-import com.niccher.mpesa_analyzer.models.Mod_User_Auth;
+import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 
 import java.util.Map;
 
@@ -15,5 +14,5 @@ public interface JsonProcesses {
 
     @FormUrlEncoded
     @POST("get/my_uploads")
-    Call<Mod_Summaries> getSummary(@FieldMap Map<String, String> fields);
+    Call <SummaryResponse> getSummary(@FieldMap Map<String, String> fields);
 }

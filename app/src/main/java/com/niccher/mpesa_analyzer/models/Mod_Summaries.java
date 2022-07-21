@@ -1,8 +1,7 @@
 package com.niccher.mpesa_analyzer.models;
 
 public class Mod_Summaries {
-    public String summary_Name,summary_Type,summary_Extension,summary_Size,summary_Owner, summary_Device;
-    public String summary_Created,summary_Count,summary_Received,summary_Sent,summary_Unknown;
+    public String summary_Name,summary_Type,summary_Extension,summary_Size,summary_Owner, summary_Device, summary_Created,summary_Count,summary_Received,summary_Sent,summary_Unknown;
 
     public Mod_Summaries(String summary_Name, String summary_Type, String summary_Extension, String summary_Size, String summary_Owner, String summary_Device, String summary_Created, String summary_Count, String summary_Received, String summary_Sent, String summary_Unknown) {
         this.summary_Name = summary_Name;

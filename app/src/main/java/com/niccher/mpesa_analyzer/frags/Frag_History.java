@@ -51,14 +51,10 @@ public class Frag_History extends Fragment {
     JsonProcesses jsonProcesses;
     Konstants kon;
     Gson gson = null;
-    //ArrayList<Mod_Summaries> summariesList = new ArrayList<>();
-    ArrayList<Mod_Summaries> summariesList;;// = new ArrayList<>();
+    ArrayList<Mod_Summaries> summariesList;
     Info_adapter summariesAdapter;
 
-    public Frag_History() {
-        // Required empty public constructor
-    }
-
+    public Frag_History() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,8 +74,6 @@ public class Frag_History extends Fragment {
         recyclerView = view.findViewById(R.id.recy_history);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        //summariesAdapter = new Info_adapter(summariesList, getActivity());
-        //recyclerView.setAdapter(summariesAdapter);
         getSummaries();
         return view;
     }

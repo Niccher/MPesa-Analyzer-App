@@ -2,14 +2,20 @@ package com.niccher.mpesa_analyzer.adapter;
 
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -19,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.niccher.mpesa_analyzer.R;
+import com.niccher.mpesa_analyzer.frags.Frag_Summary;
 import com.niccher.mpesa_analyzer.helpers.Prefs;
 import com.niccher.mpesa_analyzer.models.Mod_Summaries;
 
@@ -26,7 +33,6 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
 
     ArrayList<Mod_Summaries> summariesList;
     Context context;
-    Prefs prefs;
 
     public Info_adapter(ArrayList<Mod_Summaries> summariesList, Context context) {
         this.summariesList = summariesList;
@@ -53,10 +59,19 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
             holder.part_date.setText(summariesList.get(position).summary_Created);
         }
 
-        holder.part_sent.setText("Sent "+summariesList.get(position).summary_Sent);
-        holder.part_unknown.setText("Unknown "+summariesList.get(position).summary_Unknown);
-        holder.part_receive.setText("Received " +summariesList.get(position).summary_Received);
+        holder.part_sent.setText(summariesList.get(position).summary_Sent);
+        holder.part_unknown.setText(summariesList.get(position).summary_Unknown);
+        holder.part_receive.setText(summariesList.get(position).summary_Received);
         holder.part_count.setText("Interactions "+summariesList.get(position).summary_Count);
+
+        holder.part_frame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) context;
+                Fragment frag_summary = new Frag_Summary();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, frag_summary).addToBackStack(null).commit();
+            }
+        });
     }
 
     @Override
@@ -66,6 +81,7 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView part_date, part_sent, part_unknown, part_receive, part_count;
+        RelativeLayout part_frame;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +90,8 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
             part_unknown=itemView.findViewById(R.id.part_txt_unknown);
             part_receive=itemView.findViewById(R.id.part_txt_incoming);
             part_count=itemView.findViewById(R.id.part_txt_total);
+
+            part_frame=itemView.findViewById(R.id.part_txt_frame);
         }
     }
 }

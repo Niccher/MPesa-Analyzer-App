@@ -6,6 +6,7 @@
     android:background="#B1B8ED">
 
     <ListView
+        android:layout_margin="10dp"
         android:id="@+id/account_list"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"

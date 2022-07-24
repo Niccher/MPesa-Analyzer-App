@@ -10,17 +10,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="158dp">
+        android:layout_height="wrap_content"
+        android:id="@+id/part_txt_frame">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             tools:ignore="UselessParent">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"
                 android:layout_marginLeft="35dp"
                 android:background="@drawable/bg_rect_frame">
@@ -39,30 +40,89 @@
                     android:maxLines="3"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/part_txt_incoming"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="From error to."
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
-                    <TextView
-                        android:id="@+id/part_txt_sent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="From error to."
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Money Received."
+                            android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/part_txt_unknown"
+                        <TextView
+                            android:id="@+id/part_txt_incoming"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:paddingStart="10dp"
+                            android:text="From error to."
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="From error to."
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Money Sent."
+                            android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/part_txt_sent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:paddingStart="10dp"
+                            android:text="From error to."
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Unknown interactions."
+                            android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/part_txt_unknown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:paddingStart="10dp"
+                            android:text="From error to."
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
                 </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/part_txt_total"
@@ -73,66 +133,10 @@
                     android:layout_marginLeft="18dp"
                     android:layout_marginBottom="8dp"
                     android:text="707"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="18dp"
-                    android:layout_marginRight="18dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_info" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="15"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginLeft="12dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_graph"
-                            tools:ignore="ContentDescription" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="15"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                    android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
+                    android:textColor="@color/twitter"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -141,7 +145,7 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/ic_home"
+                android:src="@drawable/ic_sms"
                 app:civ_border_width="@dimen/marign_2"
                 app:civ_circle_background_color="#C3C3C3" />
 

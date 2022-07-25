@@ -5,24 +5,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.niccher.mpesa_analyzer.R;
 
 public class Frag_Profile extends Fragment {
 
+    AppCompatActivity activity;
+
     public Frag_Profile() {
         // Required empty public constructor
-    }
-
-    public static Frag_Profile newInstance(String param1, String param2) {
-        Frag_Profile fragment = new Frag_Profile();
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (AppCompatActivity) getActivity();
+        ActionBar supportActionBar = activity.getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setTitle("Profile");
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+        }
+        setHasOptionsMenu(true);
     }
 
     @Override

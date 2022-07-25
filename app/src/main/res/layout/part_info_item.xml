@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:drawableEnd="@drawable/ic_next"
-    android:background="@color/bg_grey_light"
-    android:textColor="@color/twitter"
-    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-    android:textStyle="bold"
-    android:textSize="24dp"
-    android:text="Dope"
-    android:id="@+id/acc_item"
-    android:padding="10dp"
-    android:layout_margin="10dp"/>
+    android:orientation="vertical"
+    android:background="@drawable/backgroud">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_next"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            android:text="Dope"
+            android:id="@+id/acc_item"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_next"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textStyle="italic"
+            android:textSize="14dp"
+            android:text="Dope"
+            android:id="@+id/acc_item_description"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

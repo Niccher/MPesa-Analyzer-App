@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,13 +48,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Frag_History extends Fragment {
 
-    private RecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     JsonProcesses jsonProcesses;
     Konstants kon;
     Gson gson = null;
     ArrayList<Mod_Summaries> summariesList;
     Info_adapter summariesAdapter;
+
+    AppCompatActivity activity;
 
     public Frag_History() {}
 
@@ -64,6 +68,14 @@ public class Frag_History extends Fragment {
         gson = new GsonBuilder()
                 .setLenient()
                 .create();
+
+        activity = (AppCompatActivity) getActivity();
+        ActionBar supportActionBar = activity.getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setTitle("Upload History");
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+        }
+        setHasOptionsMenu(true);
     }
 
     @Override

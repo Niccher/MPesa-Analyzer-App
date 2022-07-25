@@ -15,6 +15,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -67,6 +69,8 @@ public class Frag_Home extends Fragment {
         // Required empty public constructor
     }
 
+    AppCompatActivity activity;
+
     Konstants kon;
     Prefs prefs;
     PayLoade init;
@@ -78,6 +82,14 @@ public class Frag_Home extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        activity = (AppCompatActivity) getActivity();
+        ActionBar supportActionBar = activity.getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setTitle("Home");
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+        }
+        setHasOptionsMenu(true);
 
         kon = new Konstants();
         prefs = new Prefs();

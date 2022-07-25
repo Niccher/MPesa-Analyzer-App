@@ -39,24 +39,34 @@ public class Frag_Info extends Fragment {
 
         kon = new Konstants();
 
-        final String[] mobileArray = {"Profile", "App Credits", "App Info"};
-        final ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.part_info_item, mobileArray);
-        final ListView listView = (ListView) solv.findViewById(R.id.account_list);
-        listView.setAdapter(adapter);
+        final String[] option_points = {"Profile", "App Info", "App Credits"};
+        final String[] option_points_description = {"Information about my account," +
+                "Logging Out and Deleting m Account",
+                "App Info about the version, its requirements and necessary the permissions",
+                "The Libraries and other open source resources used in creating the app"};
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.part_info_item, option_points);
+        //ArrayAdapter adapter_description = new ArrayAdapter<String>(getActivity(), R.layout.part_info_item, option_points_description);
+
+        ListView option_title = (ListView) solv.findViewById(R.id.account_list);
+        //ListView option_description = (ListView) solv.findViewById(R.id.account_list);
+
+        option_title.setAdapter(adapter);
+        //option_description.setAdapter(adapter_description);
+
+        option_title.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if (mobileArray[position] == "Profile"){
+                if (option_points[position] == "Profile"){
                     showBottomSheetDialog();
                 }
 
-                if (mobileArray[position] == "App Credits"){
+                if (option_points[position] == "App Credits"){
                     Toast.makeText(getActivity(), "App Credits", Toast.LENGTH_SHORT).show();
                 }
 
-                if (mobileArray[position] == "App Info"){
+                if (option_points[position] == "App Info"){
                     Toast.makeText(getActivity(), "App Info", Toast.LENGTH_SHORT).show();
                 }
             }

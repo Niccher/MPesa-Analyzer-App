@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.jjoe64.graphview.GraphView;
@@ -15,19 +17,22 @@ import com.niccher.mpesa_analyzer.R;
 public class Frag_Graph extends Fragment {
 
     GraphView graph_line;
+    AppCompatActivity activity;
 
     public Frag_Graph() {
         // Required empty public constructor
     }
 
-    public static Frag_Graph newInstance(String param1, String param2) {
-        Frag_Graph fragment = new Frag_Graph();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = (AppCompatActivity) getActivity();
+        ActionBar supportActionBar = activity.getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setTitle("Graphical View");
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+        }
+        setHasOptionsMenu(true);
     }
 
     @Override

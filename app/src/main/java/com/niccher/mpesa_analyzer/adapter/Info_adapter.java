@@ -1,6 +1,7 @@
 package com.niccher.mpesa_analyzer.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +70,11 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) context;
                 Fragment frag_summary = new Frag_Summary();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("created",summariesList.get(position).summary_Created);
+                frag_summary.setArguments(bundle);
+
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, frag_summary).addToBackStack(null).commit();
             }
         });

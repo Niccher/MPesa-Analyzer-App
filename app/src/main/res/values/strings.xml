@@ -34,5 +34,10 @@
     <string name="iam">I\'m</string>
     <string name="validusername">Enter Username</string>
     <string name="designed">Designed by \n matirialuiux.com</string>
+    <string name="money_received">Money Received</string>
+    <string name="money_sent">Money Sent</string>
+    <string name="summary_money_balances">Calculated Balances</string>
+    <string name="summary_interactions">Points of Interactions</string>
+    <string name="summary_info">Summary Info</string>
 
 </resources>

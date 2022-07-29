@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,6 +80,8 @@ public class Frag_Home extends Fragment {
     Button btn_fetch;
     TextView last_time;
 
+    ProgressBar progressBar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +107,9 @@ public class Frag_Home extends Fragment {
 
         btn_fetch = solv.findViewById(R.id.home_fetch_sync);
         last_time = solv.findViewById(R.id.home_last_upload);
+
+        progressBar = solv.findViewById(R.id.home_upload_state);
+        progressBar.setVisibility(View.GONE);
 
         btn_fetch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,6 +250,8 @@ public class Frag_Home extends Fragment {
 
         public void Parser_Upload(File files, String filename){
 
+            progressBar.setVisibility(View.VISIBLE);
+
             JsonUploadLoot service = ServiceGenerator.createService(JsonUploadLoot.class);
             File file = files;
             Uri fileUri = Uri.fromFile(file);
@@ -274,11 +282,13 @@ public class Frag_Home extends Fragment {
                     }catch (Exception es){
                         Log.e(kon.TAGGED, "Delete Files error\n"+es.getMessage());
                     }
+                    progressBar.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Log.e("Upload error:", t.getMessage());
+                    progressBar.setVisibility(View.GONE);
                 }
             });
 

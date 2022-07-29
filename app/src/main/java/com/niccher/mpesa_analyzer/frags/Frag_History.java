@@ -2,11 +2,15 @@ package com.niccher.mpesa_analyzer.frags;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -49,6 +53,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Frag_History extends Fragment {
 
     RecyclerView recyclerView;
+    TextView conn_state;
+    ProgressBar conn_wait;
 
     JsonProcesses jsonProcesses;
     Konstants kon;
@@ -84,10 +90,49 @@ public class Frag_History extends Fragment {
         View view = inflater.inflate(R.layout.frag_history, container, false);
 
         recyclerView = view.findViewById(R.id.recy_history);
+        conn_state = view.findViewById(R.id.conn_no_internet);
+        conn_wait  = view.findViewById(R.id.conn_wait_internet);
+        conn_wait.setVisibility(View.GONE);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        getSummaries();
+
+        if (isConnected()){
+            conn_wait.setVisibility(View.VISIBLE);
+            conn_state.setVisibility(View.GONE);
+            getSummaries();
+        }else {
+            conn_wait.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            isOffline();
+        }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isConnected()){
+            conn_wait.setVisibility(View.VISIBLE);
+            conn_state.setVisibility(View.GONE);
+            getSummaries();
+        }else {
+            conn_wait.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            isOffline();
+        }
+    }
+
+    public boolean isConnected(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        return (netInfo != null && netInfo.isConnected());
+    }
+
+    private void isOffline(){
+        Toast.makeText(activity, "No Internet", Toast.LENGTH_LONG).show();
+
     }
 
     private String get_prefs_auth(String ty){
@@ -152,6 +197,9 @@ public class Frag_History extends Fragment {
     }
 
     private void getSummaries() {
+
+        conn_wait.setVisibility(View.VISIBLE);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(kon.upload_summaries)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -168,6 +216,7 @@ public class Frag_History extends Fragment {
         call.enqueue(new Callback<SummaryResponse>() {
             @Override
             public void onResponse(Call<SummaryResponse> call, Response<SummaryResponse> response) {
+                conn_wait.setVisibility(View.GONE);
                 if(response.isSuccessful() && response.body()!=null){
                     SummaryResponse summaryResponse = response.body();
                     summariesList = new ArrayList<>(Arrays.asList(summaryResponse.getSummarizer()));
@@ -179,6 +228,7 @@ public class Frag_History extends Fragment {
 
             @Override
             public void onFailure(Call<SummaryResponse> call, Throwable t) {
+                conn_wait.setVisibility(View.GONE);
                 Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
                 Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again");
                 Log.e(kon.TAGGED, t.getMessage());

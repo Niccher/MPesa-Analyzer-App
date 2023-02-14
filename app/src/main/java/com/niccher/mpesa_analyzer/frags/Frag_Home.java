@@ -114,7 +114,6 @@ public class Frag_Home extends Fragment {
         btn_fetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Random Random", Toast.LENGTH_SHORT).show();
                 init.Parser_SMS(getActivity());
             }
         });

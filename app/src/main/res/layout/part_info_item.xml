@@ -2,38 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/backgroud">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/acc_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="10dp"
+        android:text="Dope"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_next"
-            android:textColor="@color/colorPrimaryDark"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textStyle="bold"
-            android:textSize="24dp"
-            android:text="Dope"
-            android:id="@+id/acc_item"
-            android:layout_margin="10dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_next"
-            android:textColor="@color/colorPrimaryDark"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textStyle="italic"
-            android:textSize="14dp"
-            android:text="Dope"
-            android:id="@+id/acc_item_description"
-            android:layout_margin="10dp"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/acc_item_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Dope"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        android:textStyle="italic" />
 
 </LinearLayout>

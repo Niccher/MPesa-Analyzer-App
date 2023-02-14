@@ -19,13 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.adapter.Info_adapter;
+import com.niccher.mpesa_analyzer.adapter.Info_more_adapter;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
+import com.niccher.mpesa_analyzer.models.Mod_more_info;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Frag_Info extends Fragment {
-    Konstants kon;
+
+    Info_more_adapter info_more_adapter;
+    RecyclerView recy_info;
 
     public Frag_Info() {
         // Required empty public constructor
@@ -37,40 +41,12 @@ public class Frag_Info extends Fragment {
         // Inflate the layout for this fragment
         View solv= inflater.inflate(R.layout.frag_info, container, false);
 
-        kon = new Konstants();
+        recy_info = solv.findViewById(R.id.info_more_Recycler);
+        recy_info.setHasFixedSize(true);
+        LinearLayoutManager lman = new LinearLayoutManager(solv.getContext(), LinearLayoutManager.VERTICAL,false);
+        recy_info.setLayoutManager(lman);
 
-        final String[] option_points = {"Profile", "App Info", "App Credits"};
-        final String[] option_points_description = {"Information about my account," +
-                "Logging Out and Deleting m Account",
-                "App Info about the version, its requirements and necessary the permissions",
-                "The Libraries and other open source resources used in creating the app"};
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.part_info_item, option_points);
-        //ArrayAdapter adapter_description = new ArrayAdapter<String>(getActivity(), R.layout.part_info_item, option_points_description);
-
-        ListView option_title = (ListView) solv.findViewById(R.id.account_list);
-        //ListView option_description = (ListView) solv.findViewById(R.id.account_list);
-
-        option_title.setAdapter(adapter);
-        //option_description.setAdapter(adapter_description);
-
-        option_title.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if (option_points[position] == "Profile"){
-                    showBottomSheetDialog();
-                }
-
-                if (option_points[position] == "App Credits"){
-                    Toast.makeText(getActivity(), "App Credits", Toast.LENGTH_SHORT).show();
-                }
-
-                if (option_points[position] == "App Info"){
-                    Toast.makeText(getActivity(), "App Info", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        showInfos();
 
         return solv;
     }
@@ -79,6 +55,17 @@ public class Frag_Info extends Fragment {
     public void onCreate( Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+    }
+
+    private void showInfos() {
+        ArrayList<Mod_more_info> myMoreInfo = new ArrayList<Mod_more_info>(3);
+        myMoreInfo.add(new Mod_more_info("Profile","Information about my account, Logging Out and Deleting my Account"));
+        myMoreInfo.add(new Mod_more_info("App Info","App Info about the version, its requirements and necessary the permissions"));
+        myMoreInfo.add(new Mod_more_info("App Credits","The Libraries and other open source resources used in creating the app"));
+
+        info_more_adapter = new Info_more_adapter(myMoreInfo, getActivity());
+        recy_info.setAdapter(info_more_adapter);
+        info_more_adapter.notifyDataSetChanged();
     }
 
     private void showBottomSheetDialog() {

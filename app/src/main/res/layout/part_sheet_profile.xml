@@ -1,51 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/backgroud">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/backgroud">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/header_cover_image"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="@dimen/_70sdp"
             android:scaleType="centerCrop"
-            android:src="@drawable/backgroud" />
+            android:src="@drawable/backgroud"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/user_profile_photo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@+id/header_cover_image"
-            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
             android:layout_marginTop="-60dp"
             android:background="@drawable/rect_corners"
-            android:elevation="5dp"
-            android:padding="20dp"
+            android:elevation="@dimen/_5sdp"
+            android:padding="@dimen/_20sdp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_home" />
+            android:src="@drawable/ic_home"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_cover_image" />
 
         <RelativeLayout
+            app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/profile_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/header_cover_image"
-            android:elevation="4dp"
-            android:paddingBottom="24dp">
+            android:elevation="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_24sdp"
+            app:layout_constraintTop_toBottomOf="@id/user_profile_photo">
 
             <TextView
                 android:id="@+id/user_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="76dp"
+                android:layout_marginTop="@dimen/_6sdp"
                 android:text="Viral Android"
                 android:textColor="#fff"
-                android:textSize="24sp"
+                android:textSize="@dimen/_24sdp"
                 android:textStyle="bold" />
 
             <TextView
@@ -54,52 +58,54 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_profile_name"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:text="Android free tutorials and example"
                 android:textColor="#fff"
-                android:textSize="14sp" />
+                android:textSize="@dimen/_14sdp" />
         </RelativeLayout>
 
 
         <LinearLayout
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_layout"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/profile_layout">
 
             <Button
                 android:id="@+id/bs_profile_log_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/_8sdp"
                 android:background="@drawable/rect_corners"
-                android:elevation="2dp"
-                android:padding="12dp"
+                android:elevation="@dimen/_2sdp"
+                android:padding="@dimen/_12sdp"
                 android:text="Log Me Out" />
 
             <Button
                 android:id="@+id/bs_profile_delete_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="3dp"
+                android:layout_margin="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_3sdp"
                 android:background="@drawable/rect_corners"
-                android:elevation="2dp"
-                android:padding="12dp"
+                android:elevation="@dimen/_2sdp"
+                android:padding="@dimen/_12sdp"
                 android:text="Delete My Account" />
 
             <Button
                 android:id="@+id/bs_profile_back"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/_8sdp"
                 android:background="@drawable/rect_corners"
-                android:elevation="2dp"
-                android:padding="12dp"
+                android:elevation="@dimen/_2sdp"
+                android:padding="@dimen/_12sdp"
                 android:text="Back" />
 
         </LinearLayout>
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

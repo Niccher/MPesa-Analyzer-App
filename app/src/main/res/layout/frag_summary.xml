@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#B1B8ED"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="#B1B8ED">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,85 +16,85 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="6dp"
-            android:layout_margin="4dp">
+            android:layout_margin="@dimen/_4sdp"
+            app:cardCornerRadius="@dimen/_6sdp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:text="@string/summary_money_balances"
                 android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
-                android:textStyle="bold"
                 android:textSize="18dp"
-                android:text="@string/summary_money_balances"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="28dp">
+                android:layout_marginTop="@dimen/_28sdp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_weight="3">
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:clickable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/_48sdp"
+                            android:layout_height="@dimen/_48sdp"
                             android:background="@drawable/back_green"
-                            android:padding="10dp"
+                            android:padding="@dimen/_10sdp"
                             android:src="@drawable/ic_money_incoming" />
 
                         <TextView
+                            android:id="@+id/cat_received"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="100"
-                            android:id="@+id/cat_received"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="@string/money_received"
                             android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:clickable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/_48sdp"
+                            android:layout_height="@dimen/_48sdp"
                             android:background="@drawable/back_blu"
-                            android:padding="10dp"
+                            android:padding="@dimen/_10sdp"
                             android:src="@drawable/ic_money_outgoing" />
 
                         <TextView
+                            android:id="@+id/cat_sent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="100"
-                            android:id="@+id/cat_sent"
                             android:textStyle="bold" />
 
                         <TextView
@@ -108,32 +107,32 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:clickable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/_48sdp"
+                            android:layout_height="@dimen/_48sdp"
                             android:background="@drawable/back_pinkie"
-                            android:padding="10dp"
+                            android:padding="@dimen/_10sdp"
                             android:src="@drawable/ic_money_unknown" />
 
                         <TextView
+                            android:id="@+id/cat_unknown"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="100"
-                            android:id="@+id/cat_unknown"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="Unknown"
                             android:textStyle="bold" />
 
@@ -148,60 +147,60 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="6dp"
-            android:layout_margin="4dp">
+            android:layout_margin="@dimen/_4sdp"
+            app:cardCornerRadius="@dimen/_6sdp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:text="@string/summary_interactions"
                 android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:text="@string/summary_interactions"/>
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="28dp">
+                android:layout_marginTop="@dimen/_28sdp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_weight="3">
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/cat_sports"
-                        android:clickable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/_48sdp"
+                            android:layout_height="@dimen/_48sdp"
                             android:background="@drawable/back_green"
-                            android:padding="10dp"
+                            android:padding="@dimen/_10sdp"
                             android:src="@drawable/ic_money_incoming" />
 
                         <TextView
+                            android:id="@+id/cat_point_received"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="100"
-                            android:id="@+id/cat_point_received"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="@string/money_received"
                             android:textStyle="bold" />
 
@@ -215,24 +214,24 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/_48sdp"
+                            android:layout_height="@dimen/_48sdp"
                             android:background="@drawable/back_blu"
-                            android:padding="10dp"
+                            android:padding="@dimen/_10sdp"
                             android:src="@drawable/ic_money_outgoing" />
 
                         <TextView
+                            android:id="@+id/cat_point_sent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="100"
-                            android:id="@+id/cat_point_sent"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="@string/money_sent"
                             android:textStyle="bold" />
 
@@ -246,24 +245,24 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/_48sdp"
+                            android:layout_height="@dimen/_48sdp"
                             android:background="@drawable/back_pinkie"
-                            android:padding="10dp"
+                            android:padding="@dimen/_10sdp"
                             android:src="@drawable/ic_money_unknown" />
 
                         <TextView
+                            android:id="@+id/cat_point_unknown"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="100"
-                            android:id="@+id/cat_point_unknown"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="Unknown"
                             android:textStyle="bold" />
 
@@ -278,53 +277,53 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="6dp"
-            android:layout_margin="4dp">
+            android:layout_margin="@dimen/_4sdp"
+            app:cardCornerRadius="@dimen/_6sdp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:text="@string/summary_info"
                 android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:text="@string/summary_info"/>
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="28dp">
+                android:layout_marginTop="@dimen/_28sdp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_weight="3">
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:clickable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/_48sdp"
+                            android:layout_height="@dimen/_48sdp"
                             android:background="@drawable/back_green"
-                            android:padding="10dp"
+                            android:padding="@dimen/_10sdp"
                             android:src="@drawable/ic_money_incoming" />
 
                         <TextView
+                            android:id="@+id/summary_dated"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="100"
-                            android:id="@+id/summary_dated"
                             android:textStyle="bold" />
 
 

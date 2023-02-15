@@ -11,13 +11,13 @@
         android:id="@+id/id_SignIn_TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="76dp"
         android:text="@string/sign_up"
         android:textColor="@color/signupsignintextcolor"
         android:textSize="@dimen/textsize_28"
-        android:textStyle="bold"
-        android:layout_marginStart="50dp" />
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,9 +35,9 @@
             android:id="@+id/id_textInputLayout_1"
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:layout_marginLeft="@dimen/marign_23"
-            android:layout_marginTop="@dimen/marign_33"
-            android:layout_marginRight="@dimen/marign_23"
+            android:layout_marginLeft="@dimen/_23sdp"
+            android:layout_marginTop="@dimen/_33sdp"
+            android:layout_marginRight="@dimen/_23sdp"
             android:background="@null">
 
             <EditText
@@ -56,27 +56,27 @@
             android:id="@+id/id_view_1"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginLeft="@dimen/marign_23"
-            android:layout_marginTop="@dimen/marign_2"
-            android:layout_marginRight="@dimen/marign_23"
-            android:background="@color/linecolor"/>
+            android:layout_marginLeft="@dimen/_23sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginRight="@dimen/_23sdp"
+            android:background="@color/linecolor" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/id_Email_textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="63dp"
-            android:layout_marginLeft="@dimen/marign_23"
-            android:layout_marginTop="@dimen/marign_4"
-            android:layout_marginRight="@dimen/marign_23"
+            android:layout_marginLeft="@dimen/_23sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginRight="@dimen/_23sdp"
             android:background="@null">
 
             <EditText
                 android:id="@+id/ed_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textEmailAddress"
                 android:background="@null"
                 android:hint="@string/email"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/primarytext"
                 android:textSize="@dimen/textsize_18"
                 tools:ignore="ContentDescription" />
@@ -87,9 +87,9 @@
             android:id="@+id/id_view_2"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginLeft="@dimen/marign_23"
-            android:layout_marginTop="@dimen/marign_2"
-            android:layout_marginRight="@dimen/marign_23"
+            android:layout_marginLeft="@dimen/_23sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginRight="@dimen/_23sdp"
             android:background="@color/linecolor" />
 
 
@@ -97,9 +97,9 @@
             android:id="@+id/id_Password_textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="63dp"
-            android:layout_marginLeft="@dimen/marign_23"
-            android:layout_marginTop="@dimen/marign_4"
-            android:layout_marginRight="@dimen/marign_23"
+            android:layout_marginLeft="@dimen/_23sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginRight="@dimen/_23sdp"
             android:background="@null">
 
             <EditText
@@ -119,9 +119,9 @@
             android:id="@+id/id_view_3"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginLeft="@dimen/marign_23"
-            android:layout_marginTop="@dimen/marign_2"
-            android:layout_marginRight="@dimen/marign_23"
+            android:layout_marginLeft="@dimen/_23sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginRight="@dimen/_23sdp"
             android:background="@color/linecolor" />
 
 
@@ -129,8 +129,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/marign_27">
+            android:layout_marginTop="@dimen/marign_27"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/btn_sign_register"
@@ -161,10 +161,10 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_marginLeft="@dimen/marign_23"
-            android:layout_marginTop="@dimen/marign_2"
-            android:layout_marginRight="@dimen/marign_23" />
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_23sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginRight="@dimen/_23sdp" />
 
         <TextView
             android:id="@+id/id_back_login"
@@ -182,10 +182,10 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_marginLeft="@dimen/marign_23"
-            android:layout_marginTop="@dimen/marign_2"
-            android:layout_marginRight="@dimen/marign_23" />
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_23sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginRight="@dimen/_23sdp" />
 
     </LinearLayout>
 

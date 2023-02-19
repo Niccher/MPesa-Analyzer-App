@@ -24,6 +24,7 @@ import com.google.gson.GsonBuilder;
 import com.niccher.mpesa_analyzer.BuildConfig;
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.adapter.Info_adapter;
+import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
 import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
@@ -97,22 +98,17 @@ public class Frag_History extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        if (isConnected()){
-            conn_wait.setVisibility(View.VISIBLE);
-            conn_state.setVisibility(View.GONE);
-            getSummaries();
-        }else {
-            conn_wait.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.GONE);
-            isOffline();
-        }
+        getConnectionState();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        getConnectionState();
+    }
 
+    public void getConnectionState(){
         if (isConnected()){
             conn_wait.setVisibility(View.VISIBLE);
             conn_state.setVisibility(View.GONE);
@@ -132,7 +128,6 @@ public class Frag_History extends Fragment {
 
     private void isOffline(){
         Toast.makeText(activity, "No Internet", Toast.LENGTH_LONG).show();
-
     }
 
     private String get_prefs_auth(String ty){
@@ -148,62 +143,13 @@ public class Frag_History extends Fragment {
         return id;
     }
 
-    private static OkHttpClient getUnsafeOkHttpClient() {
-        try {
-            // Create a trust manager that does not validate certificate chains
-            final TrustManager[] trustAllCerts = new TrustManager[] {
-                    new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-                        @Override
-                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-                        @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return new java.security.cert.X509Certificate[]{};
-                        }
-                    }
-            };
-
-            // Install the all-trusting trust manager
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
-            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            if(BuildConfig.DEBUG) {
-                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            }else{
-                logging.setLevel(HttpLoggingInterceptor.Level.NONE);
-            }
-
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.sslSocketFactory(sslSocketFactory);
-            builder.addInterceptor(logging);
-            builder.hostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            });
-
-            OkHttpClient okHttpClient = builder.build();
-            return okHttpClient;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void getSummaries() {
-
         conn_wait.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(kon.upload_summaries)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(getUnsafeOkHttpClient())
+                .client(ServiceGenerator.getUnsafeOkHttpClient())
                 .build();
 
         jsonProcesses = retrofit.create(JsonProcesses.class);

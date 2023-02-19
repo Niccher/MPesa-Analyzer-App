@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import com.niccher.mpesa_analyzer.BuildConfig;
 import com.niccher.mpesa_analyzer.MainActivity;
 import com.niccher.mpesa_analyzer.R;
+import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
 import com.niccher.mpesa_analyzer.interfaces.JsonAuthUser;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_User_Auth;
@@ -101,7 +102,7 @@ public class Auth_Signup extends AppCompatActivity {
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl(kon.upload_auth_url)
                             .addConverterFactory(GsonConverterFactory.create(gson))
-                            .client(getUnsafeOkHttpClient())
+                            .client(ServiceGenerator.getUnsafeOkHttpClient())
                             .build();
 
                     jsonAuthUser = retrofit.create(JsonAuthUser.class);
@@ -132,54 +133,6 @@ public class Auth_Signup extends AppCompatActivity {
             }
         });
 
-    }
-
-    private static OkHttpClient getUnsafeOkHttpClient() {
-        try {
-            // Create a trust manager that does not validate certificate chains
-            final TrustManager[] trustAllCerts = new TrustManager[] {
-                    new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-                        @Override
-                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-                        @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return new java.security.cert.X509Certificate[]{};
-                        }
-                    }
-            };
-
-            // Install the all-trusting trust manager
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
-            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            if(BuildConfig.DEBUG) {
-                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            }else{
-                logging.setLevel(HttpLoggingInterceptor.Level.NONE);
-            }
-
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.sslSocketFactory(sslSocketFactory);
-            builder.addInterceptor(logging);
-            builder.hostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            });
-
-            OkHttpClient okHttpClient = builder.build();
-            return okHttpClient;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void createUser(String new_name, String new_eml, String new_pwd) {

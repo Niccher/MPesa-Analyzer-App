@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#B1B8ED">
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dip" />
+        android:layout_height="match_parent">
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/graph" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

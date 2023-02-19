@@ -31,7 +31,7 @@ public class ServiceGenerator {
         return retrofit.create(serviceClass);
     }
 
-    private static OkHttpClient getUnsafeOkHttpClient() {
+    public static OkHttpClient getUnsafeOkHttpClient() {
         try {
             // Create a trust manager that does not validate certificate chains
             final TrustManager[] trustAllCerts = new TrustManager[] {

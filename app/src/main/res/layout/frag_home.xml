@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#B1B8ED">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -15,13 +15,16 @@
             android:layout_centerInParent="true"
             android:layout_margin="@dimen/_20sdp"
             android:background="#B1B8ED"
-            app:cardCornerRadius="@dimen/_40sdp">
+            app:cardCornerRadius="@dimen/_40sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#B1B8ED"
-                android:orientation="vertical"
                 android:paddingBottom="@dimen/_20sdp">
 
                 <Button
@@ -32,10 +35,12 @@
                     android:layout_marginTop="@dimen/marign_16"
                     android:layout_marginRight="@dimen/marign_23"
                     android:background="@drawable/rectsignin"
-                    android:text="Request Permision"
+                    android:text="@string/home_permision_req"
                     android:textAllCaps="false"
                     android:textColor="@color/thirdtext"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/home_fetch_sync"
@@ -45,10 +50,11 @@
                     android:layout_marginTop="@dimen/marign_16"
                     android:layout_marginRight="@dimen/marign_23"
                     android:background="@drawable/rectsignin"
-                    android:text="Fetch and Sync"
+                    android:text="@string/home_btn_fetch_and_sync"
                     android:textAllCaps="false"
                     android:textColor="@color/thirdtext"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/home_req_perm" />
 
                 <TextView
                     android:id="@+id/home_last_upload"
@@ -60,9 +66,11 @@
                     android:layout_marginTop="@dimen/_4sdp"
                     android:layout_marginEnd="@dimen/marign_10"
                     android:layout_marginRight="@dimen/marign_10"
-                    android:text="@string/forgot_password"
+                    android:text="@string/home_label_timestamp"
                     android:textColor="@color/secondarytext"
-                    android:textSize="@dimen/textsize_18" />
+                    android:textSize="@dimen/textsize_18"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/home_fetch_sync" />
 
                 <ProgressBar
                     android:id="@+id/home_upload_state"
@@ -73,12 +81,13 @@
                     android:layout_marginRight="@dimen/_23sdp"
                     android:indeterminate="true"
                     android:indeterminateTint="@color/black"
-                    android:max="100" />
+                    android:max="100"
+                    app:layout_constraintTop_toBottomOf="@id/home_last_upload" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

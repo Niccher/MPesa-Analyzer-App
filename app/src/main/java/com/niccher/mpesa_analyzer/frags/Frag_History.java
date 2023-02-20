@@ -116,7 +116,7 @@ public class Frag_History extends Fragment {
         }else {
             conn_wait.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
-            isOffline();
+            isOffline("No internet connection at the moment");
         }
     }
 
@@ -126,8 +126,9 @@ public class Frag_History extends Fragment {
         return (netInfo != null && netInfo.isConnected());
     }
 
-    private void isOffline(){
-        Toast.makeText(activity, "No Internet", Toast.LENGTH_LONG).show();
+    private void isOffline(String msg){
+        //Toast.makeText(activity, "No Internet", Toast.LENGTH_LONG).show();
+        conn_state.setText(msg);
     }
 
     private String get_prefs_auth(String ty){
@@ -175,7 +176,8 @@ public class Frag_History extends Fragment {
             @Override
             public void onFailure(Call<SummaryResponse> call, Throwable t) {
                 conn_wait.setVisibility(View.GONE);
-                Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
+                isOffline("Unknown error has occurred please try again later");
+                //Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
                 Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again");
                 Log.e(kon.TAGGED, t.getMessage());
             }

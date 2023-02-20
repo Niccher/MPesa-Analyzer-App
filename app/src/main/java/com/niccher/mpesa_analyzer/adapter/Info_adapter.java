@@ -72,7 +72,12 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
                 Fragment frag_summary = new Frag_Summary();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("created",summariesList.get(position).summary_Created);
+
+                bundle.putString("created", summariesList.get(position).summary_Created);
+                bundle.putString("sent", summariesList.get(position).summary_Sent);
+                bundle.putString("received", summariesList.get(position).summary_Received);
+                bundle.putString("unknown", summariesList.get(position).summary_Unknown);
+
                 frag_summary.setArguments(bundle);
 
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, frag_summary).addToBackStack(null).commit();

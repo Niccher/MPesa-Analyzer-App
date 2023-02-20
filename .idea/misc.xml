@@ -29,8 +29,8 @@
         <entry key="app/src/main/res/drawable/splash_screen_bg.xml" value="0.2035" />
         <entry key="app/src/main/res/layout/activity_about_you.xml" value="0.20425724637681159" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.20425724637681159" />
-        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.20425724637681159" />
+        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.20425724637681159" />
         <entry key="app/src/main/res/layout/back_blu.xml" value="0.23550724637681159" />
         <entry key="app/src/main/res/layout/frag__home.xml" value="0.35643115942028986" />

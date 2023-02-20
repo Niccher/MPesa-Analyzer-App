@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -49,6 +51,8 @@ public class Frag_Graph extends Fragment {
 
     GraphView graph_line, graph_line1;
     AppCompatActivity activity;
+    TextView conn_state;
+    ProgressBar conn_wait;
 
     JsonProcesses jsonProcesses;
     Konstants kon;
@@ -86,59 +90,30 @@ public class Frag_Graph extends Fragment {
         // Inflate the layout for this fragment
         View grapher = inflater.inflate(R.layout.frag_graph, container, false);
 
+        conn_state = grapher.findViewById(R.id.conn_no_internet);
+        conn_wait  = grapher.findViewById(R.id.conn_wait_internet);
+        conn_wait.setVisibility(View.GONE);
+
         graph_line = (GraphView) grapher.findViewById(R.id.graph);
         graph_line1 = (GraphView) grapher.findViewById(R.id.graph1);
-        drawGraph();
-        drawPoint();
-        return grapher;
-    }
 
-    public void drawPoint(){
-        DataPoint[] dp = new DataPoint[]{
-                new DataPoint(0, 30),
-                new DataPoint(2, 60),
-                new DataPoint(3, 35),
-                new DataPoint(6, 56),
-                new DataPoint(7, 45),
-        };
+        graph_line.setVisibility(View.GONE);
+        graph_line1.setVisibility(View.GONE);
 
-        point_sent = new PointsGraphSeries<>(dp);
-        graph_line1.addSeries(point_sent);
-
-        // we use this method to define the shape that
-        // will be used for data points
-        // series.setShape(PointsGraphSeries.Shape.TRIANGLE);
-        // we use this method to define the size of the shape
-        point_sent.setSize(50);
-
-        // we use this method to set the color
-        point_sent.setColor(Color.RED);
-
-        // we use this method to define the custom shape,
-        // we create our own shape
-        point_sent.setCustomShape(new PointsGraphSeries.CustomShape() {
-            @Override
-            public void draw(Canvas canvas, Paint paint, float x, float y, DataPointInterface dataPoint) {
-                paint.setStrokeWidth(5);
-                // we are initialising the shape structure of data points
-                canvas.drawLine(x - 20, y, x, y - 20, paint);
-                canvas.drawLine(x, y - 20, x + 20, y, paint);
-                canvas.drawLine(x + 20, y, x, y + 20, paint);
-                canvas.drawLine(x - 20, y, x, y + 20, paint);
-            }
-        });
-    }
-
-    public void drawGraph(){
         graph_line.setTitle("Category of SMS");
         getConnectionState();
+
+        return grapher;
     }
 
     public void getConnectionState(){
         if (isConnected()){
+            conn_wait.setVisibility(View.VISIBLE);
+            conn_state.setVisibility(View.GONE);
             getSummaries();
         }else {
-            isOffline();
+            conn_wait.setVisibility(View.GONE);
+            isOffline("No internet connection at the moment.");
         }
     }
 
@@ -148,8 +123,10 @@ public class Frag_Graph extends Fragment {
         return (netInfo != null && netInfo.isConnected());
     }
 
-    private void isOffline(){
-        Toast.makeText(activity, "No Internet", Toast.LENGTH_LONG).show();
+    private void isOffline(String mgs){
+        graph_line.setVisibility(View.GONE);
+        graph_line1.setVisibility(View.GONE);
+        conn_state.setText(mgs);
     }
 
     private String get_prefs_auth(String ty){
@@ -166,8 +143,7 @@ public class Frag_Graph extends Fragment {
     }
 
     private void getSummaries() {
-        //conn_wait.setVisibility(View.VISIBLE);
-
+        conn_wait.setVisibility(View.VISIBLE);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(kon.upload_summaries)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -184,7 +160,7 @@ public class Frag_Graph extends Fragment {
         call.enqueue(new Callback<SummaryResponse>() {
             @Override
             public void onResponse(Call<SummaryResponse> call, Response<SummaryResponse> response) {
-                //conn_wait.setVisibility(View.GONE);
+                conn_wait.setVisibility(View.GONE);
                 if(response.isSuccessful() && response.body()!=null){
                     SummaryResponse summaryResponse = response.body();
                     summariesList = new ArrayList<>(Arrays.asList(summaryResponse.getSummarizer()));
@@ -201,6 +177,9 @@ public class Frag_Graph extends Fragment {
                     series_sent.setColor(Color.CYAN);
                     series_received.setColor(Color.RED);
                     series_unknown.setColor(Color.BLUE);
+
+                    graph_line.setVisibility(View.VISIBLE);
+                    graph_line1.setVisibility(View.VISIBLE);
 
                     for (Mod_Summaries sumlist: summariesList) {
                         counter++;
@@ -233,8 +212,9 @@ public class Frag_Graph extends Fragment {
 
             @Override
             public void onFailure(Call<SummaryResponse> call, Throwable t) {
-                //conn_wait.setVisibility(View.GONE);
-                Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
+                conn_wait.setVisibility(View.GONE);
+                isOffline("Unknown error has occurred, please try again");
+                //Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
                 Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again");
                 Log.e(kon.TAGGED, t.getMessage());
             }

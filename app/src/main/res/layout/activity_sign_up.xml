@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,41 +12,41 @@
         android:id="@+id/id_SignIn_TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="76dp"
-        android:text="@string/sign_up"
+        android:layout_marginStart="@dimen/_50sdp"
+        android:layout_marginLeft="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_76sdp"
+        android:text="@string/auth_label_sign_up"
         android:textColor="@color/signupsignintextcolor"
         android:textSize="@dimen/textsize_28"
         android:textStyle="bold" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/id_SignIn_TextView"
-        android:layout_gravity="center"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="27dp"
-        android:background="@drawable/rect"
-        android:orientation="vertical">
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_27sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_27sdp"
+        android:background="@drawable/rect">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/id_textInputLayout_1"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="@dimen/_65sdp"
             android:layout_marginLeft="@dimen/_23sdp"
             android:layout_marginTop="@dimen/_33sdp"
             android:layout_marginRight="@dimen/_23sdp"
-            android:background="@null">
+            android:background="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <EditText
                 android:id="@+id/ed_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:hint="@string/full_name"
+                android:hint="@string/sign_up_ed_username"
                 android:textColor="@color/primarytext"
                 android:textSize="@dimen/textsize_18"
                 tools:ignore="ContentDescription" />
@@ -55,11 +56,12 @@
         <View
             android:id="@+id/id_view_1"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="@dimen/_2sdp"
             android:layout_marginLeft="@dimen/_23sdp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginRight="@dimen/_23sdp"
-            android:background="@color/linecolor" />
+            android:background="@color/linecolor"
+            app:layout_constraintTop_toBottomOf="@id/id_textInputLayout_1" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/id_Email_textInputLayout"
@@ -68,14 +70,15 @@
             android:layout_marginLeft="@dimen/_23sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginRight="@dimen/_23sdp"
-            android:background="@null">
+            android:background="@null"
+            app:layout_constraintTop_toBottomOf="@id/id_view_1">
 
             <EditText
                 android:id="@+id/ed_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:hint="@string/email"
+                android:hint="@string/sign_up_ed_email"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/primarytext"
                 android:textSize="@dimen/textsize_18"
@@ -90,7 +93,8 @@
             android:layout_marginLeft="@dimen/_23sdp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginRight="@dimen/_23sdp"
-            android:background="@color/linecolor" />
+            android:background="@color/linecolor"
+            app:layout_constraintTop_toBottomOf="@id/id_Email_textInputLayout" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -100,14 +104,15 @@
             android:layout_marginLeft="@dimen/_23sdp"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginRight="@dimen/_23sdp"
-            android:background="@null">
+            android:background="@null"
+            app:layout_constraintTop_toBottomOf="@id/id_view_2">
 
             <EditText
                 android:id="@+id/ed_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:hint="@string/password"
+                android:hint="@string/sign_up_ed_pwd"
                 android:inputType="textPassword"
                 android:textColor="@color/primarytext"
                 android:textSize="@dimen/textsize_18"
@@ -118,19 +123,22 @@
         <View
             android:id="@+id/id_view_3"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="@dimen/_2sdp"
             android:layout_marginLeft="@dimen/_23sdp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginRight="@dimen/_23sdp"
-            android:background="@color/linecolor" />
+            android:background="@color/linecolor"
+            app:layout_constraintTop_toBottomOf="@id/id_Password_textInputLayout" />
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/box_btn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/marign_27"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/id_view_3">
 
             <Button
                 android:id="@+id/btn_sign_register"
@@ -160,11 +168,13 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/id_view_4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_10sdp"
             android:layout_marginLeft="@dimen/_23sdp"
             android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginRight="@dimen/_23sdp" />
+            android:layout_marginRight="@dimen/_23sdp"
+            app:layout_constraintTop_toBottomOf="@id/box_btn" />
 
         <TextView
             android:id="@+id/id_back_login"
@@ -176,18 +186,21 @@
             android:layout_marginEnd="@dimen/marign_10"
             android:layout_marginRight="@dimen/marign_10"
             android:layout_marginBottom="@dimen/marign_4"
-            android:text="I have an Account"
+            android:text="@string/auth_sign_up_have_account"
             android:textColor="@color/secondarytext"
-            android:textSize="@dimen/textsize_18" />
+            android:textSize="@dimen/textsize_18"
+            app:layout_constraintTop_toBottomOf="@id/id_view_4"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <View
+            android:id="@+id/id_view_5"
+            app:layout_constraintTop_toBottomOf="@id/id_back_login"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_10sdp"
             android:layout_marginLeft="@dimen/_23sdp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginRight="@dimen/_23sdp" />
 
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

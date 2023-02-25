@@ -36,7 +36,6 @@
                     android:layout_marginRight="@dimen/marign_23"
                     android:background="@drawable/rectsignin"
                     android:text="@string/home_permision_req"
-                    android:textAllCaps="false"
                     android:textColor="@color/thirdtext"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"

@@ -49,8 +49,8 @@ public class Info_more_adapter extends RecyclerView.Adapter<Info_more_adapter.Vi
         bottomSheetDialog = new BottomSheetDialog(context);
         bottomSheetDialog.setContentView(R.layout.part_sheet_profile);
 
-        profile_log_out = bottomSheetDialog.findViewById(R.id.bs_profile_log_out);
-        profile_delete = bottomSheetDialog.findViewById(R.id.bs_profile_delete_account);
+        profile_log_out = bottomSheetDialog.findViewById(R.id.btn_profile_log_out);
+        profile_delete = bottomSheetDialog.findViewById(R.id.btn_profile_delete_account);
         profile_back = bottomSheetDialog.findViewById(R.id.bs_profile_back);
 
         return viewHolder;

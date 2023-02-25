@@ -3,9 +3,11 @@
 
     <string name="money_received">Money Received</string>
     <string name="money_sent">Money Sent</string>
+
     <string name="summary_money_balances">Calculated Balances</string>
     <string name="summary_interactions">Points of Interactions</string>
     <string name="summary_info">Summary Info</string>
+
     <string name="auth_btn_sign_up">Sign Up</string>
     <string name="auth_btn_proceed">Proceed Anyway</string>
     <string name="auth_btn_sign_in">Sign In</string>
@@ -15,11 +17,23 @@
     <string name="auth_label_sign_in">Sign In</string>
     <string name="auth_label_sign_up">Sign Up</string>
     <string name="auth_sign_up_have_account">I have an Account</string>
+
     <string name="home_permision_req">SMS Permission</string>
     <string name="home_btn_fetch_and_sync">Fetch and Sync</string>
     <string name="home_label_timestamp">Last Updated</string>
+
     <string name="sign_up_ed_pwd">Your Password</string>
     <string name="sign_up_ed_email">Your Email</string>
     <string name="sign_up_ed_username">Your Username</string>
+
+    <string name="sum_string_money_received">Received</string>
+    <string name="sum_string_money_sent">Sent</string>
+    <string name="sum_string_money_unknown">Unknown</string>
+
+    <string name="profile_my_name">My Name</string>
+    <string name="profile_my_desc">Anything here</string>
+    <string name="profile_txt_back">Back</string>
+    <string name="profile_txt_delete">Delete My Account</string>
+    <string name="profile_txt_log_out">Log Me Out</string>
 
 </resources>

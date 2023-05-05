@@ -72,7 +72,7 @@ public class Frag_Graph extends Fragment {
         activity = (AppCompatActivity) getActivity();
         ActionBar supportActionBar = activity.getSupportActionBar();
         if (supportActionBar != null) {
-            supportActionBar.setTitle("Graphical View");
+            supportActionBar.setTitle("More Info");
             supportActionBar.setDisplayHomeAsUpEnabled(false);
         }
         setHasOptionsMenu(true);

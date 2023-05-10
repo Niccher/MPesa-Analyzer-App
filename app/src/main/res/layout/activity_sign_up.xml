@@ -50,8 +50,7 @@
                 android:background="@null"
                 android:hint="@string/sign_up_ed_username"
                 android:textColor="@color/primarytext"
-                android:textSize="@dimen/textsize_18"
-                tools:ignore="ContentDescription" />
+                android:textSize="@dimen/textsize_14" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,8 +82,7 @@
                 android:hint="@string/sign_up_ed_email"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/primarytext"
-                android:textSize="@dimen/textsize_18"
-                tools:ignore="ContentDescription" />
+                android:textSize="@dimen/textsize_14" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,7 +115,7 @@
                 android:hint="@string/sign_up_ed_pwd"
                 android:inputType="textPassword"
                 android:textColor="@color/primarytext"
-                android:textSize="@dimen/textsize_18" />
+                android:textSize="@dimen/textsize_14" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,7 +146,7 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginRight="@dimen/_24sdp"
                 android:background="@drawable/rectsignin"
-                android:text="Register"
+                android:text="@string/auth_btn_sign_up"
                 android:textColor="@color/thirdtext"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -162,7 +160,7 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginRight="@dimen/_24sdp"
                 android:background="@drawable/rectsignin"
-                android:text="Proceed Anyway"
+                android:text="@string/auth_btn_proceed"
                 android:textColor="@color/thirdtext"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/btn_sign_register" />

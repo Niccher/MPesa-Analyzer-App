@@ -52,7 +52,7 @@
                 android:hint="@string/auth_hint_password"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/primarytext"
-                android:textSize="@dimen/_18sdp" />
+                android:textSize="@dimen/_14sdp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,7 +85,7 @@
                 android:hint="@string/auth_hint_pwd"
                 android:inputType="textPassword"
                 android:textColor="@color/primarytext"
-                android:textSize="@dimen/_18sdp" />
+                android:textSize="@dimen/_14sdp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

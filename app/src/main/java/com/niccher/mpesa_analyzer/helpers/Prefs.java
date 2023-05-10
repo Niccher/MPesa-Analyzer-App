@@ -18,6 +18,10 @@ public class Prefs {
 
     SharedPreferences.Editor sharedEditor = null;
 
+    public Prefs() {
+        kon = new Konstants();
+    }
+
     public void get_FileType(String fileName, String timeAt, Context cntt){
         kon = new Konstants();
 
@@ -50,6 +54,21 @@ public class Prefs {
         }
 
         return timestamp;
+    }
+
+    public String get_prefs_auth(String ty, Context cntt){
+        kon = new Konstants();
+        String id = "";
+        if (ty=="auth"){
+            SharedPreferences pref_auth = cntt.getSharedPreferences(kon.shared_auth_login, Context.MODE_PRIVATE);
+            //id = pref_auth.getString("userid", "nullable");
+            id = pref_auth.getString("uuid", "nullable");
+        }
+        if (ty=="print"){
+            SharedPreferences pref_dev_id = cntt.getSharedPreferences(kon.shared_device_id, Context.MODE_PRIVATE);
+            id = pref_dev_id.getString("print_id", "nullable");
+        }
+        return id;
     }
 
 }

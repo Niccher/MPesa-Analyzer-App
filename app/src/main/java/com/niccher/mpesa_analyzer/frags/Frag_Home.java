@@ -175,19 +175,6 @@ public class Frag_Home extends Fragment {
         }
     }
 
-    private String get_prefs_auth(String ty){
-        String id = "";
-        if (ty=="auth"){
-            SharedPreferences pref_auth = getActivity().getSharedPreferences(kon.shared_auth_login, Context.MODE_PRIVATE);
-            id = pref_auth.getString("userid", "nullable");
-        }
-        if (ty=="print"){
-            SharedPreferences pref_dev_id = getActivity().getSharedPreferences(kon.shared_device_id, Context.MODE_PRIVATE);
-            id = pref_dev_id.getString("print_id", "nullable");
-        }
-        return id;
-    }
-
     class PayLoade extends Thread {
         @Override
         public void run() {
@@ -260,8 +247,9 @@ public class Frag_Home extends Fragment {
             MultipartBody.Part body = MultipartBody.Part.createFormData("varLoot", filename+".txt", requestFile);
 
             // add another part within the multipart request
-            String part_token = get_prefs_auth("auth");
-            String part_dev_id = get_prefs_auth("print");
+            String part_token = prefs.get_prefs_auth("auth", getActivity());
+            String part_dev_id = prefs.get_prefs_auth("print", getActivity());
+
             RequestBody requestBody0 = RequestBody.create( okhttp3.MultipartBody.FORM, part_token);
             RequestBody requestBody1 = RequestBody.create( okhttp3.MultipartBody.FORM, part_dev_id);
 

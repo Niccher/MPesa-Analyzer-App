@@ -1,6 +1,7 @@
 package com.niccher.mpesa_analyzer.auth;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
@@ -61,6 +63,9 @@ public class Auth_Signin extends AppCompatActivity {
     SharedPreferences pref_Device = null;
     SharedPreferences.Editor sharedEditor = null;
 
+    AlertDialog.Builder builder;
+    AlertDialog alertDialog ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +87,9 @@ public class Auth_Signin extends AppCompatActivity {
                 .setLenient()
                 .create();
 
+        builder = new AlertDialog.Builder(Auth_Signin.this);
+        alertDialog = builder.create();
+
         checkPrint();
 
         btn_signin.setOnClickListener(new View.OnClickListener() {
@@ -91,10 +99,10 @@ public class Auth_Signin extends AppCompatActivity {
                 String lg_pwds = lg_pwd.getText().toString().trim();
 
                 if (lg_emls.isEmpty() || lg_pwds.isEmpty()) {
-                    Toast.makeText(Auth_Signin.this, "Both fields have to be filled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Auth_Signin.this, "Both fields have to be filled", Toast.LENGTH_LONG).show();
                 }else{
                     if (!Patterns.EMAIL_ADDRESS.matcher(lg_emls).matches()) {
-                        Toast.makeText(Auth_Signin.this, "Email is not valid, please enter a valid email", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Auth_Signin.this, "Email is not valid, please enter a valid email", Toast.LENGTH_LONG).show();
                     }else {
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(kon.upload_auth_url)
@@ -185,18 +193,38 @@ public class Auth_Signin extends AppCompatActivity {
         }
     }
 
+    public void dialogLoading(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(Auth_Signin.this);
+        builder.setMessage("");
+        builder.setTitle("");
+        builder.setCancelable(false);
+        builder.setNeutralButton("Okay", (DialogInterface.OnClickListener) (dialog, which) -> {
+            //dialog.cancel();
+        });
+        builder.setPositiveButton("Okay1", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private void createLogin(String new_eml, String new_pwd) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("varEmail", new_eml);
         parameters.put("varPassword", new_pwd);
 
         Call<Mod_User_Auth> call = jsonAuthUser.createLogin(parameters);
+        //dialogLoading();
 
         call.enqueue(new Callback<Mod_User_Auth>() {
             @Override
             public void onResponse(Call<Mod_User_Auth> call, Response<Mod_User_Auth> response) {
                 Mod_User_Auth postResponse = response.body();
-                String message, status, time, userid;
+                String message, status, time, userid, uuid;
 
                 if (postResponse.getMessage().isEmpty() || postResponse.getMessage().isEmpty() || postResponse.getMessage().isEmpty()){
                 }else {
@@ -204,6 +232,7 @@ public class Auth_Signin extends AppCompatActivity {
                     status = postResponse.getStatus();
                     time = postResponse.getTime();
                     userid = postResponse.getUserid();
+                    uuid = postResponse.getUuid();
 
                     try {
                         if (status.equals("0") || status.equals('2')){
@@ -214,6 +243,7 @@ public class Auth_Signin extends AppCompatActivity {
                             sharedEditor.putString("message", message);
                             sharedEditor.putString("time", ""+time);
                             sharedEditor.putString("userid", userid);
+                            sharedEditor.putString("uuid", uuid);
                             sharedEditor.apply();
 
                             Intent to_home = new Intent(Auth_Signin.this, MainActivity.class);

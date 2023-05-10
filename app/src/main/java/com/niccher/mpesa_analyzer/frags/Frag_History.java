@@ -24,6 +24,7 @@ import com.google.gson.GsonBuilder;
 import com.niccher.mpesa_analyzer.BuildConfig;
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.adapter.Info_adapter;
+import com.niccher.mpesa_analyzer.helpers.Prefs;
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
 import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
@@ -63,6 +64,8 @@ public class Frag_History extends Fragment {
     ArrayList<Mod_Summaries> summariesList;
     Info_adapter summariesAdapter;
 
+    Prefs pref;
+
     AppCompatActivity activity;
 
     public Frag_History() {}
@@ -71,6 +74,7 @@ public class Frag_History extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         kon = new Konstants();
+        pref = new Prefs();
 
         gson = new GsonBuilder()
                 .setLenient()
@@ -131,19 +135,6 @@ public class Frag_History extends Fragment {
         conn_state.setText(msg);
     }
 
-    private String get_prefs_auth(String ty){
-        String id = "";
-        if (ty=="auth"){
-            SharedPreferences pref_auth = getActivity().getSharedPreferences(kon.shared_auth_login, Context.MODE_PRIVATE);
-            id = pref_auth.getString("userid", "nullable");
-        }
-        if (ty=="print"){
-            SharedPreferences pref_dev_id = getActivity().getSharedPreferences(kon.shared_device_id, Context.MODE_PRIVATE);
-            id = pref_dev_id.getString("print_id", "nullable");
-        }
-        return id;
-    }
-
     private void getSummaries() {
         conn_wait.setVisibility(View.VISIBLE);
 
@@ -156,8 +147,8 @@ public class Frag_History extends Fragment {
         jsonProcesses = retrofit.create(JsonProcesses.class);
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("varUsername", get_prefs_auth("auth"));
-        parameters.put("varEmail", get_prefs_auth("print"));
+        parameters.put("varUser", pref.get_prefs_auth("auth", getContext()));
+        parameters.put("varDev", pref.get_prefs_auth("print", getActivity()));
 
         Call <SummaryResponse> call = jsonProcesses.getSummary(parameters);
         call.enqueue(new Callback<SummaryResponse>() {

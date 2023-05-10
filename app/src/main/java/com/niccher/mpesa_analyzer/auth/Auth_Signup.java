@@ -162,7 +162,7 @@ public class Auth_Signup extends AppCompatActivity {
 
                     try {
                         if (status.equals("0") || status.equals('2')){
-                            Toast.makeText(Auth_Signup.this, message, Toast.LENGTH_LONG).show();
+                            Toast.makeText(Auth_Signup.this, message.replaceAll("var", ""), Toast.LENGTH_LONG).show();
                         }else if (status.equals("1")){
                             sharedEditor.putString("status", status);
                             sharedEditor.putString("message", message);

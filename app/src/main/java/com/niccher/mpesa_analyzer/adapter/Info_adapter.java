@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,12 +51,12 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull Info_adapter.ViewHolder holder, final int position) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//2023-05-10 20:34:30/Y-m-d H:i:s
         try{
-            Long Timestamp = Long.parseLong(String.valueOf(summariesList.get(position).summary_Created));
-            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-            cal.setTimeInMillis(Timestamp * 1000L);
-            String timestamp = DateFormat.format("MMM dd HH:mm:ss", cal).toString();
-            holder.part_date.setText(timestamp);
+            Date date_time = format.parse(summariesList.get(position).summary_Created);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd HH:mm:ss");
+            String dated = dateFormat.format(date_time);
+            holder.part_date.setText(dated);
         }catch (Exception ex){
             holder.part_date.setText(summariesList.get(position).summary_Created);
         }

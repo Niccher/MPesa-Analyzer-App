@@ -2,13 +2,14 @@ package com.niccher.mpesa_analyzer.models;
 
 public class Mod_User_Auth {
 
-    private String message, status, time, userid;
+    private String message, status, time, userid, uuid;
 
-    public Mod_User_Auth(String message, String status, String time, String userid) {
+    public Mod_User_Auth(String message, String status, String time, String userid, String uuid) {
         this.message = message;
         this.status = status;
         this.time = time;
         this.userid = userid;
+        this.uuid = uuid;
     }
 
     public String getMessage() {
@@ -41,5 +42,13 @@ public class Mod_User_Auth {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

@@ -15,4 +15,8 @@ public interface JsonProcesses {
     @FormUrlEncoded
     @POST("get/my_uploads")
     Call <SummaryResponse> getSummary(@FieldMap Map<String, String> fields);
+
+    @FormUrlEncoded
+    @POST("get/my_summary_calculations")
+    Call <SummaryResponse> getSummaryCalc(@FieldMap Map<String, String> fields);
 }

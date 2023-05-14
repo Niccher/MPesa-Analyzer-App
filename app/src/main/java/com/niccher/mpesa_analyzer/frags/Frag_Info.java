@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +32,8 @@ public class Frag_Info extends Fragment {
 
     Info_more_adapter info_more_adapter;
     RecyclerView recy_info;
+
+    AppCompatActivity activity;
 
     public Frag_Info() {
         // Required empty public constructor
@@ -53,8 +57,14 @@ public class Frag_Info extends Fragment {
 
     @Override
     public void onCreate( Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+        activity = (AppCompatActivity) getActivity();
+        ActionBar supportActionBar = activity.getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setTitle("More Info");
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+        }
+        setHasOptionsMenu(true);
     }
 
     private void showInfos() {

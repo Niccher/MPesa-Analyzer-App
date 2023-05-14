@@ -30,6 +30,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.adapter.Info_adapter;
+import com.niccher.mpesa_analyzer.helpers.Prefs;
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
 import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
@@ -56,6 +57,7 @@ public class Frag_Graph extends Fragment {
 
     JsonProcesses jsonProcesses;
     Konstants kon;
+    Prefs pref;
     Gson gson = null;
     ArrayList<Mod_Summaries> summariesList;
 
@@ -72,12 +74,13 @@ public class Frag_Graph extends Fragment {
         activity = (AppCompatActivity) getActivity();
         ActionBar supportActionBar = activity.getSupportActionBar();
         if (supportActionBar != null) {
-            supportActionBar.setTitle("More Info");
+            supportActionBar.setTitle("Graph View");
             supportActionBar.setDisplayHomeAsUpEnabled(false);
         }
         setHasOptionsMenu(true);
 
         kon = new Konstants();
+        pref = new Prefs();
 
         gson = new GsonBuilder()
                 .setLenient()
@@ -129,19 +132,6 @@ public class Frag_Graph extends Fragment {
         conn_state.setText(mgs);
     }
 
-    private String get_prefs_auth(String ty){
-        String id = "";
-        if (ty=="auth"){
-            SharedPreferences pref_auth = getActivity().getSharedPreferences(kon.shared_auth_login, Context.MODE_PRIVATE);
-            id = pref_auth.getString("userid", "nullable");
-        }
-        if (ty=="print"){
-            SharedPreferences pref_dev_id = getActivity().getSharedPreferences(kon.shared_device_id, Context.MODE_PRIVATE);
-            id = pref_dev_id.getString("print_id", "nullable");
-        }
-        return id;
-    }
-
     private void getSummaries() {
         conn_wait.setVisibility(View.VISIBLE);
         Retrofit retrofit = new Retrofit.Builder()
@@ -153,8 +143,8 @@ public class Frag_Graph extends Fragment {
         jsonProcesses = retrofit.create(JsonProcesses.class);
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("varUsername", get_prefs_auth("auth"));
-        parameters.put("varEmail", get_prefs_auth("print"));
+        parameters.put("varUsername", pref.get_prefs_auth("auth", getActivity()));
+        parameters.put("varEmail", pref.get_prefs_auth("print", getActivity()));
 
         Call <SummaryResponse> call = jsonProcesses.getSummary(parameters);
         call.enqueue(new Callback<SummaryResponse>() {
@@ -206,7 +196,6 @@ public class Frag_Graph extends Fragment {
                     graph_line.addSeries(series_sent);
                     graph_line.addSeries(series_received);
                     graph_line.addSeries(series_unknown);
-
                 }
             }
 

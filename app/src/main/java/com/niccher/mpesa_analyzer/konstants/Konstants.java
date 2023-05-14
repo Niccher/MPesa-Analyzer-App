@@ -17,6 +17,7 @@ public class Konstants {
     public static int string_read_write_block = 1024;
     public String string_algo_enryptor = "AES/CBC/PKCS5Padding";
     public String string_algo = "AES";
+    public String string_character_encoding = "UTF-8";
 
     public String string_key = "a:r2yt>N3_\\Py,f=";
     public String string_key_spec = "[M[@_w[F4a>yQsJW";

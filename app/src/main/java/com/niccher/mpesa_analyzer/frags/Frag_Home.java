@@ -226,7 +226,7 @@ public class Frag_Home extends Fragment {
                         c.moveToNext();
                     }
                 }
-                Make_a_File("sms_All_at_" + System.currentTimeMillis(), sbsent);
+                Make_a_File("sms_All_" + System.currentTimeMillis(), sbsent);
                 c.close();
             } else {
                 Log.e(kon.TAGGED, "Parser_All_SMS->No More >");

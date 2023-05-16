@@ -2,6 +2,7 @@ package com.niccher.mpesa_analyzer.interfaces;
 
 
 import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
+import com.niccher.mpesa_analyzer.models.Mod_Loot_Summary;
 
 import java.util.Map;
 
@@ -18,5 +19,11 @@ public interface JsonProcesses {
 
     @FormUrlEncoded
     @POST("get/my_summary_calculations")
-    Call <SummaryResponse> getSummaryCalc(@FieldMap Map<String, String> fields);
+    Call <Mod_Loot_Summary> getSummaryCalc(@FieldMap Map<String, String> fields);
+
+    /*
+    @FormUrlEncoded
+    @POST("device")
+    Call<Mod_Fone_Id> createPrint(@FieldMap Map<String, String> fields);
+     */
 }

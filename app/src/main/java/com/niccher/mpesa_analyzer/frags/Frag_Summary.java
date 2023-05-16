@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.adapter.Info_adapter;
 import com.niccher.mpesa_analyzer.helpers.Prefs;
@@ -23,6 +24,7 @@ import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
 import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
+import com.niccher.mpesa_analyzer.models.Mod_Loot_Summary;
 import com.niccher.mpesa_analyzer.models.Mod_Summaries;
 
 import java.util.ArrayList;
@@ -56,6 +58,14 @@ public class Frag_Summary extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        kon = new Konstants();
+        pref = new Prefs();
+
+        gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         activity = (AppCompatActivity) getActivity();
         ActionBar supportActionBar = activity.getSupportActionBar();
         if (supportActionBar != null) {
@@ -70,7 +80,6 @@ public class Frag_Summary extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View summarizer =  inflater.inflate(R.layout.frag_summary, container, false);
-        kon = new Konstants();
 
         tv_recv = summarizer.findViewById(R.id.cat_point_received);
         tv_sent = summarizer.findViewById(R.id.cat_point_sent);
@@ -82,21 +91,24 @@ public class Frag_Summary extends Fragment {
 
     public void getReferences(){
         Bundle sent_data = this.getArguments();
-        String st_created, st_sent, st_received, st_unknown;
+        String st_created, st_sent, st_received, st_unknown, st_name;
         if(sent_data != null){
             //Toast.makeText(activity, "getReferences: " + sent_data.get("created"), Toast.LENGTH_SHORT).show();
-            st_created = sent_data.get("created").toString();
-            st_sent = sent_data.get("sent").toString();
-            st_received = sent_data.get("received").toString();
-            st_unknown = sent_data.get("unknown").toString();
+            st_created = sent_data.get("summary_created").toString();
+            st_sent = sent_data.get("summary_sent").toString();
+            st_received = sent_data.get("summary_received").toString();
+            st_unknown = sent_data.get("summary_unknown").toString();
+            st_name = sent_data.get("summary_loot_name").toString();
 
             tv_recv.setText(st_received);
             tv_sent.setText(st_sent);
             tv_unknown.setText(st_unknown);
+
+            getSummaries(st_name);
         }
     }
 
-    private void getSummaries() {
+    private void getSummaries(String loot_name) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(kon.upload_summaries)
@@ -109,17 +121,19 @@ public class Frag_Summary extends Fragment {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("varUser", pref.get_prefs_auth("auth", getContext()));
         parameters.put("varDev", pref.get_prefs_auth("print", getActivity()));
+        parameters.put("varLootName", loot_name);
 
-        Call<SummaryResponse> call = jsonProcesses.getSummaryCalc(parameters);
-        call.enqueue(new Callback<SummaryResponse>() {
+        Call<Mod_Loot_Summary> call = jsonProcesses.getSummaryCalc(parameters);
+        call.enqueue(new Callback<Mod_Loot_Summary>() {
             @Override
-            public void onResponse(Call<SummaryResponse> call, Response<SummaryResponse> response) {
+            public void onResponse(Call<Mod_Loot_Summary> call, Response<Mod_Loot_Summary> response) {
                 if(response.isSuccessful() && response.body()!=null){
+                    Log.e("Summary data", "onResponse: "+ response.body() );
                 }
             }
 
             @Override
-            public void onFailure(Call<SummaryResponse> call, Throwable t) {
+            public void onFailure(Call<Mod_Loot_Summary> call, Throwable t) {
                 //Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
                 Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again");
                 Log.e(kon.TAGGED, t.getMessage());

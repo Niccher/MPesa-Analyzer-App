@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,17 +17,12 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.niccher.mpesa_analyzer.R;
-import com.niccher.mpesa_analyzer.adapter.Info_adapter;
 import com.niccher.mpesa_analyzer.helpers.Prefs;
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
-import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_Loot_Summary;
-import com.niccher.mpesa_analyzer.models.Mod_Summaries;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,12 +36,10 @@ public class Frag_Summary extends Fragment {
     Konstants kon;
     AppCompatActivity activity;
 
-    TextView tv_recv, tv_sent, tv_unknown;
+    TextView tv_all, tv_bal, tv_fuliza, tv_recv, tv_sent, tv_withdraw, tv_wrong_pin, tv_unknown;
 
     JsonProcesses jsonProcesses;
     Gson gson = null;
-    ArrayList<Mod_Summaries> summariesList;
-    Info_adapter summariesAdapter;
 
     Prefs pref;
 
@@ -81,8 +73,13 @@ public class Frag_Summary extends Fragment {
         // Inflate the layout for this fragment
         View summarizer =  inflater.inflate(R.layout.frag_summary, container, false);
 
+        tv_all = summarizer.findViewById(R.id.cat_point_all);
+        tv_bal = summarizer.findViewById(R.id.cat_point_bal);
+        tv_fuliza = summarizer.findViewById(R.id.cat_point_fuliza);
         tv_recv = summarizer.findViewById(R.id.cat_point_received);
         tv_sent = summarizer.findViewById(R.id.cat_point_sent);
+        tv_withdraw = summarizer.findViewById(R.id.cat_point_withdraw);
+        tv_wrong_pin = summarizer.findViewById(R.id.cat_point_wrong_pin);
         tv_unknown = summarizer.findViewById(R.id.cat_point_unknown);
 
         getReferences();
@@ -91,18 +88,9 @@ public class Frag_Summary extends Fragment {
 
     public void getReferences(){
         Bundle sent_data = this.getArguments();
-        String st_created, st_sent, st_received, st_unknown, st_name;
+        String st_name;
         if(sent_data != null){
-            //Toast.makeText(activity, "getReferences: " + sent_data.get("created"), Toast.LENGTH_SHORT).show();
-            st_created = sent_data.get("summary_created").toString();
-            st_sent = sent_data.get("summary_sent").toString();
-            st_received = sent_data.get("summary_received").toString();
-            st_unknown = sent_data.get("summary_unknown").toString();
             st_name = sent_data.get("summary_loot_name").toString();
-
-            tv_recv.setText(st_received);
-            tv_sent.setText(st_sent);
-            tv_unknown.setText(st_unknown);
 
             getSummaries(st_name);
         }
@@ -128,7 +116,17 @@ public class Frag_Summary extends Fragment {
             @Override
             public void onResponse(Call<Mod_Loot_Summary> call, Response<Mod_Loot_Summary> response) {
                 if(response.isSuccessful() && response.body()!=null){
-                    Log.e("Summary data", "onResponse: "+ response.body() );
+                    Mod_Loot_Summary mod_loot_summary = response.body();
+
+                    tv_all.setText(mod_loot_summary.val_all);
+                    tv_bal.setText(mod_loot_summary.val_balance);
+                    tv_fuliza.setText(mod_loot_summary.val_fuliza);
+                    tv_recv.setText(mod_loot_summary.val_received);
+                    tv_sent.setText(mod_loot_summary.val_sent);
+                    tv_withdraw.setText(mod_loot_summary.val_withdraw);
+                    tv_wrong_pin.setText(mod_loot_summary.val_wrong_pin);
+                    tv_unknown.setText(mod_loot_summary.val_unknown);
+
                 }
             }
 

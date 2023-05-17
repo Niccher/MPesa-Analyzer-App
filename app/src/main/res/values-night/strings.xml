@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">MPesa Analyzer</string>
 
     <string name="money_received">Money Received</string>
@@ -28,8 +26,13 @@
     <string name="sign_up_ed_email">Your Email</string>
     <string name="sign_up_ed_username">Your Username</string>
 
+    <string name="sum_string_money_all">All</string>
+    <string name="sum_string_money_balance">Balance</string>
+    <string name="sum_string_money_fuliza">Fuliza</string>
     <string name="sum_string_money_received">Received</string>
     <string name="sum_string_money_sent">Sent</string>
+    <string name="sum_string_money_withdraw">Withdraw</string>
+    <string name="sum_string_money_wrong_pin">Wrong Pin</string>
     <string name="sum_string_money_unknown">Unknown</string>
 
     <string name="profile_my_name">My Name</string>

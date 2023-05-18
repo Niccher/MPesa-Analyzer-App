@@ -58,9 +58,9 @@ public class Frag_Info extends Fragment {
 
     private void showInfos() {
         ArrayList<Mod_more_info> myMoreInfo = new ArrayList<Mod_more_info>(3);
-        myMoreInfo.add(new Mod_more_info("Profile", "Information about my account, Logging Out and Deleting my Account"));
-        myMoreInfo.add(new Mod_more_info("App Info", "App Info about the version, its requirements and necessary the permissions"));
-        myMoreInfo.add(new Mod_more_info("App Credits", "The Libraries and other open source resources used in creating the app"));
+        myMoreInfo.add(new Mod_more_info("Profile", "Information about my account", R.mipmap.app_profile));
+        myMoreInfo.add(new Mod_more_info("App Info", "Info like version, permissions.", R.mipmap.app_info));
+        myMoreInfo.add(new Mod_more_info("App Credits", "The Libraries and other open source resources used in creating the app", R.mipmap.app_credits));
 
         info_more_adapter = new Info_more_adapter(myMoreInfo, getActivity());
         recy_info.setAdapter(info_more_adapter);

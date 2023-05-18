@@ -12,29 +12,33 @@
         android:background="#D9E6E6"
         android:paddingBottom="@dimen/_6sdp">
 
-        <TextView
-            android:id="@+id/acc_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:text="Dope"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="@dimen/_20sdp"
-            android:textStyle="bold"
+        <ImageView
+            android:id="@+id/acc_item_img"
+            android:layout_margin="@dimen/_4sdp"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:src="@mipmap/summ_money_wrong_pin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/acc_item_description"
-            android:layout_width="match_parent"
+            android:id="@+id/acc_item"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/acc_item_img"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/acc_item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
-            android:layout_marginEnd="@dimen/_14sdp"
-            android:text="Dope"
             android:textSize="@dimen/_14sdp"
+            app:layout_constraintStart_toStartOf="@id/acc_item"
             app:layout_constraintTop_toBottomOf="@id/acc_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

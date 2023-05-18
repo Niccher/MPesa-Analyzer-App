@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ public class Info_more_adapter extends RecyclerView.Adapter<Info_more_adapter.Vi
     public void onBindViewHolder(@NonNull Info_more_adapter.ViewHolder holder, final int position) {
         holder.part_name.setText(info_list.get(position).getName_title());
         holder.part_desc.setText(info_list.get(position).getName_desc());
+        holder.part_icon.setImageResource(info_list.get(position).getName_icon());
 
         my_name.setText(get_prefs_user_data("user_email"));
         my_email.setText(get_prefs_user_data("user_name"));
@@ -112,6 +114,7 @@ public class Info_more_adapter extends RecyclerView.Adapter<Info_more_adapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView part_name, part_desc;
+        ImageView part_icon;
         ConstraintLayout part_body;
 
         public ViewHolder(@NonNull View itemView) {
@@ -119,6 +122,7 @@ public class Info_more_adapter extends RecyclerView.Adapter<Info_more_adapter.Vi
             part_name = itemView.findViewById(R.id.acc_item);
             part_desc = itemView.findViewById(R.id.acc_item_description);
             part_body = itemView.findViewById(R.id.acc_body);
+            part_icon = itemView.findViewById(R.id.acc_item_img);
         }
     }
 }

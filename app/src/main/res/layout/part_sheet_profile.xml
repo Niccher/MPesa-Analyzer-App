@@ -17,7 +17,7 @@
             android:background="@drawable/rect_corners"
             android:padding="@dimen/_20sdp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_home"
+            android:src="@mipmap/user_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -36,23 +36,35 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_6sdp"
                 android:text="@string/profile_my_name"
-                android:textSize="@dimen/_24sdp"
+                android:textSize="@dimen/_18sdp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/user_profile_short_bio"
+                android:id="@+id/user_profile_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_profile_name"
-                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="@string/profile_my_desc"
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/user_profile_name" />
+
+            <TextView
+                android:id="@+id/user_profile_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_profile_name"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/profile_my_desc"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_email" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -65,45 +77,120 @@
             android:paddingBottom="@dimen/_18sdp"
             app:layout_constraintTop_toBottomOf="@id/profile_layout">
 
-            <Button
-                android:id="@+id/btn_profile_log_out"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_24sdp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:layout_marginRight="@dimen/_24sdp"
-                android:background="@drawable/rect_btn"
-                android:text="@string/profile_txt_log_out"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/_16sdp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardCornerRadius="@dimen/_16sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/btn_profile_delete_account"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:padding="@dimen/_4sdp">
+
+                    <ImageView
+                        android:id="@+id/btn_prof_logout"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@mipmap/user_logout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:text="@string/sheet_string_logout"
+                        android:textSize="@dimen/_20sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/btn_prof_logout"
+                        app:layout_constraintStart_toEndOf="@id/btn_prof_logout"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_del"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_24sdp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:layout_marginRight="@dimen/_24sdp"
-                android:background="@drawable/rect_btn"
-                android:text="@string/profile_txt_delete"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_profile_log_out" />
+                android:layout_margin="@dimen/_16sdp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintTop_toBottomOf="@id/card_logout">
 
-            <Button
-                android:id="@+id/bs_profile_back"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:padding="@dimen/_4sdp">
+
+                    <ImageView
+                        android:id="@+id/btn_prof_del"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@mipmap/user_delete"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:text="@string/sheet_string_del"
+                        android:textSize="@dimen/_20sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/btn_prof_del"
+                        app:layout_constraintStart_toEndOf="@id/btn_prof_del"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_back"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_24sdp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:layout_marginRight="@dimen/_24sdp"
-                android:background="@drawable/rect_btn"
-                android:text="@string/profile_txt_back"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/btn_profile_delete_account" />
+                android:layout_margin="@dimen/_16sdp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintTop_toBottomOf="@id/card_del">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:padding="@dimen/_4sdp">
+
+                    <ImageView
+                        android:id="@+id/btn_prof_back"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@mipmap/user_back"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:text="@string/sheet_string_back"
+                        android:textSize="@dimen/_20sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/btn_prof_back"
+                        app:layout_constraintStart_toEndOf="@id/btn_prof_back"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

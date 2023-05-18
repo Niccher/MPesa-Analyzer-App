@@ -2,9 +2,9 @@ package com.niccher.mpesa_analyzer.models;
 
 public class Mod_Loot_Summary {
 
-    public String val_all, val_balance, val_fuliza, val_received, val_sent, val_withdraw, val_wrong_pin, val_unknown;
+    public String val_all, val_balance, val_fuliza, val_received, val_sent, val_withdraw, val_wrong_pin, val_unknown, val_created;
 
-    public Mod_Loot_Summary(String val_all, String val_balance, String val_fuliza, String val_received, String val_sent, String val_withdraw, String val_wrong_pin, String val_unknown) {
+    public Mod_Loot_Summary(String val_all, String val_balance, String val_fuliza, String val_received, String val_sent, String val_withdraw, String val_wrong_pin, String val_unknown, String val_created) {
         this.val_all = val_all;
         this.val_balance = val_balance;
         this.val_fuliza = val_fuliza;
@@ -13,6 +13,7 @@ public class Mod_Loot_Summary {
         this.val_withdraw = val_withdraw;
         this.val_wrong_pin = val_wrong_pin;
         this.val_unknown = val_unknown;
+        this.val_created = val_created;
     }
 
     public String getVal_all() {
@@ -77,5 +78,13 @@ public class Mod_Loot_Summary {
 
     public void setVal_unknown(String val_unknown) {
         this.val_unknown = val_unknown;
+    }
+
+    public String getVal_created() {
+        return val_created;
+    }
+
+    public void setVal_created(String val_created) {
+        this.val_created = val_created;
     }
 }

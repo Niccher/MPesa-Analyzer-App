@@ -35,6 +35,10 @@
     <string name="sum_string_money_wrong_pin">Wrong Pin</string>
     <string name="sum_string_money_unknown">Unknown</string>
 
+    <string name="sheet_string_logout">Logout</string>
+    <string name="sheet_string_del">Delete Account</string>
+    <string name="sheet_string_back">Back</string>
+
     <string name="profile_my_name">My Name</string>
     <string name="profile_my_desc">Anything here</string>
     <string name="profile_txt_back">Back</string>

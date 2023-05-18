@@ -36,7 +36,7 @@ public class Frag_Summary extends Fragment {
     Konstants kon;
     AppCompatActivity activity;
 
-    TextView tv_all, tv_bal, tv_fuliza, tv_recv, tv_sent, tv_withdraw, tv_wrong_pin, tv_unknown;
+    TextView tv_all, tv_bal, tv_fuliza, tv_recv, tv_sent, tv_withdraw, tv_wrong_pin, tv_unknown, tv_time, tv_date;
 
     JsonProcesses jsonProcesses;
     Gson gson = null;
@@ -81,6 +81,9 @@ public class Frag_Summary extends Fragment {
         tv_withdraw = summarizer.findViewById(R.id.cat_point_withdraw);
         tv_wrong_pin = summarizer.findViewById(R.id.cat_point_wrong_pin);
         tv_unknown = summarizer.findViewById(R.id.cat_point_unknown);
+
+        tv_time = summarizer.findViewById(R.id.cat_point_loot_time);
+        tv_date = summarizer.findViewById(R.id.cat_point_loot_date);
 
         getReferences();
         return summarizer;
@@ -127,6 +130,8 @@ public class Frag_Summary extends Fragment {
                     tv_wrong_pin.setText(mod_loot_summary.val_wrong_pin);
                     tv_unknown.setText(mod_loot_summary.val_unknown);
 
+                    tv_time.setText(mod_loot_summary.val_created.split(" ")[1]);
+                    tv_date.setText(mod_loot_summary.val_created.split(" ")[0]);
                 }
             }
 

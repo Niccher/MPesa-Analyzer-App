@@ -225,7 +225,7 @@ public class Auth_Signin extends AppCompatActivity {
             @Override
             public void onResponse(Call<Mod_User_Auth> call, Response<Mod_User_Auth> response) {
                 Mod_User_Auth postResponse = response.body();
-                String message, status, time, userid, uuid;
+                String message, status, time, userid, uuid, user_name, user_email;
 
                 if (postResponse.getMessage().isEmpty() || postResponse.getMessage().isEmpty() || postResponse.getMessage().isEmpty()){
                 }else {
@@ -234,6 +234,8 @@ public class Auth_Signin extends AppCompatActivity {
                     time = postResponse.getTime();
                     userid = postResponse.getUserid();
                     uuid = postResponse.getUuid();
+                    user_name = postResponse.getUser_name();
+                    user_email = postResponse.getUser_email();
 
                     try {
                         if (status.equals("0") || status.equals('2')){
@@ -245,6 +247,8 @@ public class Auth_Signin extends AppCompatActivity {
                             sharedEditor.putString("time", ""+time);
                             sharedEditor.putString("userid", userid);
                             sharedEditor.putString("uuid", uuid);
+                            sharedEditor.putString("user_name", user_name);
+                            sharedEditor.putString("user_email", user_email);
                             sharedEditor.apply();
 
                             Intent to_home = new Intent(Auth_Signin.this, MainActivity.class);

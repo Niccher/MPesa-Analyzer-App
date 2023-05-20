@@ -4,22 +4,29 @@ import static android.content.Context.MODE_PRIVATE;
 import static android.os.Environment.getExternalStorageDirectory;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.provider.CallLog;
 import android.provider.ContactsContract;
@@ -34,6 +41,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.niccher.mpesa_analyzer.MainActivity;
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.helpers.Encryptor;
 import com.niccher.mpesa_analyzer.helpers.Prefs;
@@ -77,8 +85,8 @@ public class Frag_Home extends Fragment {
     PayLoade init;
     StringBuffer sbsent;
 
-    Button btn_fetch;
-    TextView last_time;
+    TextView text_get_and_upload, last_time, perm_status, perm_request;
+    int SMS_CODE = 102;
 
     ProgressBar progressBar;
 
@@ -105,13 +113,29 @@ public class Frag_Home extends Fragment {
         // Inflate the layout for this fragment
         View solv = inflater.inflate(R.layout.frag_home, container, false);
 
-        btn_fetch = solv.findViewById(R.id.home_fetch_sync);
+        text_get_and_upload = solv.findViewById(R.id.card_text_upload);//home_fetch_sync
+
         last_time = solv.findViewById(R.id.home_last_upload);
+
+        perm_status = solv.findViewById(R.id.card_text_permission);
+
+        perm_request = solv.findViewById(R.id.card_text_req_permission);
+        perm_request.setVisibility(View.GONE);
+
+        reqPermission(Manifest.permission.READ_SMS, SMS_CODE);
 
         progressBar = solv.findViewById(R.id.home_upload_state);
         progressBar.setVisibility(View.GONE);
 
-        btn_fetch.setOnClickListener(new View.OnClickListener() {
+        perm_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Perm /*- ", "perm_request" );
+                reqPermission(Manifest.permission.READ_SMS, SMS_CODE);
+            }
+        });
+
+        text_get_and_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 init.Parser_SMS(getActivity());
@@ -119,6 +143,54 @@ public class Frag_Home extends Fragment {
         });
         last_time.setText(prefs.get_TimeStamp(getActivity()));
         return  solv;
+    }
+
+    public void reqPermission(String permission, int requestCode){
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+            permTweak(false);
+            requestPermissions(new String[]{Manifest.permission.READ_SMS}, SMS_CODE);
+        }else {
+            //Log.e("Perm /*- ", "reqPermission: Granted" );
+            permTweak(true);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == SMS_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                permTweak(true);
+            }
+            else {
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle(getString(R.string.string_dialog_permission_status));
+                alertDialog.setMessage(getString(R.string.string_dialog_permission_denied));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.string_dialog_permission),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+                permTweak(false);
+            }
+        }
+    }
+
+    private void permTweak(boolean perm_granted){
+        if (perm_granted){
+            perm_status.setTextColor(getResources().getColor(R.color.bg_green));
+            perm_status.setText(getText(R.string.string_dialog_permission_granted));;
+
+            perm_request.setVisibility(View.GONE);
+        }else {
+            perm_status.setTextColor(getResources().getColor(R.color.bg_red));
+            perm_status.setText(getText(R.string.string_dialog_permission_denied));
+
+            perm_status.setVisibility(View.GONE);
+            perm_request.setVisibility(View.VISIBLE);
+        }
     }
 
     private void Cryptor(File dir_file, InputStream ins){

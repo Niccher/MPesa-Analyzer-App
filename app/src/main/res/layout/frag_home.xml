@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_margin="@dimen/_20sdp"
+            android:layout_margin="@dimen/_8sdp"
             android:background="#B1B8ED"
             app:cardCornerRadius="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,72 +27,17 @@
                 android:background="#B1B8ED"
                 android:paddingBottom="@dimen/_20sdp">
 
-                <Button
-                    android:id="@+id/home_req_perm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/marign_23"
-                    android:layout_marginTop="@dimen/marign_16"
-                    android:layout_marginRight="@dimen/marign_23"
-                    android:background="@drawable/rectsignin"
-                    android:text="@string/home_permision_req"
-                    android:textColor="@color/thirdtext"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/home_fetch_sync"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/marign_23"
-                    android:layout_marginTop="@dimen/marign_16"
-                    android:layout_marginRight="@dimen/marign_23"
-                    android:background="@drawable/rectsignin"
-                    android:text="@string/home_btn_fetch_and_sync"
-                    android:textAllCaps="false"
-                    android:textColor="@color/thirdtext"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/home_req_perm" />
-
-                <TextView
-                    android:id="@+id/home_last_upload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginStart="@dimen/marign_8"
-                    android:layout_marginLeft="@dimen/marign_8"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:layout_marginEnd="@dimen/marign_10"
-                    android:layout_marginRight="@dimen/marign_10"
-                    android:text="@string/home_label_timestamp"
-                    android:textColor="@color/secondarytext"
-                    android:textSize="@dimen/textsize_18"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_fetch_sync" />
-
-                <!--<ProgressBar
-                    android:id="@+id/home_upload_state"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_23sdp"
-                    android:layout_marginRight="@dimen/_23sdp"
-                    android:indeterminate="true"
-                    android:indeterminateTint="@color/black"
-                    android:max="100"
-                    app:layout_constraintTop_toBottomOf="@id/home_last_upload" />-->
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:padding="@dimen/_8sdp"
                     app:cardCornerRadius="@dimen/_4sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_last_upload">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -103,7 +48,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/colorPrimaryDark"
+                            android:paddingStart="@dimen/_4sdp"
                             android:text="SMS permission status."
+                            android:textSize="@dimen/_9sdp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,6 +59,7 @@
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"
                             android:layout_marginStart="@dimen/_4sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:src="@mipmap/home_sms_granted"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/card_text_1" />
@@ -135,6 +83,9 @@
                             android:layout_marginStart="@dimen/_16sdp"
                             android:text="Request"
                             android:textSize="@dimen/_14sdp"
+                            android:background="@drawable/rect_btn"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/_8sdp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="@id/card_img_1"
                             app:layout_constraintStart_toEndOf="@id/card_text_permission"
@@ -154,9 +105,9 @@
                     android:id="@+id/card_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:padding="@dimen/_8sdp"
                     app:cardCornerRadius="@dimen/_4sdp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -171,7 +122,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/colorPrimaryDark"
+                            android:paddingStart="@dimen/_4sdp"
                             android:text="Upload SMS."
+                            android:textSize="@dimen/_9sdp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -180,6 +133,7 @@
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"
                             android:layout_marginStart="@dimen/_4sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:src="@mipmap/home_sms_upload"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/card_text_2" />
@@ -189,35 +143,39 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_16sdp"
-                            android:text="Permission"
-                            android:textSize="@dimen/_14sdp"
+                            android:background="@drawable/rect_btn"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/_8sdp"
                             android:textStyle="bold"
+                            android:text="@string/home_btn_fetch_and_sync"
+                            android:textSize="@dimen/_14sdp"
                             app:layout_constraintBottom_toBottomOf="@id/card_img_2"
                             app:layout_constraintStart_toEndOf="@id/card_img_2"
                             app:layout_constraintTop_toTopOf="@id/card_img_2" />
 
                         <TextView
-                            android:id="@+id/card_text_last_upload"
+                            android:id="@+id/home_last_upload"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_16sdp"
+                            android:layout_marginEnd="@dimen/_16sdp"
                             android:text="Time"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="italic"
-                            app:layout_constraintTop_toBottomOf="@id/card_text_upload"
-                            app:layout_constraintStart_toStartOf="@id/card_text_upload" />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/card_text_upload" />
 
                         <ProgressBar
                             android:id="@+id/home_upload_state"
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:indeterminate="true"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
+                            android:indeterminate="true"
                             android:indeterminateTint="@color/black"
                             android:max="100"
-                            app:layout_constraintTop_toBottomOf="@id/card_text_last_upload" />
+                            app:layout_constraintTop_toBottomOf="@id/home_last_upload" />
 
                         <View
                             android:layout_width="match_parent"
@@ -233,9 +191,9 @@
                     android:id="@+id/card_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:padding="@dimen/_8sdp"
                     app:cardCornerRadius="@dimen/_4sdp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -250,7 +208,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/colorPrimaryDark"
+                            android:paddingStart="@dimen/_4sdp"
                             android:text="Upload Summary."
+                            android:textSize="@dimen/_9sdp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -259,6 +219,7 @@
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"
                             android:layout_marginStart="@dimen/_4sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
                             android:src="@mipmap/home_sms_summary"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/card_text_3" />
@@ -283,8 +244,8 @@
                             android:text="Count"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="italic"
-                            app:layout_constraintTop_toBottomOf="@id/card_text_info1"
-                            app:layout_constraintStart_toStartOf="@id/card_text_info1" />
+                            app:layout_constraintStart_toStartOf="@id/card_text_info1"
+                            app:layout_constraintTop_toBottomOf="@id/card_text_info1" />
 
                         <View
                             android:layout_width="match_parent"

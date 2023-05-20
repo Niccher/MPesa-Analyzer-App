@@ -18,7 +18,7 @@
     <string name="auth_label_sign_up">Sign Up</string>
     <string name="auth_sign_up_have_account">I have an Account</string>
 
-    <string name="home_permision_req">SMS Permission</string>
+    <string name="home_permission_req">SMS Permission</string>
     <string name="home_btn_fetch_and_sync">Fetch and Sync</string>
     <string name="home_label_timestamp">Last Updated</string>
 
@@ -34,6 +34,11 @@
     <string name="sum_string_money_withdraw">Withdraw</string>
     <string name="sum_string_money_wrong_pin">Wrong Pin</string>
     <string name="sum_string_money_unknown">Unknown</string>
+
+    <string name="string_dialog_permission">Proceed</string>
+    <string name="string_dialog_permission_denied">Permission Denied</string>
+    <string name="string_dialog_permission_granted">SMS Permission Granted</string>
+    <string name="string_dialog_permission_status">SMS Permission</string>
 
     <string name="sheet_string_logout">Logout</string>
     <string name="sheet_string_del">Delete Account</string>

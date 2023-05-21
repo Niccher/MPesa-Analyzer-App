@@ -1,6 +1,9 @@
 package com.niccher.mpesa_analyzer.adapter;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.niccher.mpesa_analyzer.R;
+import com.niccher.mpesa_analyzer.auth.Auth_Signin;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_more_info;
 
@@ -86,6 +90,15 @@ public class Info_more_adapter extends RecyclerView.Adapter<Info_more_adapter.Vi
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(context, "Sign profile_log_out", Toast.LENGTH_SHORT).show();
+                            SharedPreferences pref_loggin = context.getSharedPreferences(kon.shared_auth_login, Context.MODE_PRIVATE);
+
+                            //pref_loggin.edit().remove("KeyName").commit();
+                            pref_loggin.edit().clear().commit();
+
+                            Intent logout = new Intent(context, Auth_Signin.class);
+                            logout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            logout.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(logout);
                         }
                     });
 

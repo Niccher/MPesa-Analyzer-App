@@ -13,6 +13,7 @@ public class Konstants {
     public String shared_auth_login = "auth_login";
     public String shared_auth_register = "auth_register";
     public String shared_device_id = "pref_device_id";
+    public String shared_loot_count = "pref_loot_count";
 
     public static int string_read_write_block = 1024;
     public String string_algo_enryptor = "AES/CBC/PKCS5Padding";

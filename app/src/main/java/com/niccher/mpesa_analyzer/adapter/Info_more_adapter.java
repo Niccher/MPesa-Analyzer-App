@@ -89,7 +89,6 @@ public class Info_more_adapter extends RecyclerView.Adapter<Info_more_adapter.Vi
                     card_log_out.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(context, "Sign profile_log_out", Toast.LENGTH_SHORT).show();
                             SharedPreferences pref_loggin = context.getSharedPreferences(kon.shared_auth_login, Context.MODE_PRIVATE);
 
                             //pref_loggin.edit().remove("KeyName").commit();

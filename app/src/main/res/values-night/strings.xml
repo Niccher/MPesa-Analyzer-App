@@ -49,5 +49,7 @@
     <string name="profile_txt_back">Back</string>
     <string name="profile_txt_delete">Delete My Account</string>
     <string name="profile_txt_log_out">Log Me Out</string>
+    <string name="home_summary_sms_sync">SMS Sync</string>
+    <string name="home_summary_sms_sync_count">0</string>
 
 </resources>

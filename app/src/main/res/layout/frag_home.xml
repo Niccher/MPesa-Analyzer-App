@@ -229,7 +229,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_16sdp"
-                            android:text="Average Sms"
+                            android:text="@string/home_summary_sms_sync"
                             android:textSize="@dimen/_14sdp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="@id/card_img_3"
@@ -237,11 +237,11 @@
                             app:layout_constraintTop_toTopOf="@id/card_img_3" />
 
                         <TextView
-                            android:id="@+id/card_text_info_1"
+                            android:id="@+id/card_text_info_loot"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_16sdp"
-                            android:text="Count"
+                            android:text="@string/home_summary_sms_sync_count"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="italic"
                             app:layout_constraintStart_toStartOf="@id/card_text_info1"
@@ -251,7 +251,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_2sdp"
                             android:layout_marginTop="@dimen/_4sdp"
-                            app:layout_constraintTop_toBottomOf="@id/card_text_info_1" />
+                            app:layout_constraintTop_toBottomOf="@id/card_text_info_loot" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

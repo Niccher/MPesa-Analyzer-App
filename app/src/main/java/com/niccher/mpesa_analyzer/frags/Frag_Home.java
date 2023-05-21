@@ -41,13 +41,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.niccher.mpesa_analyzer.MainActivity;
 import com.niccher.mpesa_analyzer.R;
+import com.niccher.mpesa_analyzer.adapter.Info_adapter;
 import com.niccher.mpesa_analyzer.helpers.Encryptor;
 import com.niccher.mpesa_analyzer.helpers.Prefs;
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
+import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
+import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
 import com.niccher.mpesa_analyzer.interfaces.JsonUploadLoot;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
+import com.niccher.mpesa_analyzer.models.Mod_My_Loot_Count;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -60,7 +66,11 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.crypto.NoSuchPaddingException;
 
@@ -71,6 +81,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Frag_Home extends Fragment {
 
@@ -85,7 +97,13 @@ public class Frag_Home extends Fragment {
     PayLoade init;
     StringBuffer sbsent;
 
-    TextView text_get_and_upload, last_time, perm_status, perm_request;
+    JsonProcesses jsonProcesses;
+    Gson gson = null;
+
+    SharedPreferences pref_loot_counter = null;
+    SharedPreferences.Editor sharedEditor = null;
+
+    TextView text_get_and_upload, text_get_loot_count, last_time, perm_status, perm_request;
     int SMS_CODE = 102;
 
     ProgressBar progressBar;
@@ -104,6 +122,11 @@ public class Frag_Home extends Fragment {
 
         kon = new Konstants();
         prefs = new Prefs();
+        gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        prefs = new Prefs();
+
         init = new PayLoade();
     }
 
@@ -114,6 +137,7 @@ public class Frag_Home extends Fragment {
         View solv = inflater.inflate(R.layout.frag_home, container, false);
 
         text_get_and_upload = solv.findViewById(R.id.card_text_upload);//home_fetch_sync
+        text_get_loot_count = solv.findViewById(R.id.card_text_info_loot);
 
         last_time = solv.findViewById(R.id.home_last_upload);
 
@@ -247,6 +271,56 @@ public class Frag_Home extends Fragment {
         }
     }
 
+    private void calc_Loot(){
+        pref_loot_counter = getActivity().getSharedPreferences(kon.shared_loot_count, Context.MODE_PRIVATE);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(kon.upload_summaries)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(ServiceGenerator.getUnsafeOkHttpClient())
+                .build();
+
+        jsonProcesses = retrofit.create(JsonProcesses.class);
+
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("varUser", prefs.get_prefs_auth("auth", getContext()));
+        parameters.put("varDev", prefs.get_prefs_auth("print", getActivity()));
+
+        Call <Mod_My_Loot_Count> call = jsonProcesses.getLootCount(parameters);
+        call.enqueue(new Callback<Mod_My_Loot_Count>() {
+            @Override
+            public void onResponse(Call<Mod_My_Loot_Count> call, Response<Mod_My_Loot_Count> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    Mod_My_Loot_Count my_loots = response.body();
+
+                    String msg_time;
+                    int msg_count, msg_status;
+
+                    msg_count = my_loots.getMsg_count();
+                    msg_status = my_loots.getMsg_status();
+                    msg_time = my_loots.getMsg_time();
+
+                    if (msg_status == 1){
+                        sharedEditor = pref_loot_counter.edit();
+                        sharedEditor.putInt("status", msg_status);
+                        sharedEditor.putInt("loots", msg_count);
+                        sharedEditor.putString("time", ""+msg_time);
+                        sharedEditor.apply();
+
+                        text_get_loot_count.setText(msg_count);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Mod_My_Loot_Count> call, Throwable t) {
+                //Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
+                Log.e(kon.TAGGED, "calc_Loot Error");
+                Log.e(kon.TAGGED, t.getMessage());
+            }
+        });
+    }
+
     class PayLoade extends Thread {
         @Override
         public void run() {
@@ -330,7 +404,6 @@ public class Frag_Home extends Fragment {
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Log.e(kon.TAGGED, response.toString());
                     try {
                         File enc_b64 = new File( getActivity().getFilesDir() + "/" + kon.string_enc_b64_file+filename);
                         File enc_aes = new File(getActivity().getFilesDir() + "/" + kon.string_enc_aes_files+filename);
@@ -338,6 +411,7 @@ public class Frag_Home extends Fragment {
                         enc_aes.delete();
                         prefs.get_FileType(filename, String.valueOf(System.currentTimeMillis()), getActivity());
                         last_time.setText(prefs.get_TimeStamp(getActivity()));
+                        calc_Loot();
                     }catch (Exception es){
                         Log.e(kon.TAGGED, "Delete Files error\n"+es.getMessage());
                     }

@@ -81,11 +81,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_16sdp"
-                            android:text="Request"
-                            android:textSize="@dimen/_14sdp"
                             android:background="@drawable/rect_btn"
                             android:gravity="center_horizontal"
                             android:padding="@dimen/_8sdp"
+                            android:text="Request"
+                            android:textSize="@dimen/_14sdp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="@id/card_img_1"
                             app:layout_constraintStart_toEndOf="@id/card_text_permission"
@@ -146,9 +146,9 @@
                             android:background="@drawable/rect_btn"
                             android:gravity="center_horizontal"
                             android:padding="@dimen/_8sdp"
-                            android:textStyle="bold"
                             android:text="@string/home_btn_fetch_and_sync"
                             android:textSize="@dimen/_14sdp"
+                            android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="@id/card_img_2"
                             app:layout_constraintStart_toEndOf="@id/card_img_2"
                             app:layout_constraintTop_toTopOf="@id/card_img_2" />
@@ -241,10 +241,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_16sdp"
+                            android:layout_marginEnd="@dimen/_16sdp"
                             android:text="@string/home_summary_sms_sync_count"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="italic"
-                            app:layout_constraintStart_toStartOf="@id/card_text_info1"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/card_text_info1" />
 
                         <View
@@ -256,7 +257,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.cardview.widget.CardView>
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

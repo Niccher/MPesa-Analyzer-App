@@ -169,7 +169,11 @@ public class Frag_Home extends Fragment {
         return  solv;
     }
 
+
+
     public void reqPermission(String permission, int requestCode){
+        text_get_loot_count.setText("Synced "+String.valueOf(prefs.get_prefs_auth("loot_count", getActivity())) + " times.");
+
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             permTweak(false);
             requestPermissions(new String[]{Manifest.permission.READ_SMS}, SMS_CODE);
@@ -307,7 +311,7 @@ public class Frag_Home extends Fragment {
                         sharedEditor.putString("time", ""+msg_time);
                         sharedEditor.apply();
 
-                        text_get_loot_count.setText(msg_count);
+                        text_get_loot_count.setText("Synced "+ String.valueOf(msg_count) + " times");
                     }
                 }
             }

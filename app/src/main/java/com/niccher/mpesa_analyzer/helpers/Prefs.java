@@ -68,6 +68,10 @@ public class Prefs {
             SharedPreferences pref_dev_id = cntt.getSharedPreferences(kon.shared_device_id, Context.MODE_PRIVATE);
             id = pref_dev_id.getString("print_id", "nullable");
         }
+        if (ty=="loot_count"){
+            SharedPreferences pref_loot_count = cntt.getSharedPreferences(kon.shared_loot_count, Context.MODE_PRIVATE);
+            id = String.valueOf(pref_loot_count.getInt("loots", 0));
+        }
         return id;
     }
 

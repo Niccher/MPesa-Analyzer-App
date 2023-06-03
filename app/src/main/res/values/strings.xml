@@ -51,5 +51,9 @@
     <string name="profile_txt_log_out">Log Me Out</string>
     <string name="home_summary_sms_sync">SMS Sync</string>
     <string name="home_summary_sms_sync_count">0</string>
+    <string name="txt_missing_digit">##</string>
+    <string name="txt_received">Received</string>
+    <string name="tag_sent">Sent</string>
+    <string name="tag_unknown">Unknown</string>
 
 </resources>

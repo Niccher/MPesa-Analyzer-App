@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,7 +65,7 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
         holder.part_sent.setText(summariesList.get(position).summary_Sent);
         holder.part_unknown.setText(summariesList.get(position).summary_Unknown);
         holder.part_receive.setText(summariesList.get(position).summary_Received);
-        holder.part_count.setText("Interactions "+summariesList.get(position).summary_Count);
+        holder.part_count.setText("Interactions: "+summariesList.get(position).summary_Count);
 
         holder.part_frame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +89,7 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView part_date, part_sent, part_unknown, part_receive, part_count;
-        RelativeLayout part_frame;
+        ConstraintLayout part_frame;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

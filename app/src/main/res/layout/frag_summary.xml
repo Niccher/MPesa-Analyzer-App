@@ -156,7 +156,7 @@
                             <ImageView
                                 android:layout_width="@dimen/_50sdp"
                                 android:layout_height="@dimen/_50sdp"
-                                android:src="@mipmap/summ_money_fuliza" />
+                                android:src="@mipmap/summ_money_received" />
 
                             <TextView
                                 android:id="@+id/cat_point_received"

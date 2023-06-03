@@ -1,83 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
-    android:padding="@dimen/margin_15"
-    tools:ignore="HardcodedText">
+    android:padding="@dimen/_4sdp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/part_txt_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/info_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            tools:ignore="UselessParent">
+            android:layout_marginTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/info_box1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
-                android:layout_marginLeft="35dp"
-                android:background="@drawable/bg_rect_frame">
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:background="@drawable/bg_rect_frame"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/info_box2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="13dp"
-                    android:layout_marginRight="13dp"
-                    android:layout_marginBottom="40dp"
-                    android:gravity="center|left"
-                    android:maxLines="3"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_24sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <LinearLayout
+                        android:id="@+id/box_received"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="Money Received."
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/txt_received"
                             android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_16sdp"
+                            android:textSize="@dimen/_14sdp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/part_txt_incoming"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
+                            android:gravity="center"
                             android:paddingStart="@dimen/_10sdp"
-                            android:text="From error to."
+                            android:text="@string/txt_missing_digit"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_16sdp" />
+                            android:textSize="@dimen/_14sdp" />
+
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/box_sent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/box_received">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="Money Sent."
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/tag_sent"
                             android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sdp"
@@ -87,75 +97,82 @@
                             android:id="@+id/part_txt_sent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
+                            android:gravity="center"
                             android:paddingStart="@dimen/_10sdp"
-                            android:text="From error to."
+                            android:text="@string/txt_missing_digit"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_16sdp" />
+
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/box_unknown"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/box_sent">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="Unknown interactions."
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/tag_unknown"
                             android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_16sdp"
+                            android:textSize="@dimen/_14sdp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/part_txt_unknown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_weight="1"
+                            android:gravity="center"
                             android:paddingStart="@dimen/_10sdp"
-                            android:text="From error to."
+                            android:text="@string/txt_missing_digit"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_16sdp" />
+                            android:textSize="@dimen/_14sdp" />
+
                     </LinearLayout>
 
-                </LinearLayout>
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/part_txt_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="@dimen/_18sdp"
-                    android:layout_marginLeft="@dimen/_18sdp"
-                    android:layout_marginBottom="@dimen/_8sdp"
-                    android:text="707"
+                    android:text="@string/txt_missing_digit"
                     android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
-                    android:textColor="@color/twitter"
+                    android:textColor="@color/primarytext"
                     android:textSize="@dimen/_16sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/info_box2"
+                    app:layout_constraintStart_toStartOf="@id/info_box2"
+                    app:layout_constraintTop_toBottomOf="@id/info_box2" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:src="@drawable/ic_sms"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@mipmap/list_monies"
                 app:civ_border_width="@dimen/_2sdp"
-                app:civ_circle_background_color="#C3C3C3" />
+                app:civ_circle_background_color="#C3C3C3"
+                app:layout_constraintBottom_toBottomOf="@id/info_box1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/info_box1" />
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <RelativeLayout
-        android:layout_width="154dp"
-        android:layout_height="30dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_rectangle">
 
@@ -167,6 +184,6 @@
             android:text="04 December 2018"
             android:textColor="@color/white" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

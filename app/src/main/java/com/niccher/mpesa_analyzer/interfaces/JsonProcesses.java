@@ -1,6 +1,7 @@
 package com.niccher.mpesa_analyzer.interfaces;
 
 
+import com.niccher.mpesa_analyzer.helpers.SummaryLootResponse;
 import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 import com.niccher.mpesa_analyzer.models.Mod_Loot_Summary;
 import com.niccher.mpesa_analyzer.models.Mod_My_Loot_Count;
@@ -26,6 +27,10 @@ public interface JsonProcesses {
     @FormUrlEncoded
     @POST("get/my_uploads_count")
     Call <Mod_My_Loot_Count> getLootCount(@FieldMap Map<String, String> fields);
+
+    @FormUrlEncoded
+    @POST("get/my_uploads_category_count")
+    Call <SummaryLootResponse> getLootCountCategories(@FieldMap Map<String, String> fields);
 
     /*
     @FormUrlEncoded

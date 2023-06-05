@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -32,9 +33,11 @@ import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.adapter.Info_adapter;
 import com.niccher.mpesa_analyzer.helpers.Prefs;
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
+import com.niccher.mpesa_analyzer.helpers.SummaryLootResponse;
 import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
+import com.niccher.mpesa_analyzer.models.Mod_Loot_Summary;
 import com.niccher.mpesa_analyzer.models.Mod_Summaries;
 
 import java.util.ArrayList;
@@ -59,9 +62,9 @@ public class Frag_Graph extends Fragment {
     Konstants kon;
     Prefs pref;
     Gson gson = null;
-    ArrayList<Mod_Summaries> summariesList;
+    ArrayList<Mod_Loot_Summary> summaryLootList;
 
-    LineGraphSeries<DataPoint> series_sent, series_received, series_unknown;
+    LineGraphSeries<DataPoint> series_all, series_balance, series_fuliza, series_received, series_sent, series_withdraw, series_wrongpin, series_unknown;
     PointsGraphSeries<DataPoint> point_sent, point_received, point_unknown;
 
     public Frag_Graph() {
@@ -98,10 +101,10 @@ public class Frag_Graph extends Fragment {
         conn_wait.setVisibility(View.GONE);
 
         graph_line = (GraphView) grapher.findViewById(R.id.graph);
-        graph_line1 = (GraphView) grapher.findViewById(R.id.graph1);
+        //graph_line1 = (GraphView) grapher.findViewById(R.id.graph1);
 
         graph_line.setVisibility(View.GONE);
-        graph_line1.setVisibility(View.GONE);
+        //graph_line1.setVisibility(View.GONE);
 
         graph_line.setTitle("Category of SMS");
         getConnectionState();
@@ -128,7 +131,7 @@ public class Frag_Graph extends Fragment {
 
     private void isOffline(String mgs){
         graph_line.setVisibility(View.GONE);
-        graph_line1.setVisibility(View.GONE);
+        //graph_line1.setVisibility(View.GONE);
         conn_state.setText(mgs);
     }
 
@@ -143,64 +146,129 @@ public class Frag_Graph extends Fragment {
         jsonProcesses = retrofit.create(JsonProcesses.class);
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("varUsername", pref.get_prefs_auth("auth", getActivity()));
-        parameters.put("varEmail", pref.get_prefs_auth("print", getActivity()));
+        parameters.put("varUser", pref.get_prefs_auth("auth", getActivity()));
+        parameters.put("varDev", pref.get_prefs_auth("print", getActivity()));
 
-        Call <SummaryResponse> call = jsonProcesses.getSummary(parameters);
-        call.enqueue(new Callback<SummaryResponse>() {
+        Call <SummaryLootResponse> call = jsonProcesses.getLootCountCategories(parameters);
+        call.enqueue(new Callback<SummaryLootResponse>() {
             @Override
-            public void onResponse(Call<SummaryResponse> call, Response<SummaryResponse> response) {
+            public void onResponse(Call<SummaryLootResponse> call, Response<SummaryLootResponse> response) {
                 conn_wait.setVisibility(View.GONE);
                 if(response.isSuccessful() && response.body()!=null){
-                    SummaryResponse summaryResponse = response.body();
-                    summariesList = new ArrayList<>(Arrays.asList(summaryResponse.getSummarizer()));
-                    //summariesAdapter = new Info_adapter(summariesList, getActivity());
+                    SummaryLootResponse summaryLootResponse = response.body();
+                    summaryLootList = new ArrayList<Mod_Loot_Summary>(Arrays.asList(summaryLootResponse.getLootSummarizer()));
+
                     int counter = 0;
-                    int countar = summariesList.size();
+                    int countar = summaryLootList.size();
 
-                    DataPoint point_sent, point_received, point_unknown;
+                    DataPoint point_all, point_balance, point_fuliza, point_received, point_sent, point_withdraw, point_wrongpin, point_unknown;
 
-                    series_sent = new LineGraphSeries<>();
+                    series_all = new LineGraphSeries<>();
+                    series_balance = new LineGraphSeries<>();
+                    series_fuliza = new LineGraphSeries<>();
                     series_received = new LineGraphSeries<>();
+                    series_sent = new LineGraphSeries<>();
+                    series_withdraw = new LineGraphSeries<>();
+                    series_wrongpin = new LineGraphSeries<>();
                     series_unknown = new LineGraphSeries<>();
 
-                    series_sent.setColor(Color.CYAN);
-                    series_received.setColor(Color.RED);
+                    series_all.setColor(Color.rgb(145,236,97));
+                    series_balance.setColor(Color.RED);
+                    series_fuliza.setColor(Color.LTGRAY);
+                    series_received.setColor(Color.YELLOW);
+                    series_sent.setColor(Color.DKGRAY);
+                    series_withdraw.setColor(Color.MAGENTA);
+                    series_wrongpin.setColor(Color.GREEN);
                     series_unknown.setColor(Color.BLUE);
 
                     graph_line.setVisibility(View.VISIBLE);
-                    graph_line1.setVisibility(View.VISIBLE);
+                    //graph_line1.setVisibility(View.VISIBLE);
 
-                    for (Mod_Summaries sumlist: summariesList) {
+                    graph_line.getViewport().setScalable(true);
+                    graph_line.getViewport().setScrollable(true);
+                    graph_line.getViewport().setScalableY(true);
+                    graph_line.getViewport().setScrollableY(true);
+
+                    graph_line.getLegendRenderer().setVisible(true);
+
+                    for (Mod_Loot_Summary sumlootlist: summaryLootList) {
                         counter++;
-                        point_sent = new DataPoint(counter, Double.parseDouble(sumlist.summary_Sent));
-                        point_received = new DataPoint(counter, Double.parseDouble(sumlist.summary_Received));
-                        point_unknown = new DataPoint(counter, Double.parseDouble(sumlist.summary_Unknown));
 
-                        series_sent.appendData(point_sent, true, countar);
+                        point_all = new DataPoint(counter, Double.parseDouble(sumlootlist.val_all));
+                        point_balance = new DataPoint(counter, Double.parseDouble(sumlootlist.val_balance));
+                        point_fuliza = new DataPoint(counter, Double.parseDouble(sumlootlist.val_fuliza));
+                        point_received = new DataPoint(counter, Double.parseDouble(sumlootlist.val_received));
+                        point_sent = new DataPoint(counter, Double.parseDouble(sumlootlist.val_sent));
+                        point_withdraw = new DataPoint(counter, Double.parseDouble(sumlootlist.val_withdraw));
+                        point_wrongpin = new DataPoint(counter, Double.parseDouble(sumlootlist.val_wrong_pin));
+                        point_unknown = new DataPoint(counter, Double.parseDouble(sumlootlist.val_unknown));
+
+                        series_all.appendData(point_all, true, countar);
+                        series_balance.appendData(point_balance, true, countar);
+                        series_fuliza.appendData(point_fuliza, true, countar);
                         series_received.appendData(point_received, true, countar);
+                        series_sent.appendData(point_sent, true, countar);
+                        series_withdraw.appendData(point_withdraw, true, countar);
+                        series_wrongpin.appendData(point_wrongpin, true, countar);
                         series_unknown.appendData(point_unknown, true, countar);
                     }
 
+                    series_all.setTitle("All");
+                    series_balance.setTitle("Balances");
+                    series_fuliza.setTitle("Fuliza");
+                    series_received.setTitle("Received");
                     series_sent.setTitle("Sent");
+                    series_withdraw.setTitle("Withdrawn");
+                    series_wrongpin.setTitle("Wrong Pin");
                     series_received.setTitle("Received");
                     series_unknown.setTitle("Unknown");
 
-                    series_sent.setAnimated(true);
+                    series_all.setAnimated(true);
+                    series_balance.setAnimated(true);
+                    series_fuliza.setAnimated(true);
                     series_received.setAnimated(true);
+                    series_sent.setAnimated(true);
+                    series_withdraw.setAnimated(true);
+                    series_wrongpin.setAnimated(true);
                     series_unknown.setAnimated(true);
 
-                    graph_line.getLegendRenderer().setVisible(true);
-                    //graph_line.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                    series_all.setDrawDataPoints(true);
+                    series_balance.setDrawDataPoints(true);
+                    series_fuliza.setDrawDataPoints(true);
+                    series_received.setDrawDataPoints(true);
+                    series_sent.setDrawDataPoints(true);
+                    series_withdraw.setDrawDataPoints(true);
+                    series_wrongpin.setDrawDataPoints(true);
+                    series_unknown.setDrawDataPoints(true);
 
-                    graph_line.addSeries(series_sent);
+                    graph_line.addSeries(series_all);
+                    graph_line.addSeries(series_balance);
+                    graph_line.addSeries(series_fuliza);
                     graph_line.addSeries(series_received);
+                    graph_line.addSeries(series_sent);
+                    graph_line.addSeries(series_withdraw);
+                    graph_line.addSeries(series_wrongpin);
                     graph_line.addSeries(series_unknown);
+
+                    graph_line.getViewport().setMinX(1);
+                    graph_line.getViewport().setMaxX(countar);
+
+                    //graph.getViewport().setYAxisBoundsManual(true);
+                    graph_line.getViewport().setXAxisBoundsManual(true);
+
+                    /*BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
+                            new DataPoint(0, -2),
+                            new DataPoint(1, 5),
+                            new DataPoint(2, 3),
+                            new DataPoint(3, 2),
+                            new DataPoint(4, 6)
+                    });
+                    graph_line.addSeries(series);*/
                 }
             }
 
             @Override
-            public void onFailure(Call<SummaryResponse> call, Throwable t) {
+            public void onFailure(Call<SummaryLootResponse> call, Throwable t) {
                 conn_wait.setVisibility(View.GONE);
                 isOffline("Unknown error has occurred, please try again");
                 //Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();

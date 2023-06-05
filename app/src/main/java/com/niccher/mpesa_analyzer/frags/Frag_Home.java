@@ -151,6 +151,8 @@ public class Frag_Home extends Fragment {
         progressBar = solv.findViewById(R.id.home_upload_state);
         progressBar.setVisibility(View.GONE);
 
+        calc_Loot();
+
         perm_request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

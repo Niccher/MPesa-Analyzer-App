@@ -1,10 +1,6 @@
 package com.niccher.mpesa_analyzer.frags;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,26 +19,23 @@ import androidx.fragment.app.Fragment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LegendRenderer;
-import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.niccher.mpesa_analyzer.R;
-import com.niccher.mpesa_analyzer.adapter.Info_adapter;
+import com.niccher.mpesa_analyzer.adapter.Info_Sms_Spinner_adapter;
 import com.niccher.mpesa_analyzer.helpers.Prefs;
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
 import com.niccher.mpesa_analyzer.helpers.SummaryLootResponse;
-import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_Loot_Summary;
-import com.niccher.mpesa_analyzer.models.Mod_Summaries;
+import com.niccher.mpesa_analyzer.models.Mod_Sms_Cat_Spinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -63,6 +56,11 @@ public class Frag_Graph extends Fragment {
     Prefs pref;
     Gson gson = null;
     ArrayList<Mod_Loot_Summary> summaryLootList;
+
+    Spinner spin_cat_sms;
+    ArrayList<Mod_Sms_Cat_Spinner> sms_cat_spin_list;
+    List<Mod_Sms_Cat_Spinner> list_smscat = new ArrayList<>();
+    Info_Sms_Spinner_adapter info_sms_spinner_adapter;
 
     LineGraphSeries<DataPoint> series_all, series_balance, series_fuliza, series_received, series_sent, series_withdraw, series_wrongpin, series_unknown;
     PointsGraphSeries<DataPoint> point_sent, point_received, point_unknown;
@@ -97,14 +95,17 @@ public class Frag_Graph extends Fragment {
         View grapher = inflater.inflate(R.layout.frag_graph, container, false);
 
         conn_state = grapher.findViewById(R.id.conn_no_internet);
-        conn_wait  = grapher.findViewById(R.id.conn_wait_internet);
+        conn_wait = grapher.findViewById(R.id.conn_wait_internet);
         conn_wait.setVisibility(View.GONE);
 
-        graph_line = (GraphView) grapher.findViewById(R.id.graph);
+        graph_line = grapher.findViewById(R.id.graph);
         //graph_line1 = (GraphView) grapher.findViewById(R.id.graph1);
 
         graph_line.setVisibility(View.GONE);
         //graph_line1.setVisibility(View.GONE);
+
+        spin_cat_sms = grapher.findViewById(R.id.spinner_sms_category);
+        initSpinners(grapher);
 
         graph_line.setTitle("Category of SMS");
         getConnectionState();
@@ -112,27 +113,38 @@ public class Frag_Graph extends Fragment {
         return grapher;
     }
 
-    public void getConnectionState(){
-        if (isConnected()){
+    public void getConnectionState() {
+        if (isConnected()) {
             conn_wait.setVisibility(View.VISIBLE);
             conn_state.setVisibility(View.GONE);
             getSummaries();
-        }else {
+        } else {
             conn_wait.setVisibility(View.GONE);
             isOffline("No internet connection at the moment.");
         }
     }
 
-    public boolean isConnected(){
+    public boolean isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         return (netInfo != null && netInfo.isConnected());
     }
 
-    private void isOffline(String mgs){
+    private void isOffline(String mgs) {
         graph_line.setVisibility(View.GONE);
         //graph_line1.setVisibility(View.GONE);
         conn_state.setText(mgs);
+    }
+
+    private void initSpinners(View this_view) {
+        String[] arr_categories = {"All", "Balance", "Fuliza", "Received", "Sent", "Withdraw", "Wrong Pin", "Unknown"};
+        int[] arr_cat_imgs = {R.mipmap.summ_money_all, R.mipmap.summ_money_balance, R.mipmap.summ_money_fuliza,
+                R.mipmap.summ_money_received, R.mipmap.summ_money_sent, R.mipmap.summ_money_withdraw,
+                R.mipmap.summ_money_wrong_pin, R.mipmap.summ_money_unknown};
+
+        Info_Sms_Spinner_adapter info_sms_spinner_adapter = new Info_Sms_Spinner_adapter(getActivity(), arr_cat_imgs, arr_categories);
+        spin_cat_sms.setAdapter(info_sms_spinner_adapter);
+
     }
 
     private void getSummaries() {
@@ -149,12 +161,12 @@ public class Frag_Graph extends Fragment {
         parameters.put("varUser", pref.get_prefs_auth("auth", getActivity()));
         parameters.put("varDev", pref.get_prefs_auth("print", getActivity()));
 
-        Call <SummaryLootResponse> call = jsonProcesses.getLootCountCategories(parameters);
+        Call<SummaryLootResponse> call = jsonProcesses.getLootCountCategories(parameters);
         call.enqueue(new Callback<SummaryLootResponse>() {
             @Override
             public void onResponse(Call<SummaryLootResponse> call, Response<SummaryLootResponse> response) {
                 conn_wait.setVisibility(View.GONE);
-                if(response.isSuccessful() && response.body()!=null){
+                if (response.isSuccessful() && response.body() != null) {
                     SummaryLootResponse summaryLootResponse = response.body();
                     summaryLootList = new ArrayList<Mod_Loot_Summary>(Arrays.asList(summaryLootResponse.getLootSummarizer()));
 
@@ -172,14 +184,14 @@ public class Frag_Graph extends Fragment {
                     series_wrongpin = new LineGraphSeries<>();
                     series_unknown = new LineGraphSeries<>();
 
-                    series_all.setColor(Color.rgb(145,236,97));
-                    series_balance.setColor(Color.RED);
-                    series_fuliza.setColor(Color.LTGRAY);
-                    series_received.setColor(Color.YELLOW);
-                    series_sent.setColor(Color.DKGRAY);
-                    series_withdraw.setColor(Color.MAGENTA);
-                    series_wrongpin.setColor(Color.GREEN);
-                    series_unknown.setColor(Color.BLUE);
+                    series_all.setColor(getResources().getColor(R.color.dark_gray));
+                    series_balance.setColor(getResources().getColor(R.color.light_pink));
+                    series_fuliza.setColor(getResources().getColor(R.color.yellow));
+                    series_received.setColor(getResources().getColor(R.color.pink));
+                    series_sent.setColor(getResources().getColor(R.color.green));
+                    series_withdraw.setColor(getResources().getColor(R.color.blue));
+                    series_wrongpin.setColor(getResources().getColor(R.color.beige));
+                    series_unknown.setColor(getResources().getColor(R.color.red));
 
                     graph_line.setVisibility(View.VISIBLE);
                     //graph_line1.setVisibility(View.VISIBLE);
@@ -191,7 +203,7 @@ public class Frag_Graph extends Fragment {
 
                     graph_line.getLegendRenderer().setVisible(true);
 
-                    for (Mod_Loot_Summary sumlootlist: summaryLootList) {
+                    for (Mod_Loot_Summary sumlootlist : summaryLootList) {
                         counter++;
 
                         point_all = new DataPoint(counter, Double.parseDouble(sumlootlist.val_all));
@@ -256,14 +268,6 @@ public class Frag_Graph extends Fragment {
                     //graph.getViewport().setYAxisBoundsManual(true);
                     graph_line.getViewport().setXAxisBoundsManual(true);
 
-                    /*BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
-                            new DataPoint(0, -2),
-                            new DataPoint(1, 5),
-                            new DataPoint(2, 3),
-                            new DataPoint(3, 2),
-                            new DataPoint(4, 6)
-                    });
-                    graph_line.addSeries(series);*/
                 }
             }
 

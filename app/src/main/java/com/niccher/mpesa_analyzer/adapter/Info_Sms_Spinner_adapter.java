@@ -25,7 +25,6 @@ public class Info_Sms_Spinner_adapter extends BaseAdapter {
         this.sms_cat_name = sms_cat_name;
     }
 
-
     @Override
     public int getCount() {
         return sms_cat_name.length;

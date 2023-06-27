@@ -55,5 +55,6 @@
     <string name="txt_received">Received</string>
     <string name="tag_sent">Sent</string>
     <string name="tag_unknown">Unknown</string>
+    <string name="str_no_internet_connection">No Internet Connection</string>
 
 </resources>

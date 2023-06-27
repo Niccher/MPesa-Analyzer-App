@@ -8,9 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +47,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Frag_Graph extends Fragment {
+public class Frag_Graph extends Fragment implements AdapterView.OnItemSelectedListener {
 
     GraphView graph_line, graph_line1;
     AppCompatActivity activity;
@@ -61,6 +64,9 @@ public class Frag_Graph extends Fragment {
     ArrayList<Mod_Sms_Cat_Spinner> sms_cat_spin_list;
     List<Mod_Sms_Cat_Spinner> list_smscat = new ArrayList<>();
     Info_Sms_Spinner_adapter info_sms_spinner_adapter;
+
+    String[] arr_categories;
+    int[] arr_cat_imgs;
 
     LineGraphSeries<DataPoint> series_all, series_balance, series_fuliza, series_received, series_sent, series_withdraw, series_wrongpin, series_unknown;
     PointsGraphSeries<DataPoint> point_sent, point_received, point_unknown;
@@ -137,14 +143,14 @@ public class Frag_Graph extends Fragment {
     }
 
     private void initSpinners(View this_view) {
-        String[] arr_categories = {"All", "Balance", "Fuliza", "Received", "Sent", "Withdraw", "Wrong Pin", "Unknown"};
-        int[] arr_cat_imgs = {R.mipmap.summ_money_all, R.mipmap.summ_money_balance, R.mipmap.summ_money_fuliza,
+        arr_categories = new String[]{"All", "Balance", "Fuliza", "Received", "Sent", "Withdraw", "Wrong Pin", "Unknown"};
+        arr_cat_imgs = new int[]{R.mipmap.summ_money_all, R.mipmap.summ_money_balance, R.mipmap.summ_money_fuliza,
                 R.mipmap.summ_money_received, R.mipmap.summ_money_sent, R.mipmap.summ_money_withdraw,
                 R.mipmap.summ_money_wrong_pin, R.mipmap.summ_money_unknown};
 
         Info_Sms_Spinner_adapter info_sms_spinner_adapter = new Info_Sms_Spinner_adapter(getActivity(), arr_cat_imgs, arr_categories);
         spin_cat_sms.setAdapter(info_sms_spinner_adapter);
-
+        spin_cat_sms.setOnItemSelectedListener(this);
     }
 
     private void getSummaries() {
@@ -280,5 +286,15 @@ public class Frag_Graph extends Fragment {
                 Log.e(kon.TAGGED, t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //Toast.makeText(getActivity(), arr_categories[position], Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Log.e(kon.TAGGED, "Nothing Selected");
     }
 }

@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_4sdp"
+            app:cardBackgroundColor="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -24,10 +25,10 @@
 
                 <TextView
                     android:id="@+id/label_sms_category"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_100sdp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_4sdp"
-                    android:gravity="center"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:gravity="end"
                     android:text="SMS Category"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold"
@@ -38,8 +39,9 @@
                 <Spinner
                     android:id="@+id/spinner_sms_category"
                     style="?attr/spinnerDropDownItemStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_160sdp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
                     android:padding="@dimen/_4sdp"
                     android:spinnerMode="dropdown"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="No Internet Connection"
+            android:text="@string/str_no_internet_connection"
             android:textSize="@dimen/_24sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

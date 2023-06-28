@@ -87,4 +87,26 @@ public class Mod_Loot_Summary {
     public void setVal_created(String val_created) {
         this.val_created = val_created;
     }
+
+    public String setVal_sel(String val_sel) {
+        //Log.e("Mod_Loot_Summary", "setVal_sel: " + val_sel );
+        switch (val_sel) {
+            case "Balance":
+                return val_balance;
+            case "Fuliza":
+                return val_fuliza;
+            case "Received":
+                return val_received;
+            case "Sent":
+                return val_sent;
+            case "Withdraw":
+                return val_withdraw;
+            case "Wrong Pin":
+                return val_wrong_pin;
+            case "Unknown":
+                return val_unknown;
+            default:
+                return val_all;
+        }
+    }
 }

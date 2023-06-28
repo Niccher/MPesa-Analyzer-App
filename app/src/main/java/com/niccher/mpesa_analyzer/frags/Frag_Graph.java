@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,12 +32,10 @@ import com.niccher.mpesa_analyzer.helpers.SummaryLootResponse;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 import com.niccher.mpesa_analyzer.models.Mod_Loot_Summary;
-import com.niccher.mpesa_analyzer.models.Mod_Sms_Cat_Spinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -61,9 +58,8 @@ public class Frag_Graph extends Fragment implements AdapterView.OnItemSelectedLi
     ArrayList<Mod_Loot_Summary> summaryLootList;
 
     Spinner spin_cat_sms;
-    ArrayList<Mod_Sms_Cat_Spinner> sms_cat_spin_list;
-    List<Mod_Sms_Cat_Spinner> list_smscat = new ArrayList<>();
-    Info_Sms_Spinner_adapter info_sms_spinner_adapter;
+    String sms_category_selected;
+    SummaryLootResponse stored_SummaryLootResponse;
 
     String[] arr_categories;
     int[] arr_cat_imgs;
@@ -105,10 +101,8 @@ public class Frag_Graph extends Fragment implements AdapterView.OnItemSelectedLi
         conn_wait.setVisibility(View.GONE);
 
         graph_line = grapher.findViewById(R.id.graph);
-        //graph_line1 = (GraphView) grapher.findViewById(R.id.graph1);
 
         graph_line.setVisibility(View.GONE);
-        //graph_line1.setVisibility(View.GONE);
 
         spin_cat_sms = grapher.findViewById(R.id.spinner_sms_category);
         initSpinners(grapher);
@@ -174,106 +168,8 @@ public class Frag_Graph extends Fragment implements AdapterView.OnItemSelectedLi
                 conn_wait.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     SummaryLootResponse summaryLootResponse = response.body();
-                    summaryLootList = new ArrayList<Mod_Loot_Summary>(Arrays.asList(summaryLootResponse.getLootSummarizer()));
-
-                    int counter = 0;
-                    int countar = summaryLootList.size();
-
-                    DataPoint point_all, point_balance, point_fuliza, point_received, point_sent, point_withdraw, point_wrongpin, point_unknown;
-
-                    series_all = new LineGraphSeries<>();
-                    series_balance = new LineGraphSeries<>();
-                    series_fuliza = new LineGraphSeries<>();
-                    series_received = new LineGraphSeries<>();
-                    series_sent = new LineGraphSeries<>();
-                    series_withdraw = new LineGraphSeries<>();
-                    series_wrongpin = new LineGraphSeries<>();
-                    series_unknown = new LineGraphSeries<>();
-
-                    series_all.setColor(getResources().getColor(R.color.dark_gray));
-                    series_balance.setColor(getResources().getColor(R.color.light_pink));
-                    series_fuliza.setColor(getResources().getColor(R.color.yellow));
-                    series_received.setColor(getResources().getColor(R.color.pink));
-                    series_sent.setColor(getResources().getColor(R.color.green));
-                    series_withdraw.setColor(getResources().getColor(R.color.blue));
-                    series_wrongpin.setColor(getResources().getColor(R.color.beige));
-                    series_unknown.setColor(getResources().getColor(R.color.red));
-
-                    graph_line.setVisibility(View.VISIBLE);
-                    //graph_line1.setVisibility(View.VISIBLE);
-
-                    graph_line.getViewport().setScalable(true);
-                    graph_line.getViewport().setScrollable(true);
-                    graph_line.getViewport().setScalableY(true);
-                    graph_line.getViewport().setScrollableY(true);
-
-                    graph_line.getLegendRenderer().setVisible(true);
-
-                    for (Mod_Loot_Summary sumlootlist : summaryLootList) {
-                        counter++;
-
-                        point_all = new DataPoint(counter, Double.parseDouble(sumlootlist.val_all));
-                        point_balance = new DataPoint(counter, Double.parseDouble(sumlootlist.val_balance));
-                        point_fuliza = new DataPoint(counter, Double.parseDouble(sumlootlist.val_fuliza));
-                        point_received = new DataPoint(counter, Double.parseDouble(sumlootlist.val_received));
-                        point_sent = new DataPoint(counter, Double.parseDouble(sumlootlist.val_sent));
-                        point_withdraw = new DataPoint(counter, Double.parseDouble(sumlootlist.val_withdraw));
-                        point_wrongpin = new DataPoint(counter, Double.parseDouble(sumlootlist.val_wrong_pin));
-                        point_unknown = new DataPoint(counter, Double.parseDouble(sumlootlist.val_unknown));
-
-                        series_all.appendData(point_all, true, countar);
-                        series_balance.appendData(point_balance, true, countar);
-                        series_fuliza.appendData(point_fuliza, true, countar);
-                        series_received.appendData(point_received, true, countar);
-                        series_sent.appendData(point_sent, true, countar);
-                        series_withdraw.appendData(point_withdraw, true, countar);
-                        series_wrongpin.appendData(point_wrongpin, true, countar);
-                        series_unknown.appendData(point_unknown, true, countar);
-                    }
-
-                    series_all.setTitle("All");
-                    series_balance.setTitle("Balances");
-                    series_fuliza.setTitle("Fuliza");
-                    series_received.setTitle("Received");
-                    series_sent.setTitle("Sent");
-                    series_withdraw.setTitle("Withdrawn");
-                    series_wrongpin.setTitle("Wrong Pin");
-                    series_received.setTitle("Received");
-                    series_unknown.setTitle("Unknown");
-
-                    series_all.setAnimated(true);
-                    series_balance.setAnimated(true);
-                    series_fuliza.setAnimated(true);
-                    series_received.setAnimated(true);
-                    series_sent.setAnimated(true);
-                    series_withdraw.setAnimated(true);
-                    series_wrongpin.setAnimated(true);
-                    series_unknown.setAnimated(true);
-
-                    series_all.setDrawDataPoints(true);
-                    series_balance.setDrawDataPoints(true);
-                    series_fuliza.setDrawDataPoints(true);
-                    series_received.setDrawDataPoints(true);
-                    series_sent.setDrawDataPoints(true);
-                    series_withdraw.setDrawDataPoints(true);
-                    series_wrongpin.setDrawDataPoints(true);
-                    series_unknown.setDrawDataPoints(true);
-
-                    graph_line.addSeries(series_all);
-                    graph_line.addSeries(series_balance);
-                    graph_line.addSeries(series_fuliza);
-                    graph_line.addSeries(series_received);
-                    graph_line.addSeries(series_sent);
-                    graph_line.addSeries(series_withdraw);
-                    graph_line.addSeries(series_wrongpin);
-                    graph_line.addSeries(series_unknown);
-
-                    graph_line.getViewport().setMinX(1);
-                    graph_line.getViewport().setMaxX(countar);
-
-                    //graph.getViewport().setYAxisBoundsManual(true);
-                    graph_line.getViewport().setXAxisBoundsManual(true);
-
+                    stored_SummaryLootResponse = summaryLootResponse;
+                    graph_all_summaries(summaryLootResponse);
                 }
             }
 
@@ -288,9 +184,161 @@ public class Frag_Graph extends Fragment implements AdapterView.OnItemSelectedLi
         });
     }
 
+    private void graph_all_summaries(SummaryLootResponse summaryLootResponse) {
+        Frag_Graph.this.summaryLootList = new ArrayList<Mod_Loot_Summary>(Arrays.asList(summaryLootResponse.getLootSummarizer()));
+
+        int counter = 0;
+        int countar = Frag_Graph.this.summaryLootList.size();
+
+        DataPoint point_all, point_balance, point_fuliza, point_received, point_sent, point_withdraw, point_wrongpin, point_unknown;
+
+        graph_line.removeAllSeries();
+
+        series_all = new LineGraphSeries<>();
+        series_balance = new LineGraphSeries<>();
+        series_fuliza = new LineGraphSeries<>();
+        series_received = new LineGraphSeries<>();
+        series_sent = new LineGraphSeries<>();
+        series_withdraw = new LineGraphSeries<>();
+        series_wrongpin = new LineGraphSeries<>();
+        series_unknown = new LineGraphSeries<>();
+
+        series_all.setColor(getResources().getColor(R.color.dark_gray));
+        series_balance.setColor(getResources().getColor(R.color.light_pink));
+        series_fuliza.setColor(getResources().getColor(R.color.yellow));
+        series_received.setColor(getResources().getColor(R.color.pink));
+        series_sent.setColor(getResources().getColor(R.color.green));
+        series_withdraw.setColor(getResources().getColor(R.color.blue));
+        series_wrongpin.setColor(getResources().getColor(R.color.beige));
+        series_unknown.setColor(getResources().getColor(R.color.red));
+
+        graph_line.setVisibility(View.VISIBLE);
+
+        graph_line.getViewport().setScalable(true);
+        graph_line.getViewport().setScrollable(true);
+        graph_line.getViewport().setScalableY(true);
+        graph_line.getViewport().setScrollableY(true);
+
+        graph_line.getLegendRenderer().setVisible(true);
+
+        for (Mod_Loot_Summary sumlootlist : Frag_Graph.this.summaryLootList) {
+            counter++;
+
+            point_all = new DataPoint(counter, Double.parseDouble(sumlootlist.val_all));
+            point_balance = new DataPoint(counter, Double.parseDouble(sumlootlist.val_balance));
+            point_fuliza = new DataPoint(counter, Double.parseDouble(sumlootlist.val_fuliza));
+            point_received = new DataPoint(counter, Double.parseDouble(sumlootlist.val_received));
+            point_sent = new DataPoint(counter, Double.parseDouble(sumlootlist.val_sent));
+            point_withdraw = new DataPoint(counter, Double.parseDouble(sumlootlist.val_withdraw));
+            point_wrongpin = new DataPoint(counter, Double.parseDouble(sumlootlist.val_wrong_pin));
+            point_unknown = new DataPoint(counter, Double.parseDouble(sumlootlist.val_unknown));
+
+            series_all.appendData(point_all, true, countar);
+            series_balance.appendData(point_balance, true, countar);
+            series_fuliza.appendData(point_fuliza, true, countar);
+            series_received.appendData(point_received, true, countar);
+            series_sent.appendData(point_sent, true, countar);
+            series_withdraw.appendData(point_withdraw, true, countar);
+            series_wrongpin.appendData(point_wrongpin, true, countar);
+            series_unknown.appendData(point_unknown, true, countar);
+        }
+
+        series_all.setTitle("All");
+        series_balance.setTitle("Balances");
+        series_fuliza.setTitle("Fuliza");
+        series_received.setTitle("Received");
+        series_sent.setTitle("Sent");
+        series_withdraw.setTitle("Withdrawn");
+        series_wrongpin.setTitle("Wrong Pin");
+        series_received.setTitle("Received");
+        series_unknown.setTitle("Unknown");
+
+        series_all.setAnimated(true);
+        series_balance.setAnimated(true);
+        series_fuliza.setAnimated(true);
+        series_received.setAnimated(true);
+        series_sent.setAnimated(true);
+        series_withdraw.setAnimated(true);
+        series_wrongpin.setAnimated(true);
+        series_unknown.setAnimated(true);
+
+        series_all.setDrawDataPoints(true);
+        series_balance.setDrawDataPoints(true);
+        series_fuliza.setDrawDataPoints(true);
+        series_received.setDrawDataPoints(true);
+        series_sent.setDrawDataPoints(true);
+        series_withdraw.setDrawDataPoints(true);
+        series_wrongpin.setDrawDataPoints(true);
+        series_unknown.setDrawDataPoints(true);
+
+        graph_line.addSeries(series_all);
+        graph_line.addSeries(series_balance);
+        graph_line.addSeries(series_fuliza);
+        graph_line.addSeries(series_received);
+        graph_line.addSeries(series_sent);
+        graph_line.addSeries(series_withdraw);
+        graph_line.addSeries(series_wrongpin);
+        graph_line.addSeries(series_unknown);
+
+        graph_line.getViewport().setMinX(1);
+        graph_line.getViewport().setMaxX(countar);
+        graph_line.getViewport().setXAxisBoundsManual(true);
+    }
+
+    private void graph_one_summaries(SummaryLootResponse summaryLootResponse, String sms_category) {
+        Frag_Graph.this.summaryLootList = new ArrayList<Mod_Loot_Summary>(Arrays.asList(summaryLootResponse.getLootSummarizer()));
+
+        int counter = 0;
+        int countar = Frag_Graph.this.summaryLootList.size();
+
+        DataPoint point_all;
+
+        graph_line.removeAllSeries();
+
+        series_all = new LineGraphSeries<>();
+
+        series_all.setColor(getResources().getColor(R.color.red));
+        graph_line.setVisibility(View.VISIBLE);
+
+        graph_line.getViewport().setScalable(true);
+        graph_line.getViewport().setScrollable(true);
+        graph_line.getViewport().setScalableY(true);
+        graph_line.getViewport().setScrollableY(true);
+        graph_line.getLegendRenderer().setVisible(true);
+
+        for (Mod_Loot_Summary sumlootlist : Frag_Graph.this.summaryLootList) {
+            counter++;
+            Double double_sel_string = Double.valueOf(sumlootlist.setVal_sel(sms_category));
+
+            point_all = new DataPoint(counter, double_sel_string);
+
+            series_all.appendData(point_all, true, countar);
+        }
+
+        series_all.setTitle(sms_category);
+        series_all.setAnimated(true);
+        series_all.setDrawDataPoints(true);
+
+        graph_line.addSeries(series_all);
+
+        graph_line.getViewport().setMinX(1);
+        graph_line.getViewport().setMaxX(countar);
+        graph_line.getViewport().setXAxisBoundsManual(true);
+    }
+
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        //Toast.makeText(getActivity(), arr_categories[position], Toast.LENGTH_LONG).show();
+        sms_category_selected = arr_categories[position];
+        if (stored_SummaryLootResponse == null) {
+            Toast.makeText(getActivity(), "Unknown error please try again", Toast.LENGTH_LONG).show();
+        } else {
+            if (sms_category_selected == "All") {
+                graph_all_summaries(stored_SummaryLootResponse);
+            } else {
+                graph_one_summaries(stored_SummaryLootResponse, sms_category_selected);
+            }
+        }
     }
 
     @Override

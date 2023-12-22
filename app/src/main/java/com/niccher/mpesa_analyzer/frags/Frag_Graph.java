@@ -331,7 +331,7 @@ public class Frag_Graph extends Fragment implements AdapterView.OnItemSelectedLi
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         sms_category_selected = arr_categories[position];
         if (stored_SummaryLootResponse == null) {
-            Toast.makeText(getActivity(), "Unknown error please try again", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(), "Unknown error please try again", Toast.LENGTH_LONG).show();
         } else {
             if (sms_category_selected == "All") {
                 graph_all_summaries(stored_SummaryLootResponse);

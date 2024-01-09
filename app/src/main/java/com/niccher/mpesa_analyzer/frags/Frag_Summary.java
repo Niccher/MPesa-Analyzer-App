@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -86,6 +88,7 @@ public class Frag_Summary extends Fragment {
         tv_date = summarizer.findViewById(R.id.cat_point_loot_date);
 
         getReferences();
+
         return summarizer;
     }
 
@@ -121,17 +124,17 @@ public class Frag_Summary extends Fragment {
                 if(response.isSuccessful() && response.body()!=null){
                     Mod_Loot_Summary mod_loot_summary = response.body();
 
-                    tv_all.setText(mod_loot_summary.val_all);
-                    tv_bal.setText(mod_loot_summary.val_balance);
-                    tv_fuliza.setText(mod_loot_summary.val_fuliza);
-                    tv_recv.setText(mod_loot_summary.val_received);
-                    tv_sent.setText(mod_loot_summary.val_sent);
-                    tv_withdraw.setText(mod_loot_summary.val_withdraw);
-                    tv_wrong_pin.setText(mod_loot_summary.val_wrong_pin);
-                    tv_unknown.setText(mod_loot_summary.val_unknown);
+                    tv_all.setText(mod_loot_summary.count_All);
+                    tv_bal.setText(mod_loot_summary.count_Get_Bal);
+                    tv_fuliza.setText(mod_loot_summary.count_Fuliza_Mini_Statement);
+                    tv_recv.setText(mod_loot_summary.count_Get_Receive);
+                    tv_sent.setText(mod_loot_summary.count_Sent);
+                    tv_withdraw.setText(mod_loot_summary.count_Withdraw);
+                    tv_wrong_pin.setText(mod_loot_summary.count_Error_Pin);
+                    tv_unknown.setText(mod_loot_summary.count_Unknown);
 
-                    tv_time.setText(mod_loot_summary.val_created.split(" ")[1]);
-                    tv_date.setText(mod_loot_summary.val_created.split(" ")[0]);
+                    tv_time.setText(mod_loot_summary.created.split(" ")[1]);
+                    tv_date.setText(mod_loot_summary.created.split(" ")[0]);
                 }
             }
 

@@ -137,7 +137,13 @@ public class Frag_Graph extends Fragment implements AdapterView.OnItemSelectedLi
     }
 
     private void initSpinners(View this_view) {
-        arr_categories = new String[]{"All", "Balance", "Fuliza", "Received", "Sent", "Withdraw", "Wrong Pin", "Unknown"};
+        arr_categories = new String[]{"Get Receive","Get Bank","Get Mshwari","Get from NCBA","Get from IM",
+                "Get Bal","Get Bal KCB","Get Bal Mshwari","Get Reversal","Loan Limit","Sent",
+                "Sent Mini","Sent Mshwari","Sent Cancel","Error Failed","Error Pay Merchant",
+                "Error Pin","Error Less","Error Receiver","Error Receiver Org","Withdraw",
+                "Fuliza Leave","Fuliza Opt In","Fuliza Limit","Fuliza Mini Statement",
+                "Fuliza Loan Taken","Similar Transaction","All","Unknown"};
+        //arr_categories = new String[]{"All", "Balance", "Fuliza", "Received", "Sent", "Withdraw", "Wrong Pin", "Unknown"};
         arr_cat_imgs = new int[]{R.mipmap.summ_money_all, R.mipmap.summ_money_balance, R.mipmap.summ_money_fuliza,
                 R.mipmap.summ_money_received, R.mipmap.summ_money_sent, R.mipmap.summ_money_withdraw,
                 R.mipmap.summ_money_wrong_pin, R.mipmap.summ_money_unknown};
@@ -167,9 +173,11 @@ public class Frag_Graph extends Fragment implements AdapterView.OnItemSelectedLi
             public void onResponse(Call<SummaryLootResponse> call, Response<SummaryLootResponse> response) {
                 conn_wait.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
-                    SummaryLootResponse summaryLootResponse = response.body();
-                    stored_SummaryLootResponse = summaryLootResponse;
-                    graph_all_summaries(summaryLootResponse);
+                    try {
+                        SummaryLootResponse summaryLootResponse = response.body();
+                        stored_SummaryLootResponse = summaryLootResponse;
+                        graph_all_summaries(summaryLootResponse);
+                    }catch (Exception ex){}
                 }
             }
 
@@ -224,14 +232,14 @@ public class Frag_Graph extends Fragment implements AdapterView.OnItemSelectedLi
         for (Mod_Loot_Summary sumlootlist : Frag_Graph.this.summaryLootList) {
             counter++;
 
-            point_all = new DataPoint(counter, Double.parseDouble(sumlootlist.val_all));
-            point_balance = new DataPoint(counter, Double.parseDouble(sumlootlist.val_balance));
-            point_fuliza = new DataPoint(counter, Double.parseDouble(sumlootlist.val_fuliza));
-            point_received = new DataPoint(counter, Double.parseDouble(sumlootlist.val_received));
-            point_sent = new DataPoint(counter, Double.parseDouble(sumlootlist.val_sent));
-            point_withdraw = new DataPoint(counter, Double.parseDouble(sumlootlist.val_withdraw));
-            point_wrongpin = new DataPoint(counter, Double.parseDouble(sumlootlist.val_wrong_pin));
-            point_unknown = new DataPoint(counter, Double.parseDouble(sumlootlist.val_unknown));
+            point_all = new DataPoint(counter, Double.parseDouble(sumlootlist.count_All));
+            point_balance = new DataPoint(counter, Double.parseDouble(sumlootlist.count_Get_Bal));
+            point_fuliza = new DataPoint(counter, Double.parseDouble(sumlootlist.count_Fuliza_Loan_Taken));
+            point_received = new DataPoint(counter, Double.parseDouble(sumlootlist.count_Get_Receive));
+            point_sent = new DataPoint(counter, Double.parseDouble(sumlootlist.count_Sent));
+            point_withdraw = new DataPoint(counter, Double.parseDouble(sumlootlist.count_Withdraw));
+            point_wrongpin = new DataPoint(counter, Double.parseDouble(sumlootlist.count_Error_Pin));
+            point_unknown = new DataPoint(counter, Double.parseDouble(sumlootlist.count_Unknown));
 
             series_all.appendData(point_all, true, countar);
             series_balance.appendData(point_balance, true, countar);

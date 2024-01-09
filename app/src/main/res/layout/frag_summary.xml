@@ -51,6 +51,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/summary_All"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -80,6 +81,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/summary_Balance"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -108,6 +110,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/summary_Fuliza"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -146,6 +149,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/summary_Received"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -175,6 +179,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/summary_Sent"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -203,6 +208,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/summary_Withdraw"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -241,6 +247,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/summary_Wrong_Pin"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -270,6 +277,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/summary_Unknown"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

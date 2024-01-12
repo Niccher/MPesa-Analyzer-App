@@ -50,12 +50,12 @@
 
     <string name="sum_string_money_error_all">All</string>
     <string name="sum_string_money_error_mpesa">M-Pesa</string>
-    <string name="sum_string_money_error_pin">Balance</string>
-    <string name="sum_string_money_error_less">Fuliza</string>
-    <string name="sum_string_money_error_receiver">Received</string>
-    <string name="sum_string_money_error_receiver_org">Sent</string>
-    <string name="sum_string_money_error_failed">Withdraw</string>
-    <string name="sum_string_money_error_merchant">Wrong Pin</string>
+    <string name="sum_string_money_error_pin">Wrong Pin</string>
+    <string name="sum_string_money_error_less">Less</string>
+    <string name="sum_string_money_error_receiver">Receiver</string>
+    <string name="sum_string_money_error_receiver_org">Org</string>
+    <string name="sum_string_money_error_failed">Failed</string>
+    <string name="sum_string_money_error_merchant">Merchant</string>
 
     <string name="sum_string_money_Fuliza_all">All</string>
     <string name="sum_string_money_Fuliza_opt_out">Opt - In</string>

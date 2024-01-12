@@ -2,12 +2,14 @@ package com.niccher.mpesa_analyzer.models;
 
 public class Mod_Loot_Summary {
 
+    public String created, status, count_Loot_Name;
     public String count_Get_Receive, count_Get_Bank, count_Get_Mshwari, count_Get_from_NCBA, count_Get_from_IM, count_Get_Bal, count_Get_Bal_KCB, count_Get_Bal_Mshwari, count_Get_Reversal, count_Loan_Limit, count_Sent, count_Sent_Mini;
     public String count_Sent_Mshwari, count_Sent_Cancel, count_Error_Failed, count_Error_Pay_Merchant, count_Error_Pin, count_Error_Less, count_Error_Receiver, count_Error_Receiver_Org, count_Withdraw, count_Fuliza_Leave, count_Fuliza_Opt_In;
     public String count_Fuliza_Limit, count_Fuliza_Mini_Statement, count_Fuliza_Loan_Taken, count_Similar_Transaction, count_All, count_Unknown;
-    public String created, status;
 
-    public Mod_Loot_Summary(String count_Get_Receive, String count_Get_Bank, String count_Get_Mshwari, String count_Get_from_NCBA, String count_Get_from_IM, String count_Get_Bal, String count_Get_Bal_KCB, String count_Get_Bal_Mshwari, String count_Get_Reversal, String count_Loan_Limit, String count_Sent, String count_Sent_Mini, String count_Sent_Mshwari, String count_Sent_Cancel, String count_Error_Failed, String count_Error_Pay_Merchant, String count_Error_Pin, String count_Error_Less, String count_Error_Receiver, String count_Error_Receiver_Org, String count_Withdraw, String count_Fuliza_Leave, String count_Fuliza_Opt_In, String count_Fuliza_Limit, String count_Fuliza_Mini_Statement, String count_Fuliza_Loan_Taken, String count_Similar_Transaction, String count_All, String count_Unknown, String created, String status) {
+    public Mod_Loot_Summary(String created, String status, String count_Get_Receive, String count_Get_Bank, String count_Get_Mshwari, String count_Get_from_NCBA, String count_Get_from_IM, String count_Get_Bal, String count_Get_Bal_KCB, String count_Get_Bal_Mshwari, String count_Get_Reversal, String count_Loan_Limit, String count_Sent, String count_Sent_Mini, String count_Sent_Mshwari, String count_Sent_Cancel, String count_Error_Failed, String count_Error_Pay_Merchant, String count_Error_Pin, String count_Error_Less, String count_Error_Receiver, String count_Error_Receiver_Org, String count_Withdraw, String count_Fuliza_Leave, String count_Fuliza_Opt_In, String count_Fuliza_Limit, String count_Fuliza_Mini_Statement, String count_Fuliza_Loan_Taken, String count_Similar_Transaction, String count_All, String count_Unknown) {
+        this.created = created;
+        this.status = status;
         this.count_Get_Receive = count_Get_Receive;
         this.count_Get_Bank = count_Get_Bank;
         this.count_Get_Mshwari = count_Get_Mshwari;
@@ -37,7 +39,21 @@ public class Mod_Loot_Summary {
         this.count_Similar_Transaction = count_Similar_Transaction;
         this.count_All = count_All;
         this.count_Unknown = count_Unknown;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
         this.created = created;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -271,22 +287,6 @@ public class Mod_Loot_Summary {
 
     public void setCount_Unknown(String count_Unknown) {
         this.count_Unknown = count_Unknown;
-    }
-
-    public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String setVal_sel(String val_sel) {//Values from drop-down list.

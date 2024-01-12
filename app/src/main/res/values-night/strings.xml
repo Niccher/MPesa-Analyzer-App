@@ -5,7 +5,12 @@
     <string name="money_sent">Money Sent</string>
 
     <string name="summary_money_balances">Calculated Balances</string>
-    <string name="summary_interactions">Points of Interactions</string>
+    <string name="summary_interactions_general">Summary Interactions</string>
+    <string name="summary_interactions_incoming">Received Interactions</string>
+    <string name="summary_interactions_balance">Balance Interactions</string>
+    <string name="summary_interactions_outgoing">Sent Interactions</string>
+    <string name="summary_interactions_fuliza">Fuliza Interactions</string>
+    <string name="summary_interactions_error">Error Interactions</string>
     <string name="summary_info">Summary Info</string>
 
     <string name="auth_btn_sign_up">Sign Up</string>
@@ -26,14 +31,47 @@
     <string name="sign_up_ed_email">Your Email</string>
     <string name="sign_up_ed_username">Your Username</string>
 
-    <string name="sum_string_money_all">All</string>
-    <string name="sum_string_money_balance">Balance</string>
-    <string name="sum_string_money_fuliza">Fuliza</string>
-    <string name="sum_string_money_received">Received</string>
-    <string name="sum_string_money_sent">Sent</string>
-    <string name="sum_string_money_withdraw">Withdraw</string>
-    <string name="sum_string_money_wrong_pin">Wrong Pin</string>
-    <string name="sum_string_money_unknown">Unknown</string>
+    <string name="sum_string_money_receive_all">All</string>
+    <string name="sum_string_money_receive_mpesa">M-Pesa</string>
+    <string name="sum_string_money_receive_bank">Bank</string>
+    <string name="sum_string_money_receive_mshwari">Mshwari</string>
+    <string name="sum_string_money_receive_ncba">NCBA</string>
+    <string name="sum_string_money_receive_im">I M</string>
+    <string name="sum_string_money_receive_reversal">Reversal</string>
+
+    <string name="sum_string_money_balance_all">All</string>
+    <string name="sum_string_money_balance_mpesa">M-Pesa</string>
+    <string name="sum_string_money_balance_kcb">KCB</string>
+    <string name="sum_string_money_balance_mshari">Mshwari</string>
+
+    <string name="sum_string_money_sent_all">All</string>
+    <string name="sum_string_money_sent_mshari">Mshwari</string>
+    <string name="sum_string_money_sent_mini">Mini</string>
+
+    <string name="sum_string_money_error_all">All</string>
+    <string name="sum_string_money_error_mpesa">M-Pesa</string>
+    <string name="sum_string_money_error_pin">Balance</string>
+    <string name="sum_string_money_error_less">Fuliza</string>
+    <string name="sum_string_money_error_receiver">Received</string>
+    <string name="sum_string_money_error_receiver_org">Sent</string>
+    <string name="sum_string_money_error_failed">Withdraw</string>
+    <string name="sum_string_money_error_merchant">Wrong Pin</string>
+
+    <string name="sum_string_money_Fuliza_all">All</string>
+    <string name="sum_string_money_Fuliza_opt_out">Opt - In</string>
+    <string name="sum_string_money_Fuliza_opt_in">Opt - Out</string>
+    <string name="sum_string_money_Fuliza_limit">Limit</string>
+    <string name="sum_string_money_Fuliza_loan">Loan</string>
+    <string name="sum_string_money_Fuliza_mini">Mini</string>
+
+    <string name="sum_string_money_general_all">All</string>
+    <string name="sum_string_money_general_balance">Balance</string>
+    <string name="sum_string_money_general_fuliza">Fuliza</string>
+    <string name="sum_string_money_general_received">Received</string>
+    <string name="sum_string_money_general_sent">Sent</string>
+    <string name="sum_string_money_general_withdraw">Withdraw</string>
+    <string name="sum_string_money_general_wrong_pin">Wrong Pin</string>
+    <string name="sum_string_money_general_unknown">Unknown</string>
 
     <string name="string_dialog_permission">Proceed</string>
     <string name="string_dialog_permission_denied">Permission Denied</string>

@@ -74,7 +74,7 @@ public class Info_adapter extends RecyclerView.Adapter<Info_adapter.ViewHolder> 
                 Fragment frag_summary = new Frag_Summary();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("summary_loot_name", summariesList.get(position).summary_Name);
+                bundle.putString("summary_loot_name", summariesList.get(position).summary_Loot_Uuid);
                 frag_summary.setArguments(bundle);
 
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, frag_summary).addToBackStack(null).commit();

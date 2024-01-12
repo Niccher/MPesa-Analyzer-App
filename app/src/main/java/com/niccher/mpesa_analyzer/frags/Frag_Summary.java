@@ -38,7 +38,7 @@ public class Frag_Summary extends Fragment {
     Konstants kon;
     AppCompatActivity activity;
 
-    TextView tv_all, tv_bal, tv_fuliza, tv_recv, tv_sent, tv_withdraw, tv_wrong_pin, tv_unknown, tv_time, tv_date;
+    TextView tv_gen_all, tv_gen_bal, tv_gen_fuliza, tv_gen_recv, tv_gen_sent, tv_gen_withdraw, tv_gen_wrong_pin, tv_gen_unknown, tv_gen_time, tv_gen_date;
 
     JsonProcesses jsonProcesses;
     Gson gson = null;
@@ -75,17 +75,17 @@ public class Frag_Summary extends Fragment {
         // Inflate the layout for this fragment
         View summarizer =  inflater.inflate(R.layout.frag_summary, container, false);
 
-        tv_all = summarizer.findViewById(R.id.cat_point_all);
-        tv_bal = summarizer.findViewById(R.id.cat_point_bal);
-        tv_fuliza = summarizer.findViewById(R.id.cat_point_fuliza);
-        tv_recv = summarizer.findViewById(R.id.cat_point_received);
-        tv_sent = summarizer.findViewById(R.id.cat_point_sent);
-        tv_withdraw = summarizer.findViewById(R.id.cat_point_withdraw);
-        tv_wrong_pin = summarizer.findViewById(R.id.cat_point_wrong_pin);
-        tv_unknown = summarizer.findViewById(R.id.cat_point_unknown);
+        tv_gen_all = summarizer.findViewById(R.id.cat_point_gen_all);
+        tv_gen_bal = summarizer.findViewById(R.id.cat_point_gen_bal);
+        tv_gen_fuliza = summarizer.findViewById(R.id.cat_point_gen_fuliza);
+        tv_gen_recv = summarizer.findViewById(R.id.cat_point_gen_received);
+        tv_gen_sent = summarizer.findViewById(R.id.cat_point_gen_sent);
+        tv_gen_withdraw = summarizer.findViewById(R.id.cat_point_gen_withdraw);
+        tv_gen_wrong_pin = summarizer.findViewById(R.id.cat_point_gen_wrong_pin);
+        tv_gen_unknown = summarizer.findViewById(R.id.cat_point_gen_unknown);
 
-        tv_time = summarizer.findViewById(R.id.cat_point_loot_time);
-        tv_date = summarizer.findViewById(R.id.cat_point_loot_date);
+        tv_gen_time = summarizer.findViewById(R.id.cat_point_loot_time);
+        tv_gen_date = summarizer.findViewById(R.id.cat_point_loot_date);
 
         getReferences();
 
@@ -97,7 +97,6 @@ public class Frag_Summary extends Fragment {
         String st_name;
         if(sent_data != null){
             st_name = sent_data.get("summary_loot_name").toString();
-
             getSummaries(st_name);
         }
     }
@@ -115,7 +114,7 @@ public class Frag_Summary extends Fragment {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("varUser", pref.get_prefs_auth("auth", getContext()));
         parameters.put("varDev", pref.get_prefs_auth("print", getActivity()));
-        parameters.put("varLootName", loot_name);
+        parameters.put("varLootUuid", loot_name);
 
         Call<Mod_Loot_Summary> call = jsonProcesses.getSummaryCalc(parameters);
         call.enqueue(new Callback<Mod_Loot_Summary>() {
@@ -124,17 +123,17 @@ public class Frag_Summary extends Fragment {
                 if(response.isSuccessful() && response.body()!=null){
                     Mod_Loot_Summary mod_loot_summary = response.body();
 
-                    tv_all.setText(mod_loot_summary.count_All);
-                    tv_bal.setText(mod_loot_summary.count_Get_Bal);
-                    tv_fuliza.setText(mod_loot_summary.count_Fuliza_Mini_Statement);
-                    tv_recv.setText(mod_loot_summary.count_Get_Receive);
-                    tv_sent.setText(mod_loot_summary.count_Sent);
-                    tv_withdraw.setText(mod_loot_summary.count_Withdraw);
-                    tv_wrong_pin.setText(mod_loot_summary.count_Error_Pin);
-                    tv_unknown.setText(mod_loot_summary.count_Unknown);
+                    tv_gen_all.setText(mod_loot_summary.count_All);
+                    tv_gen_bal.setText(mod_loot_summary.count_Get_Bal);
+                    tv_gen_fuliza.setText(mod_loot_summary.count_Fuliza_Mini_Statement);
+                    tv_gen_recv.setText(mod_loot_summary.count_Get_Receive);
+                    tv_gen_sent.setText(mod_loot_summary.count_Sent);
+                    tv_gen_withdraw.setText(mod_loot_summary.count_Withdraw);
+                    tv_gen_wrong_pin.setText(mod_loot_summary.count_Error_Pin);
+                    tv_gen_unknown.setText(mod_loot_summary.count_Unknown);
 
-                    tv_time.setText(mod_loot_summary.created.split(" ")[1]);
-                    tv_date.setText(mod_loot_summary.created.split(" ")[0]);
+                    tv_gen_time.setText(mod_loot_summary.created.split(" ")[1]);
+                    tv_gen_date.setText(mod_loot_summary.created.split(" ")[0]);
                 }
             }
 

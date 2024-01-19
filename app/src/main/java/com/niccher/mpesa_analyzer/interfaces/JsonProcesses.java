@@ -32,6 +32,10 @@ public interface JsonProcesses {
     @POST("get/my_uploads_category_count")
     Call <SummaryLootResponse> getLootCountCategories(@FieldMap Map<String, String> fields);
 
+    @FormUrlEncoded
+    @POST("get/list_all_sms_in_category")
+    Call <SummaryLootResponse> getAllSmsInCategory(@FieldMap Map<String, String> fields);
+
     /*
     @FormUrlEncoded
     @POST("device")

@@ -25,7 +25,7 @@
 
                 <TextView
                     android:id="@+id/label_sms_category"
-                    android:layout_width="@dimen/_100sdp"
+                    android:layout_width="@dimen/_80sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:gravity="end"
@@ -39,7 +39,7 @@
                 <Spinner
                     android:id="@+id/spinner_sms_category"
                     style="?attr/spinnerDropDownItemStyle"
-                    android:layout_width="@dimen/_160sdp"
+                    android:layout_width="@dimen/_180sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:padding="@dimen/_4sdp"

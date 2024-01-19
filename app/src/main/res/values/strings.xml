@@ -7,6 +7,7 @@
     <string name="summary_money_balances">Calculated Balances</string>
     <string name="summary_interactions_general">Summary Interactions</string>
     <string name="summary_interactions_incoming">Received Interactions</string>
+    <string name="summary_interactions_sent">Sent Interactions</string>
     <string name="summary_interactions_balance">Balance Interactions</string>
     <string name="summary_interactions_outgoing">Sent Interactions</string>
     <string name="summary_interactions_fuliza">Fuliza Interactions</string>
@@ -36,33 +37,37 @@
     <string name="sum_string_money_receive_bank">Bank</string>
     <string name="sum_string_money_receive_mshwari">Mshwari</string>
     <string name="sum_string_money_receive_ncba">NCBA</string>
-    <string name="sum_string_money_receive_im">I M</string>
+    <string name="sum_string_money_receive_kcb">KCB</string>
+    <string name="sum_string_money_receive_im">IM</string>
     <string name="sum_string_money_receive_reversal">Reversal</string>
 
     <string name="sum_string_money_balance_all">All</string>
-    <string name="sum_string_money_balance_mpesa">M-Pesa</string>
-    <string name="sum_string_money_balance_kcb">KCB</string>
-    <string name="sum_string_money_balance_mshari">Mshwari</string>
+    <string name="sum_string_money_balance_mpesa">M-Pesa Bal</string>
+    <string name="sum_string_money_balance_kcb">KCB Bal</string>
+    <string name="sum_string_money_balance_mshari">Mshwari Bal</string>
 
     <string name="sum_string_money_sent_all">All</string>
     <string name="sum_string_money_sent_mshari">Mshwari</string>
-    <string name="sum_string_money_sent_mini">Mini</string>
+    <string name="sum_string_money_sent_mpesa">M-PESA</string>
+    <string name="sum_string_money_sent_lnm">Lipa Na M-PESA</string>
+    <string name="sum_string_money_sent_mini">Mini Statement</string>
+    <string name="sum_string_money_sent_cancel">Canceled</string>
 
     <string name="sum_string_money_error_all">All</string>
     <string name="sum_string_money_error_mpesa">M-Pesa</string>
     <string name="sum_string_money_error_pin">Wrong Pin</string>
-    <string name="sum_string_money_error_less">Less</string>
-    <string name="sum_string_money_error_receiver">Receiver</string>
-    <string name="sum_string_money_error_receiver_org">Org</string>
+    <string name="sum_string_money_error_less">Less Money</string>
+    <string name="sum_string_money_error_receiver">Wrong Receiver</string>
+    <string name="sum_string_money_error_receiver_org">Unsupported Org</string>
     <string name="sum_string_money_error_failed">Failed</string>
     <string name="sum_string_money_error_merchant">Merchant</string>
 
     <string name="sum_string_money_Fuliza_all">All</string>
-    <string name="sum_string_money_Fuliza_opt_out">Opt - In</string>
-    <string name="sum_string_money_Fuliza_opt_in">Opt - Out</string>
-    <string name="sum_string_money_Fuliza_limit">Limit</string>
-    <string name="sum_string_money_Fuliza_loan">Loan</string>
-    <string name="sum_string_money_Fuliza_mini">Mini</string>
+    <string name="sum_string_money_Fuliza_opt_out">Fuliza Opt-In</string>
+    <string name="sum_string_money_Fuliza_opt_in">Fuliza Opt-Out</string>
+    <string name="sum_string_money_Fuliza_limit">Fuliza Limit</string>
+    <string name="sum_string_money_Fuliza_loan">Fuliza Loan</string>
+    <string name="sum_string_money_Fuliza_mini">Mini Statement</string>
 
     <string name="sum_string_money_general_all">All</string>
     <string name="sum_string_money_general_balance">Balance</string>

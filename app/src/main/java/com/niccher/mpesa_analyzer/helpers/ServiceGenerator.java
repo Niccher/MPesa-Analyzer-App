@@ -4,6 +4,7 @@ import com.niccher.mpesa_analyzer.BuildConfig;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
 
 import java.security.cert.CertificateException;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -65,6 +66,11 @@ public class ServiceGenerator {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.sslSocketFactory(sslSocketFactory);
             builder.addInterceptor(logging);
+            builder.callTimeout(60, TimeUnit.MINUTES);
+            builder.connectTimeout(60, TimeUnit.SECONDS);
+            builder.readTimeout(60, TimeUnit.SECONDS);
+            builder.writeTimeout(60, TimeUnit.SECONDS);;
+
             builder.hostnameVerifier(new HostnameVerifier() {
                 @Override
                 public boolean verify(String hostname, SSLSession session) {

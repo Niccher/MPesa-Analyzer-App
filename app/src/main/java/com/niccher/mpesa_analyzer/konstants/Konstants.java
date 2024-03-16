@@ -26,6 +26,9 @@ public class Konstants {
     public String string_enc_b64_file = "enc_b64_";
     public String string_enc_aes_files = "enc_aes_";
 
+    public String string_zip_b64_files = "enc_zip_b64_";
+    public String string_zip_aes_files = "enc_zip_aes_";
+
     public String shared_last_time = "last_upload_time";
 }
 

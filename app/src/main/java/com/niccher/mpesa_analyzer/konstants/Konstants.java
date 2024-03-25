@@ -23,11 +23,10 @@ public class Konstants {
     public String string_key = "a:r2yt>N3_\\Py,f=";
     public String string_key_spec = "[M[@_w[F4a>yQsJW";
 
-    public String string_enc_b64_file = "enc_b64_";
+    public String string_plain_file = "enc_plain_";
     public String string_enc_aes_files = "enc_aes_";
-
-    public String string_zip_b64_files = "enc_zip_b64_";
-    public String string_zip_aes_files = "enc_zip_aes_";
+    public String string_enc_gzip_aes_files = "enc_gzip_aes_";
+    public String string_enc_gzip_plain_files = "enc_gzip_plain_";
 
     public String shared_last_time = "last_upload_time";
 }

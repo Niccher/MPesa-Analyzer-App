@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -22,7 +23,7 @@ public class Kompressors {
 
     static Konstants kon = new Konstants();
 
-    public static File FileKompress(String file_input_path, String file_output_path) throws IOException, FileNotFoundException {
+    public static void FileKompressZIP(String file_input_path, String file_output_path) throws IOException, FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(file_output_path);
         ZipOutputStream zipOut = new ZipOutputStream(fos);
         try {
@@ -37,22 +38,39 @@ public class Kompressors {
                 zipOut.write(bytes, 0, length);
             }
 
-//            zipOut.close();
-//            fis.close();
-//            fos.close();
             fis.close();
-            //fos.close();
-            Log.e(kon.TAGGED, "FileKompress: Compressing "+file_input_path+" to "+file_output_path+" finishing" );
+            Log.e(kon.TAGGED, "FileKompressZIP: Compressing "+file_input_path+" to "+file_output_path+" finishing" );
         } catch (IOException e) {
-            Log.e(kon.TAGGED, "FileKompress: Compressing "+file_input_path+" to "+file_output_path+" error " + e.getMessage() );
+            Log.e(kon.TAGGED, "FileKompressZIP: Compressing "+file_input_path+" to "+file_output_path+" error " + e.getMessage() );
             e.printStackTrace();
         } finally {
-            Log.e(kon.TAGGED, "FileKompress: Compressing "+file_input_path+" to "+file_output_path+" done." );
+            Log.e(kon.TAGGED, "FileKompressZIP: Compressing "+file_input_path+" to "+file_output_path+" done." );
             zipOut.close();
             //fis.close();
             fos.close();
         }
+    }
 
-        return new File(String.valueOf(fos));
+    public static void FileKompressGZIP(String file_input_path, String file_output_path) throws IOException, FileNotFoundException {
+        byte[] buffer = new byte[1024];
+        try {
+            GZIPOutputStream os = new GZIPOutputStream(new FileOutputStream(file_output_path));
+
+            FileInputStream in = new FileInputStream(file_input_path);
+
+            int totalSize;
+            while ((totalSize = in.read(buffer)) > 0) {
+                os.write(buffer, 0, totalSize);
+            }
+
+            in.close();
+            os.finish();
+            os.close();
+
+            Log.e(kon.TAGGED, "FileKompressGZIP: Compressing "+file_input_path+" to "+file_output_path+" done." );
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(kon.TAGGED, "FileKompressGZIP: Compressing "+file_input_path+" to "+file_output_path+" done." );
+        }
     }
 }

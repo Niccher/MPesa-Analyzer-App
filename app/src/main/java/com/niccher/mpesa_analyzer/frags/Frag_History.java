@@ -139,7 +139,7 @@ public class Frag_History extends Fragment {
         conn_wait.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(kon.upload_summaries)
+                .baseUrl(kon.link_process)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(ServiceGenerator.getUnsafeOkHttpClient())
                 .build();

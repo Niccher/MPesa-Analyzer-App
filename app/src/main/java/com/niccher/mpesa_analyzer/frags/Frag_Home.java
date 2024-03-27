@@ -307,7 +307,7 @@ public class Frag_Home extends Fragment {
         pref_loot_counter = getActivity().getSharedPreferences(kon.shared_loot_count, Context.MODE_PRIVATE);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(kon.upload_summaries)
+                .baseUrl(kon.link_process)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(ServiceGenerator.getUnsafeOkHttpClient())
                 .build();
@@ -438,8 +438,11 @@ public class Frag_Home extends Fragment {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
-                        File enc_plain = new File( getActivity().getFilesDir() + "/" + kon.string_plain_file+filename);
+                        File enc_plain = new File(getActivity().getFilesDir() + "/" + kon.string_plain_file+filename);
                         File enc_aes = new File(getActivity().getFilesDir() + "/" + kon.string_enc_aes_files+filename);
+                        //File File_gzip_aes = new File(getActivity().getFilesDir() + "/" + kon.string_enc_gzip_aes_files+file_name);
+                        //File File_gzip_plain = new File(getActivity().getFilesDir() + "/" + kon.string_enc_gzip_plain_files+file_name);
+
                         //File enc_gzip_aes = new File(getActivity().getFilesDir() + "/" + kon.string_enc_gzip_aes_files+filename);
                         enc_plain.delete();
                         enc_aes.delete();

@@ -99,5 +99,6 @@
     <string name="tag_sent">Sent</string>
     <string name="tag_unknown">Unknown</string>
     <string name="str_no_internet_connection">No Internet Connection</string>
+    <string name="str_loot_delete">Delete This Data</string>
 
 </resources>

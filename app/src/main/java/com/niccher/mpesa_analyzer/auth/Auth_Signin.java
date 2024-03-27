@@ -184,7 +184,7 @@ public class Auth_Signin extends AppCompatActivity {
         if (Integer.parseInt(state) == 1){
         }else {
             Retrofit retrof = new Retrofit.Builder()
-                    .baseUrl(kon.upload_print)
+                    .baseUrl(kon.link_process)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(ServiceGenerator.getUnsafeOkHttpClient())
                     .build();

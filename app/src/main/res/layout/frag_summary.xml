@@ -1539,57 +1539,76 @@
                         android:paddingTop="@dimen/_10sdp"
                         android:paddingBottom="@dimen/_20sdp">
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/summ_view_date"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/point_loot_time"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <ImageView
-                                android:layout_width="@dimen/_40sdp"
-                                android:layout_height="@dimen/_40sdp"
-                                android:background="@color/colorPrimary"
-                                android:src="@mipmap/summ_money_date"></ImageView>
+                            <TextView
+                                android:id="@+id/cat_point_loot_date"
+                                android:layout_width="@dimen/_80sdp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_weight="1"
+                                android:textStyle="bold" />
 
-                        </androidx.cardview.widget.CardView>
+                            <TextView
+                                android:id="@+id/cat_point_loot_time"
+                                android:layout_width="@dimen/_80sdp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_weight="1"
+                                android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/cat_point_loot_date"
-                            android:layout_width="@dimen/_80sdp"
+                        </LinearLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:textStyle="bold|italic"
-                            app:layout_constraintBottom_toBottomOf="@id/summ_view_date"
-                            app:layout_constraintStart_toEndOf="@id/summ_view_date"
-                            app:layout_constraintTop_toTopOf="@id/summ_view_date" />
+                            android:layout_marginTop="@dimen/_30sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/point_loot_time">
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/summ_view_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_16sdp"
-                            app:layout_constraintStart_toEndOf="@id/cat_point_loot_date">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_marginBottom="@dimen/_8sdp"
+                                android:layout_weight="3"
+                                android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_width="@dimen/_40sdp"
-                                android:layout_height="@dimen/_40sdp"
-                                android:background="@color/colorPrimary"
-                                android:src="@mipmap/summ_money_time"></ImageView>
+                                <LinearLayout
+                                    android:id="@+id/summary_Loot_Delete"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:clickable="true"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
 
-                        </androidx.cardview.widget.CardView>
+                                    <ImageView
+                                        android:layout_width="@dimen/_50sdp"
+                                        android:layout_height="@dimen/_50sdp"
+                                        android:src="@mipmap/summ_loot_delete" />
 
-                        <TextView
-                            android:id="@+id/cat_point_loot_time"
-                            android:layout_width="@dimen/_80sdp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:textStyle="bold|italic"
-                            app:layout_constraintBottom_toBottomOf="@id/summ_view_time"
-                            app:layout_constraintStart_toEndOf="@id/summ_view_time"
-                            app:layout_constraintTop_toTopOf="@id/summ_view_time" />
+                                    <TextView
+                                        android:id="@+id/cat_point_loot_delete"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_5sdp"
+                                        android:text="@string/str_loot_delete"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

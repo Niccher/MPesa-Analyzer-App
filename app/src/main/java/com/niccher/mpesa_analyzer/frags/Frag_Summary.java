@@ -26,7 +26,9 @@ import com.niccher.mpesa_analyzer.helpers.Prefs;
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerator;
 import com.niccher.mpesa_analyzer.interfaces.JsonProcesses;
 import com.niccher.mpesa_analyzer.konstants.Konstants;
+import com.niccher.mpesa_analyzer.models.Mod_Loot_Delete;
 import com.niccher.mpesa_analyzer.models.Mod_Loot_Summary;
+import com.niccher.mpesa_analyzer.models.Mod_Summaries;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +56,7 @@ public class Frag_Summary extends Fragment {
     LinearLayout lin_lay_bal_all, lin_lay_bal_mpesa, lin_lay_bal_mshwari, lin_lay_bal_kcb;
     LinearLayout lin_lay_fuliza_all, lin_lay_fuliza_opt_in, lin_lay_fuliza_opt_out, lin_lay_fuliza_limit, lin_lay_fuliza_loan, lin_lay_fuliza_mini;
     LinearLayout lin_lay_error_all, lin_lay_error_pin, lin_lay_error_less, lin_lay_error_merchant, lin_lay_error_receiver, lin_lay_error_org, lin_lay_error_failed;
+    LinearLayout lin_loot_delete;
 
     String lood_uuid;
 
@@ -176,6 +179,8 @@ public class Frag_Summary extends Fragment {
         lin_lay_error_receiver = summarizer.findViewById(R.id.summary_Error_Receiver);
         lin_lay_error_org = summarizer.findViewById(R.id.summary_Error_Org);
         lin_lay_error_failed = summarizer.findViewById(R.id.summary_Error_Failed);
+
+        lin_loot_delete = summarizer.findViewById(R.id.summary_Loot_Delete);
 
         layout_interactions = summarizer.findViewById(R.id.summary_interactions_layout);
 
@@ -404,6 +409,12 @@ public class Frag_Summary extends Fragment {
                 getSmsListingFor("Transaction Cancelled");
             }
         });
+        lin_loot_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSmsListingFor("Delete Loot");
+            }
+        });
     }
 
     public void getSmsListingFor(String category){
@@ -417,7 +428,7 @@ public class Frag_Summary extends Fragment {
     private void getSummaries(String loot_name) {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(kon.upload_summaries)
+                .baseUrl(kon.link_process)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(ServiceGenerator.getUnsafeOkHttpClient())
                 .build();
@@ -505,6 +516,45 @@ public class Frag_Summary extends Fragment {
 
             @Override
             public void onFailure(Call<Mod_Loot_Summary> call, Throwable t) {
+                //Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
+                Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again");
+                Log.e(kon.TAGGED, t.getMessage());
+            }
+        });
+    }
+
+    private void setLootToDelete(String loot_uuid) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(kon.link_process)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(ServiceGenerator.getUnsafeOkHttpClient())
+                .build();
+
+        jsonProcesses = retrofit.create(JsonProcesses.class);
+
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("varUser", pref.get_prefs_auth("auth", getContext()));
+        parameters.put("varDev", pref.get_prefs_auth("print", getActivity()));
+        parameters.put("varLootUuid", loot_uuid);
+
+        Call<Mod_Loot_Delete> call = jsonProcesses.getLootDelete(parameters);
+        call.enqueue(new Callback<Mod_Loot_Delete>() {
+            @Override
+            public void onResponse(Call<Mod_Loot_Delete> call, Response<Mod_Loot_Delete> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    Mod_Loot_Delete mod_summary = response.body();
+
+                    if (mod_summary.getSummary_Status() == "1"){
+
+                    } else if (mod_summary.getSummary_Status() == "2"){
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Mod_Loot_Delete> call, Throwable t) {
                 //Toast.makeText(getActivity(),  t.getMessage()+"\nUnknown error occurred, please try again", Toast.LENGTH_LONG).show();
                 Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again");
                 Log.e(kon.TAGGED, t.getMessage());

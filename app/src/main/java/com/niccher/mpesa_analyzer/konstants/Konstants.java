@@ -7,8 +7,7 @@ public class Konstants {
     public String string_ip = "https://mympesa.chegecache.co.ke";
     public String upload_file_url = string_ip+"/process/";
     public String upload_auth_url = string_ip+"/auth/";
-    public String upload_print = string_ip+"/process/";
-    public String upload_summaries = string_ip+"/process/";
+    public String link_process = string_ip+"/process/";
 
     public String shared_auth_login = "auth_login";
     public String shared_auth_register = "auth_register";

@@ -1,11 +1,14 @@
 package com.niccher.my_mpesa_analyzer
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.niccher.my_mpesa_analyzer.auth.Sign_In
+import com.niccher.my_mpesa_analyzer.auth.Sign_up
 
 class Splash : AppCompatActivity() {
 
@@ -41,6 +44,9 @@ class Splash : AppCompatActivity() {
             }
             handler.post {
                 progressText.visibility = View.GONE
+
+                val intent = Intent(this, Sign_up::class.java)
+                startActivity(intent)
             }
         }).start()
     }

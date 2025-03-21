@@ -90,4 +90,10 @@
     <string name="txt_intro_text">Your Sms Finance Intelligence</string>
     <string name="txt_blank" />
 
+    <string name="title_activity_bottom">BottomActiv</string>
+    <string name="title_home">Home</string>
+    <string name="title_graph">Graphs</string>
+    <string name="title_history">History</string>
+    <string name="title_info">Info</string>
+
 </resources>

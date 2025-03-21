@@ -183,6 +183,7 @@
                         android:text="@string/auth_btn_proceed"
                         android:textColor="@color/thirdtext"
                         android:textStyle="bold"
+                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@id/btn_sign_register" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

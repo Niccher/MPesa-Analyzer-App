@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navi_home">
+
+    <fragment
+        android:id="@+id/navi_home"
+        android:name="com.niccher.my_mpesa_analyzer.fragments.Home.Frag_Home"
+        android:label="@string/title_home"
+        tools:layout="@layout/frag_home" />
+
+    <fragment
+        android:id="@+id/navi_graph"
+        android:name="com.niccher.my_mpesa_analyzer.fragments.Graph.Frag_Graph"
+        android:label="@string/title_graph"
+        tools:layout="@layout/frag_graph" />
+
+    <fragment
+        android:id="@+id/navi_history"
+        android:name="com.niccher.my_mpesa_analyzer.fragments.History.Frag_History"
+        android:label="@string/title_history"
+        tools:layout="@layout/frag_history" />
+
+    <fragment
+        android:id="@+id/navi_info"
+        android:name="com.niccher.my_mpesa_analyzer.fragments.Info.Frag_Info"
+        android:label="@string/title_info"
+        tools:layout="@layout/frag_info" />
+</navigation>

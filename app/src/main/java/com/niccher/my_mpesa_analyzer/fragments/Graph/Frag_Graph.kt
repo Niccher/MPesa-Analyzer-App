@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.niccher.my_mpesa_analyzer.R
 import com.niccher.my_mpesa_analyzer.databinding.FragGraphBinding
 
 class Frag_Graph : Fragment() {
@@ -21,18 +22,9 @@ class Frag_Graph : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val fragGraphVM =
-            ViewModelProvider(this).get(Frag_Graph_VM::class.java)
-
-        _binding = FragGraphBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
-        fragGraphVM.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.frag_graph, container, false)
     }
 
     override fun onDestroyView() {

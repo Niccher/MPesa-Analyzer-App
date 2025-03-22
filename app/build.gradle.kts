@@ -74,5 +74,4 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Gson converter
     implementation("com.google.android.material:material:1.9.0")
 
-
 }

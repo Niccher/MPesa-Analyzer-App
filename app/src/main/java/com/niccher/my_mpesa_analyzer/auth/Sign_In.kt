@@ -81,7 +81,6 @@ class Sign_In : AppCompatActivity() {
         }
 
         btnProceed.setOnClickListener {
-            Toast.makeText(this, "Go to Landing page", Toast.LENGTH_LONG).show()
             startActivity(Intent(this, MainActivity::class.java).apply {
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             })

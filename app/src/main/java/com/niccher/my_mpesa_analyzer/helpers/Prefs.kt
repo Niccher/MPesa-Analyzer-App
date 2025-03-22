@@ -43,21 +43,20 @@ class Prefs {
     }
 
     fun getPrefsAuth(ty: String, cntt: Context): String {
-        var id = ""
-        when (ty) {
+        return when (ty) {
             "auth" -> {
-                val prefAuth = cntt.getSharedPreferences(kon.SHARED_AUTH_LOGIN, MODE_PRIVATE)
-                id = prefAuth.getString("uuid", "nullable") ?: "nullable" // Use elvis operator
+                val prefAuth = cntt.getSharedPreferences(kon.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE)
+                prefAuth.getString("uuid", "nullable") ?: "nullable"
             }
             "print" -> {
-                val prefDevId = cntt.getSharedPreferences(kon.SHARED_DEVICE_ID, MODE_PRIVATE)
-                id = prefDevId.getString("print_id", "nullable") ?: "nullable" // Use elvis operator
+                val prefDevId = cntt.getSharedPreferences(kon.SHARED_DEVICE_ID, Context.MODE_PRIVATE)
+                prefDevId.getString("print_id", "nullable") ?: "nullable"
             }
             "loot_count" -> {
-                val prefLootCount = cntt.getSharedPreferences(kon.SHARED_LOOT_COUNT, MODE_PRIVATE)
-                id = prefLootCount.getInt("loots", 0).toString()
+                val prefLootCount = cntt.getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
+                prefLootCount.getInt("loot_count", 0).toString()
             }
+            else -> "nullable" // Default case
         }
-        return id
     }
 }

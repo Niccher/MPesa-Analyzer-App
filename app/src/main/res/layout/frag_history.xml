@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#B1B8ED">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +35,9 @@
             android:id="@+id/recy_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/_50sdp" />
+            android:layout_marginBottom="@dimen/_50sdp"
+            tools:listitem="@layout/part_posted"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

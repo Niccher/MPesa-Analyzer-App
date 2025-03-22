@@ -1,0 +1,11 @@
+package com.niccher.my_mpesa_analyzer.models
+
+data class Mod_User_Auth(
+    var message: String,
+    var status: String,
+    var time: String,
+    var userid: String,
+    var uuid: String,
+    var userName: String,
+    var userEmail: String
+)

@@ -37,6 +37,7 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -71,7 +72,7 @@ dependencies {
 //    implementation ("com.google.guava:guava:23.0")
     implementation ("com.google.guava:guava:31.1-jre")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Gson converter
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.google.android.material:material:1.9.0")
-
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 }

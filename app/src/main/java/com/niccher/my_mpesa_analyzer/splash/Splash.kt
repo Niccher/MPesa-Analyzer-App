@@ -11,7 +11,9 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.niccher.my_mpesa_analyzer.MainActivity
 import com.niccher.my_mpesa_analyzer.R
+import com.niccher.my_mpesa_analyzer.auth.Sign_In
 import com.niccher.my_mpesa_analyzer.auth.Sign_up
 import com.niccher.my_mpesa_analyzer.konstants.Konstants
 
@@ -50,31 +52,24 @@ class Splash : AppCompatActivity() {
             handler.post {
                 progressText.visibility = View.GONE
 
-                val loginStatus = checkValidity(this, Konstants.SHARED_AUTH_LOGIN)
-                Log.e(Konstants.TAGGED, "login_status is $loginStatus")
-                var go_to = Intent()
+                val loginStatus = checkValidity()
 
-                if (!loginStatus) {
-                    Log.e(Konstants.TAGGED, "login_status is $loginStatus as NOT_SET")
-                    go_to = Intent(this, Sign_up::class.java)
+                val intent = if (checkValidity() == "1") {
+                    Intent(this, MainActivity::class.java)
                 } else {
-                    //go_to = Intent(this, Sign_In::class.java)
-                    Log.e(Konstants.TAGGED, "login_status is $loginStatus  as SET_ALREADY")
+                    Intent(this, Sign_In::class.java)
                 }
 
-                try {
-                    startActivity(go_to)
-                }catch (e: Exception) {
-                    Log.e(Konstants.TAGGED, "An unexpected error occurred: ${e.message}")
-                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
 
             }
         }).start()
     }
 
-    fun checkValidity(context: Context, key: String, defaultValue: Boolean = false): Boolean {
-        val sharedPreferences: SharedPreferences =
-            context.getSharedPreferences(key, Context.MODE_PRIVATE)
-        return sharedPreferences.getBoolean(key, defaultValue)
+    fun checkValidity(): String {
+        val sharedPreferences = getSharedPreferences(Konstants.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE)
+        return sharedPreferences.getString("status", "3") ?: "3"
     }
 }

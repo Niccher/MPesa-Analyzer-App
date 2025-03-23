@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -80,9 +80,27 @@ class Frag_History : Fragment() {
         return fragHistory
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setTitle("History")
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        setTitle("History")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setTitle(title: String) {
+        // Get the activity and set the title
+        val activity = requireActivity() as AppCompatActivity
+        activity.supportActionBar?.title = title
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     fun getConnectionState() {

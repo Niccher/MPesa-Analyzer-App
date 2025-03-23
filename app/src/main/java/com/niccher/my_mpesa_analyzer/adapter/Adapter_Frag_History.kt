@@ -1,6 +1,7 @@
 package com.niccher.my_mpesa_analyzer.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.niccher.my_mpesa_analyzer.R
+import com.niccher.my_mpesa_analyzer.fragments.History.Frag_Summary
 import com.niccher.my_mpesa_analyzer.models.Mod_Summaries
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,18 +54,17 @@ class Adapter_Frag_History(
         holder.part_count.text = "Interactions: ${summary.summary_Count}"
 
         holder.part_frame.setOnClickListener {
-//            Toast.makeText(context, "Pressed", Toast.LENGTH_LONG)
-//            val activity = context as AppCompatActivity
-//            val fragSummary = Frag_Summary()
-//
-//            val bundle = Bundle()
-//            bundle.putString("summary_loot_name", summary.summary_Loot_Uuid)
-//            fragSummary.arguments = bundle
-//
-//            activity.supportFragmentManager.beginTransaction()
-//                .replace(R.id.frame, fragSummary)
-//                .addToBackStack(null)
-//                .commit()
+            val activity = context as AppCompatActivity
+            val fragSummary = Frag_Summary()
+
+            val bundle = Bundle()
+            bundle.putString("summary_loot_name", summary.summary_Loot_Uuid)
+            fragSummary.arguments = bundle
+
+            activity.supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_bottom, fragSummary)
+                .addToBackStack(null)
+                .commit()
         }
     }
 

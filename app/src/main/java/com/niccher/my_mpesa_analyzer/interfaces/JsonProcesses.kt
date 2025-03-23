@@ -1,6 +1,7 @@
 package com.niccher.my_mpesa_analyzer.interfaces
 
 import com.niccher.my_mpesa_analyzer.helpers.SummaryResponse
+import com.niccher.my_mpesa_analyzer.models.Mod_Loot_Summary
 import com.niccher.my_mpesa_analyzer.models.Mod_My_Loot_Count
 import retrofit2.Call
 import retrofit2.http.FieldMap
@@ -13,14 +14,14 @@ interface JsonProcesses {
     @POST("get/my_uploads")
     fun getSummary(@FieldMap fields: Map<String, String>): Call<SummaryResponse>
 
-//    @FormUrlEncoded
-//    @POST("get/my_summary_calculations")
-//    fun getSummaryCalc(@FieldMap fields: Map<String, String>): Call<ModLootSummary>
-//
+    @FormUrlEncoded
+    @POST("get/my_summary_calculations")
+    fun getSummaryCalc(@FieldMap fields: Map<String, String>): Call<Mod_Loot_Summary>
+
     @FormUrlEncoded
     @POST("get/my_uploads_count")
     fun getLootCount(@FieldMap fields: Map<String, String>): Call<Mod_My_Loot_Count>
-//
+
 //    @FormUrlEncoded
 //    @POST("get/my_uploads_category_count")
 //    fun getLootCountCategories(@FieldMap fields: Map<String, String>): Call<SummaryLootResponse>

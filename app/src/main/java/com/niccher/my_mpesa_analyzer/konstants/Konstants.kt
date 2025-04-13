@@ -2,7 +2,7 @@ package com.niccher.my_mpesa_analyzer.konstants
 
 object Konstants {
 
-    const val TAGGED = "MPesa_Analyzer"
+    const val TAGGED = "My_MPesa_Analyzer"
 
     const val SPLASH_TIME = 1500
 

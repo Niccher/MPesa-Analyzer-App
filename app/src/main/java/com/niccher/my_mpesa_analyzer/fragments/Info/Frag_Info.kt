@@ -1,5 +1,6 @@
 package com.niccher.my_mpesa_analyzer.fragments.Info
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +17,8 @@ class Frag_Info : Fragment() {
 
     private var _binding: FragInfoBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
-
 
     private lateinit var viewModel: Frag_Info_VM
     private lateinit var recy_info: RecyclerView
@@ -43,7 +42,7 @@ class Frag_Info : Fragment() {
         viewModel = ViewModelProvider(this)[Frag_Info_VM::class.java]
 
         viewModel.items.observe(viewLifecycleOwner) { items ->
-            adapter = Adapter_Frag_Info(items)
+            adapter = Adapter_Frag_Info(requireContext(), items)
             recy_info.adapter = adapter
         }
     }

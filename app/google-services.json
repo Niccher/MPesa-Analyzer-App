@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "121585324251",
+    "project_id": "prj-2023",
+    "storage_bucket": "prj-2023.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121585324251:android:e992d67e9fac2b4ef03cfe",
+        "android_client_info": {
+          "package_name": "com.niccher.my_mpesa_analyzer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121585324251-eoporqaaj72ssnqdrofreof1g4dekdq0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD-iIJ4d0Jnan7Usw1x-zkSC59H6WnWvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121585324251-eoporqaaj72ssnqdrofreof1g4dekdq0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121585324251:android:beecd411b71169e1f03cfe",
+        "android_client_info": {
+          "package_name": "com.niccher.pctophonecopier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121585324251-eoporqaaj72ssnqdrofreof1g4dekdq0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD-iIJ4d0Jnan7Usw1x-zkSC59H6WnWvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121585324251-eoporqaaj72ssnqdrofreof1g4dekdq0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

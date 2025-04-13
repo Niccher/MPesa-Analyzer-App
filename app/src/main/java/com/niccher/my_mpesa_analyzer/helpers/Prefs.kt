@@ -46,7 +46,7 @@ class Prefs {
         return when (ty) {
             "auth" -> {
                 val prefAuth = cntt.getSharedPreferences(kon.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE)
-                prefAuth.getString("uuid", "nullable") ?: "nullable"
+                prefAuth.getString("uuId", "nullable") ?: "nullable"
             }
             "print" -> {
                 val prefDevId = cntt.getSharedPreferences(kon.SHARED_DEVICE_ID, Context.MODE_PRIVATE)

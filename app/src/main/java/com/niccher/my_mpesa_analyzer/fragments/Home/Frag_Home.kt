@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -314,7 +315,7 @@ class Frag_Home : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("Upload error:", t.message ?: "Unknown error")
+                    Toast.makeText(context, "Upload error: " + t?.message ?: "Unknown error", Toast.LENGTH_LONG).show()
                     progressBar.visibility = View.GONE
                 }
             })

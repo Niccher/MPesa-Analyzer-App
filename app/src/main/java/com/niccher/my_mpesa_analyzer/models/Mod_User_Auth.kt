@@ -6,6 +6,6 @@ data class Mod_User_Auth(
     var time: String,
     var userid: String,
     var uuid: String,
-    var userName: String,
-    var userEmail: String
+    var user_name: String,
+    var user_email: String
 )

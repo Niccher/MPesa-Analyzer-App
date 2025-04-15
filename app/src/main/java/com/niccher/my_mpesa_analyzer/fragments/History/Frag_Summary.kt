@@ -20,7 +20,9 @@ import com.niccher.my_mpesa_analyzer.R
 import com.niccher.my_mpesa_analyzer.helpers.Prefs
 import com.niccher.my_mpesa_analyzer.interfaces.JsonProcesses
 import com.niccher.my_mpesa_analyzer.konstants.Konstants
+import com.niccher.my_mpesa_analyzer.models.LootSummarizer
 import com.niccher.my_mpesa_analyzer.models.Mod_Loot_Summary
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -331,7 +333,8 @@ class Frag_Summary : Fragment() {
         call.enqueue(object : Callback<Mod_Loot_Summary> {
             override fun onResponse(call: Call<Mod_Loot_Summary>, response: Response<Mod_Loot_Summary>) {
                 if (response.isSuccessful && response.body() != null) {
-                    val mod_loot_summary = response.body()!!
+                    val modLootSummary = response.body()!!
+                    val summarizer = modLootSummary.loot_summarizer
 
                     var all_rec = 0
                     var all_sent = 0
@@ -339,69 +342,69 @@ class Frag_Summary : Fragment() {
                     var all_fuliza = 0
                     var all_error = 0
 
-                    tv_gen_all.text = mod_loot_summary.count_All
-                    tv_gen_bal.text = mod_loot_summary.count_Get_Bal_MPESA
-                    tv_gen_fuliza.text = mod_loot_summary.count_Fuliza_Mini_Statement
-                    tv_gen_recv.text = mod_loot_summary.count_Get_from_MPESA
-                    tv_gen_sent.text = mod_loot_summary.count_Sent_to_MPESA
-                    tv_gen_withdraw.text = mod_loot_summary.count_Withdraw
-                    tv_gen_wrong_pin.text = mod_loot_summary.count_Error_Pin
-                    tv_gen_unknown.text = mod_loot_summary.count_Unknown
+                    tv_gen_all.text = summarizer.count_All
+                    tv_gen_bal.text = summarizer.count_Get_Bal_MPESA
+                    tv_gen_fuliza.text = summarizer.count_Fuliza_Mini_Statement
+                    tv_gen_recv.text = summarizer.count_Get_from_MPESA
+                    tv_gen_sent.text = summarizer.count_Sent_to_MPESA
+                    tv_gen_withdraw.text = summarizer.count_Withdraw
+                    tv_gen_wrong_pin.text = summarizer.count_Error_Pin
+                    tv_gen_unknown.text = summarizer.count_Unknown
 
-                    all_sent = mod_loot_summary.count_Sent_to_MPESA.toInt() + mod_loot_summary.count_Sent_to_Mshwari.toInt() +
-                            mod_loot_summary.count_Sent_to_LNM.toInt() + mod_loot_summary.count_Sent_Mini.toInt() +
-                            mod_loot_summary.count_Sent_Cancel.toInt()
+                    all_sent = summarizer.count_Sent_to_MPESA.toInt() + summarizer.count_Sent_to_Mshwari.toInt() +
+                            summarizer.count_Sent_to_LNM.toInt() + summarizer.count_Sent_Mini.toInt() +
+                            summarizer.count_Sent_Cancel.toInt()
                     tv_sent_all.text = all_sent.toString()
-                    tv_sent_mpesa.text = mod_loot_summary.count_Sent_to_MPESA
-                    tv_sent_mshwari.text = mod_loot_summary.count_Sent_to_Mshwari
-                    tv_sent_lnm.text = mod_loot_summary.count_Sent_to_LNM
-                    tv_sent_mini.text = mod_loot_summary.count_Sent_Mini
-                    tv_sent_cancel.text = mod_loot_summary.count_Sent_Cancel
+                    tv_sent_mpesa.text = summarizer.count_Sent_to_MPESA
+                    tv_sent_mshwari.text = summarizer.count_Sent_to_Mshwari
+                    tv_sent_lnm.text = summarizer.count_Sent_to_LNM
+                    tv_sent_mini.text = summarizer.count_Sent_Mini
+                    tv_sent_cancel.text = summarizer.count_Sent_Cancel
 
-                    all_rec = mod_loot_summary.count_Get_from_MPESA.toInt() + mod_loot_summary.count_Get_from_KCB.toInt() +
-                            mod_loot_summary.count_Get_from_NCBA.toInt() + mod_loot_summary.count_Get_from_Mshwari.toInt() +
-                            mod_loot_summary.count_Get_from_IM.toInt() + mod_loot_summary.count_Get_from_Reversal.toInt()
+                    all_rec = summarizer.count_Get_from_MPESA.toInt() + summarizer.count_Get_from_KCB.toInt() +
+                            summarizer.count_Get_from_NCBA.toInt() + summarizer.count_Get_from_Mshwari.toInt() +
+                            summarizer.count_Get_from_IM.toInt() + summarizer.count_Get_from_Reversal.toInt()
                     tv_rec_all.text = all_rec.toString()
-                    tv_rec_bank.text = mod_loot_summary.count_Get_from_MPESA // Mpesa
-                    tv_rec_mshwari.text = mod_loot_summary.count_Get_from_Mshwari
-                    tv_rec_ncba.text = mod_loot_summary.count_Get_from_NCBA
-                    tv_rec_im.text = mod_loot_summary.count_Get_from_IM
-                    tv_rec_kcb.text = mod_loot_summary.count_Get_from_KCB
-                    tv_rec_reversal.text = mod_loot_summary.count_Get_from_Reversal
+                    tv_rec_bank.text = summarizer.count_Get_from_MPESA // Mpesa
+                    tv_rec_mshwari.text = summarizer.count_Get_from_Mshwari
+                    tv_rec_ncba.text = summarizer.count_Get_from_NCBA
+                    tv_rec_im.text = summarizer.count_Get_from_IM
+                    tv_rec_kcb.text = summarizer.count_Get_from_KCB
+                    tv_rec_reversal.text = summarizer.count_Get_from_Reversal
 
-                    all_bal = mod_loot_summary.count_Get_Bal_KCB.toInt() + mod_loot_summary.count_Get_Bal_Mshwari.toInt() +
-                            mod_loot_summary.count_Get_Bal_MPESA.toInt()
+                    all_bal = summarizer.count_Get_Bal_KCB.toInt() + summarizer.count_Get_Bal_Mshwari.toInt() +
+                            summarizer.count_Get_Bal_MPESA.toInt()
                     tv_bal_all.text = all_bal.toString()
-                    tv_bal_mpesa.text = mod_loot_summary.count_Get_Bal_MPESA
-                    tv_bal_mshwari.text = mod_loot_summary.count_Get_Bal_Mshwari
-                    tv_bal_kcb.text = mod_loot_summary.count_Get_Bal_KCB
+                    tv_bal_mpesa.text = summarizer.count_Get_Bal_MPESA
+                    tv_bal_mshwari.text = summarizer.count_Get_Bal_Mshwari
+                    tv_bal_kcb.text = summarizer.count_Get_Bal_KCB
 
-                    all_fuliza = mod_loot_summary.count_Fuliza_Opt_In.toInt() +
-                            mod_loot_summary.count_Fuliza_Limit.toInt() + mod_loot_summary.count_Fuliza_Opt_Out.toInt() +
-                            mod_loot_summary.count_Fuliza_Loan_Taken.toInt() + mod_loot_summary.count_Fuliza_Mini_Statement.toInt()
+                    all_fuliza = summarizer.count_Fuliza_Opt_In.toInt() +
+                            summarizer.count_Fuliza_Limit.toInt() + summarizer.count_Fuliza_Opt_Out.toInt() +
+                            summarizer.count_Fuliza_Loan_Taken.toInt() + summarizer.count_Fuliza_Mini_Statement.toInt()
                     tv_fuliza_all.text = all_fuliza.toString()
-                    tv_fuliza_opt_in.text = mod_loot_summary.count_Fuliza_Opt_In
-                    tv_fuliza_opt_out.text = mod_loot_summary.count_Fuliza_Opt_Out
-                    tv_fuliza_limit.text = mod_loot_summary.count_Fuliza_Limit
-                    tv_fuliza_loan.text = mod_loot_summary.count_Fuliza_Loan_Taken
-                    tv_fuliza_mini.text = mod_loot_summary.count_Fuliza_Mini_Statement
+                    tv_fuliza_opt_in.text = summarizer.count_Fuliza_Opt_In
+                    tv_fuliza_opt_out.text = summarizer.count_Fuliza_Opt_Out
+                    tv_fuliza_limit.text = summarizer.count_Fuliza_Limit
+                    tv_fuliza_loan.text = summarizer.count_Fuliza_Loan_Taken
+                    tv_fuliza_mini.text = summarizer.count_Fuliza_Mini_Statement
 
-                    all_error = mod_loot_summary.count_Error_Pin.toInt() + mod_loot_summary.count_Error_Less.toInt() +
-                            mod_loot_summary.count_Error_Receiver.toInt() +
-                            mod_loot_summary.count_Error_Receiver_Org.toInt() + mod_loot_summary.count_Error_Failed.toInt()
+                    all_error = summarizer.count_Error_Pin.toInt() + summarizer.count_Error_Less.toInt() +
+                            summarizer.count_Error_Receiver.toInt() +
+                            summarizer.count_Error_Receiver_Org.toInt() + summarizer.count_Error_Failed.toInt()
                     tv_error_all.text = all_error.toString()
-                    tv_error_pin.text = mod_loot_summary.count_Error_Pin
-                    tv_error_less.text = mod_loot_summary.count_Error_Less
+                    tv_error_pin.text = summarizer.count_Error_Pin
+                    tv_error_less.text = summarizer.count_Error_Less
                     tv_error_merchant.text = "0"
-                    tv_error_receiver.text = mod_loot_summary.count_Error_Receiver
-                    tv_error_org.text = mod_loot_summary.count_Error_Receiver_Org
-                    tv_error_failed.text = mod_loot_summary.count_Error_Failed
+                    tv_error_receiver.text = summarizer.count_Error_Receiver
+                    tv_error_org.text = summarizer.count_Error_Receiver_Org
+                    tv_error_failed.text = summarizer.count_Error_Failed
 
-                    val lootCreated = mod_loot_summary.loot_Created.split(" ")
+                    val lootCreated = summarizer.loot_Created.split(" ")
                     tv_gen_time.text = lootCreated[1]
                     tv_gen_date.text = lootCreated[0]
 
-                    getClickedAction(mod_loot_summary.loot_Uuid)
+                    getClickedAction(summarizer.loot_Uuid)
                 }
             }
 

@@ -1,12 +1,13 @@
 package com.niccher.my_mpesa_analyzer.models
 
-data class Mod_Loot_Summary(
-    val count_Get_from_MPESA: String,
-    val count_Get_from_KCB: String,
+data class LootSummarizer(
+    val status: Int,
+    var count_Get_from_MPESA: String,
+    var count_Get_from_KCB: String,
     val count_Get_from_Mshwari: String,
     val count_Get_from_NCBA: String,
-    val count_Get_from_IM: String,
-    val count_Get_from_Reversal: String,
+    var count_Get_from_IM: String,
+    var count_Get_from_Reversal: String,
     val count_Get_Bal_MPESA: String,
     val count_Get_Bal_KCB: String,
     val count_Get_Bal_Mshwari: String,
@@ -33,4 +34,8 @@ data class Mod_Loot_Summary(
     val count_Unknown: String,
     val loot_Created: String,
     val loot_Uuid: String
+)
+
+data class Mod_Loot_Summary(
+    val loot_summarizer: LootSummarizer
 )

@@ -1,12 +1,11 @@
 package com.niccher.my_mpesa_analyzer.fragments.Graph
 
-import android.R.attr.data
 import android.content.Context
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.graphics.Color
 import android.net.ConnectivityManager
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
@@ -14,24 +13,24 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.niccher.my_mpesa_analyzer.R
-import com.niccher.my_mpesa_analyzer.databinding.FragGraphBinding
-import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
-import com.niccher.my_mpesa_analyzer.adapter.Adapter_Frag_History
+import com.niccher.my_mpesa_analyzer.R
+import com.niccher.my_mpesa_analyzer.databinding.FragGraphBinding
 import com.niccher.my_mpesa_analyzer.fragments.Graph.Frag_Graph_VM.ChartDataItem
 import com.niccher.my_mpesa_analyzer.helpers.Prefs
 import com.niccher.my_mpesa_analyzer.helpers.SummaryResponse
@@ -43,67 +42,62 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.collections.orEmpty
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class Frag_Graph : Fragment() {
 
     private var _binding: FragGraphBinding? = null
     private val binding get() = _binding!!
 
+    // Views
     private lateinit var connState: TextView
     private lateinit var connWait: ProgressBar
+    private lateinit var btnChartToggle: MaterialButton
+    private lateinit var toolbar: MaterialToolbar
+    private lateinit var toolbarTitle: TextView
 
+    // Dependencies
     private lateinit var jsonProcesses: JsonProcesses
     private lateinit var kon: Konstants
-    private lateinit var summariesAdapter: Adapter_Frag_History
     private lateinit var pref: Prefs
-
     private var gson: Gson = GsonBuilder().setLenient().create()
     private var summariesList: ArrayList<Mod_Summaries> = ArrayList()
 
+    // ViewModel
     private val viewModel: Frag_Graph_VM by viewModels()
+
+    // Chart state
+    private var currentChartType: ChartType = ChartType.STACKED_BAR
+
+    enum class ChartType {
+        STACKED_BAR, LINE_GRAPH
+    }
+
+    // Colors
+    private val colorReceived = Color.parseColor("#FF4CAF50") // Green
+    private val colorSent = Color.parseColor("#FFF44336")     // Red
+    private val colorUnknown = Color.parseColor("#FF9E9E9E")  // Gray
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         kon = Konstants
         pref = Prefs()
 
-        gson = GsonBuilder()
-            .setLenient()
-            .create()
-
-        val fragGraph = inflater.inflate(R.layout.frag_graph, container, false)
-
-        connState = fragGraph.findViewById(R.id.conn_no_internet)
-        connWait = fragGraph.findViewById(R.id.conn_wait_internet)
-        connWait.visibility = View.GONE
-
-        // Initialize binding
-        _binding = FragGraphBinding.bind(fragGraph)
-
-        getConnectionState()
-
-        return fragGraph
+        _binding = FragGraphBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Set up chart observation
+        initializeViews()
+        setupToolbar()
+        setupToggleButton()
         setupChartObservers()
-    }
-
-    private fun setupChartObservers() {
-        // Observe the LiveData from ViewModel
-        viewModel.summaryData.observe(viewLifecycleOwner) { dataList ->
-            if (dataList.isNotEmpty()) {
-                ChartStacked(dataList)
-                // You can also call ChartLines(dataList) here if you want both charts
-            }
-        }
+        getConnectionState()
     }
 
     override fun onDestroyView() {
@@ -111,30 +105,379 @@ class Frag_Graph : Fragment() {
         _binding = null
     }
 
-    fun getConnectionState() {
-        if (isConnected()) {
-            connWait.visibility = View.VISIBLE
-            connState.visibility = View.GONE
-            getSummaries()
-        } else {
-            connWait.visibility = View.GONE
-            isOffline("No internet connection at the moment")
+    private fun initializeViews() {
+        connState = binding.connNoInternet
+        connWait = binding.connWaitInternet
+        btnChartToggle = binding.btnChartToggle
+        toolbar = binding.toolbar
+        toolbarTitle = binding.toolbarTitle
+
+        // Hide connection elements initially
+        connWait.visibility = View.GONE
+        connState.visibility = View.GONE
+    }
+
+    private fun setupToolbar() {
+        toolbarTitle.text = getString(R.string.graphs_stacked_bar) // Default title
+    }
+
+    private fun setupToggleButton() {
+        btnChartToggle.setOnClickListener {
+            toggleChartType()
         }
     }
 
-    fun isConnected(): Boolean {
+    private fun toggleChartType() {
+        currentChartType = when (currentChartType) {
+            ChartType.STACKED_BAR -> {
+                btnChartToggle.setIconResource(R.drawable.ic_bar_chart)
+                ChartType.LINE_GRAPH
+            }
+            ChartType.LINE_GRAPH -> {
+                btnChartToggle.setIconResource(R.drawable.ic_line_chart)
+                ChartType.STACKED_BAR
+            }
+        }
+        updateToolbarTitle()
+        refreshChartsWithCurrentData()
+    }
+
+    private fun updateToolbarTitle() {
+        val title = when (currentChartType) {
+            ChartType.STACKED_BAR -> getString(R.string.graphs_stacked_bar)
+            ChartType.LINE_GRAPH -> getString(R.string.graphs_line_graph)
+        }
+        toolbarTitle.text = title
+    }
+
+    private fun setupChartObservers() {
+        viewModel.summaryData.observe(viewLifecycleOwner) { dataList ->
+            if (dataList.isNotEmpty()) {
+                refreshCharts(dataList)
+            } else {
+                showNoDataState()
+            }
+        }
+    }
+
+    private fun refreshChartsWithCurrentData() {
+        viewModel.summaryData.value?.let { dataList ->
+            if (dataList.isNotEmpty()) {
+                refreshCharts(dataList)
+            }
+        }
+    }
+
+    private fun refreshCharts(dataList: List<Frag_Graph_VM.SummaryEntry>) {
+        hideConnectionState()
+
+        when (currentChartType) {
+            ChartType.STACKED_BAR -> showStackedBarChart(dataList)
+            ChartType.LINE_GRAPH -> showLineChart(dataList)
+        }
+    }
+
+    private fun showStackedBarChart(dataList: List<Frag_Graph_VM.SummaryEntry>) {
+        binding.lineChart.visibility = View.GONE
+        binding.barChart.visibility = View.VISIBLE
+
+        val entries = dataList.mapIndexed { index, item ->
+            BarEntry(index.toFloat(), floatArrayOf(item.received, item.sent, item.unknown))
+        }
+
+        val dataSet = BarDataSet(entries, "").apply {
+            setColors(colorReceived, colorSent, colorUnknown)
+            stackLabels = arrayOf("Received", "Sent", "Unknown")
+            valueTextColor = Color.BLACK
+            valueTextSize = 10f
+            valueFormatter = object : ValueFormatter() {
+                override fun getBarStackedLabel(value: Float, entry: BarEntry?): String {
+                    return if (value > 0) value.toInt().toString() else ""
+                }
+            }
+        }
+
+        binding.barChart.apply {
+            // Clear previous data
+            clear()
+
+            // Data configuration
+            data = BarData(dataSet).apply {
+                barWidth = 0.6f
+                setValueTextColor(Color.BLACK)
+                setValueTextSize(10f)
+            }
+
+            // Chart styling
+            setDrawBarShadow(false)
+            setDrawValueAboveBar(true)
+            setMaxVisibleValueCount(60)
+            setPinchZoom(true)
+            setDrawGridBackground(false)
+            setDrawBorders(true)
+            setBorderColor(Color.LTGRAY)
+            setBorderWidth(1f)
+
+            // Description
+            description.isEnabled = true
+            description.text = "Transaction Breakdown Over Time"
+            description.textSize = 12f
+            description.textColor = Color.DKGRAY
+
+            // Legend configuration
+            legend.isEnabled = false
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            legend.orientation = Legend.LegendOrientation.VERTICAL
+            legend.setDrawInside(false)
+            legend.textSize = 12f
+            legend.textColor = Color.BLACK
+            legend.form = Legend.LegendForm.SQUARE
+            legend.formSize = 12f
+
+            // X-axis configuration
+            xAxis.apply {
+                valueFormatter = IndexAxisValueFormatter(dataList.map { it.date })
+                position = XAxis.XAxisPosition.BOTTOM
+                granularity = 1f
+                setDrawGridLines(true)
+                gridColor = Color.parseColor("#EEEEEE")
+                gridLineWidth = 1f
+                setDrawAxisLine(true)
+                axisLineColor = Color.DKGRAY
+                axisLineWidth = 1f
+                labelCount = dataList.size.coerceAtMost(6)
+                textSize = 10f
+                textColor = Color.BLACK
+            }
+
+            // Y-axis configuration
+            axisLeft.apply {
+                axisMinimum = 0f
+                granularity = 1000f
+                setDrawGridLines(true)
+                gridColor = Color.parseColor("#EEEEEE")
+                gridLineWidth = 1f
+                setDrawAxisLine(true)
+                axisLineColor = Color.DKGRAY
+                axisLineWidth = 1f
+                textSize = 10f
+                textColor = Color.BLACK
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return when {
+                            value >= 1000 -> "${(value / 1000).toInt()}K"
+                            else -> value.toInt().toString()
+                        }
+                    }
+                }
+            }
+
+            axisRight.isEnabled = false
+
+            // Interaction
+            setTouchEnabled(true)
+            isDragEnabled = true
+            setScaleEnabled(true)
+            setPinchZoom(true)
+            setDoubleTapToZoomEnabled(true)
+
+            // Animation
+            animateY(1000)
+
+            invalidate()
+        }
+    }
+
+    private fun showLineChart(dataList: List<Frag_Graph_VM.SummaryEntry>) {
+        binding.barChart.visibility = View.GONE
+        binding.lineChart.visibility = View.VISIBLE
+
+        val receivedEntries = mutableListOf<Entry>()
+        val sentEntries = mutableListOf<Entry>()
+        val unknownEntries = mutableListOf<Entry>()
+        val dates = mutableListOf<String>()
+
+        dataList.forEachIndexed { index, item ->
+            receivedEntries.add(Entry(index.toFloat(), item.received))
+            sentEntries.add(Entry(index.toFloat(), item.sent))
+            unknownEntries.add(Entry(index.toFloat(), item.unknown))
+            dates.add(item.date)
+        }
+
+        val receivedSet = LineDataSet(receivedEntries, "Received").apply {
+            color = colorReceived
+            circleRadius = 4f
+            lineWidth = 3f
+            setDrawValues(true)
+            valueTextSize = 10f
+            valueTextColor = Color.BLACK
+            setCircleColor(colorReceived)
+            circleHoleColor = Color.WHITE
+            circleHoleRadius = 2f
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            cubicIntensity = 0.2f
+        }
+
+        val sentSet = LineDataSet(sentEntries, "Sent").apply {
+            color = colorSent
+            circleRadius = 4f
+            lineWidth = 3f
+            setDrawValues(true)
+            valueTextSize = 10f
+            valueTextColor = Color.BLACK
+            setCircleColor(colorSent)
+            circleHoleColor = Color.WHITE
+            circleHoleRadius = 2f
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            cubicIntensity = 0.2f
+        }
+
+        val unknownSet = LineDataSet(unknownEntries, "Unknown").apply {
+            color = colorUnknown
+            circleRadius = 4f
+            lineWidth = 3f
+            setDrawValues(true)
+            valueTextSize = 10f
+            valueTextColor = Color.BLACK
+            setCircleColor(colorUnknown)
+            circleHoleColor = Color.WHITE
+            circleHoleRadius = 2f
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            cubicIntensity = 0.2f
+        }
+
+        binding.lineChart.apply {
+            // Clear previous data
+            clear()
+
+            // Data configuration
+            data = LineData(receivedSet, sentSet, unknownSet).apply {
+                setValueTextSize(10f)
+                setValueTextColor(Color.BLACK)
+            }
+
+            // Chart styling
+            setDrawGridBackground(false)
+            setDrawBorders(true)
+            setBorderColor(Color.LTGRAY)
+            setBorderWidth(1f)
+
+            // Description
+            description.isEnabled = true
+            description.text = "Transaction Trends Over Time"
+            description.textSize = 12f
+            description.textColor = Color.DKGRAY
+
+            // Legend configuration
+            legend.isEnabled = false
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            legend.orientation = Legend.LegendOrientation.VERTICAL
+            legend.setDrawInside(false)
+            legend.textSize = 12f
+            legend.textColor = Color.BLACK
+            legend.form = Legend.LegendForm.LINE
+            legend.formSize = 12f
+
+            // X-axis configuration
+            xAxis.apply {
+                valueFormatter = IndexAxisValueFormatter(dates)
+                position = XAxis.XAxisPosition.BOTTOM
+                granularity = 1f
+                setDrawGridLines(true)
+                gridColor = Color.parseColor("#EEEEEE")
+                gridLineWidth = 1f
+                setDrawAxisLine(true)
+                axisLineColor = Color.DKGRAY
+                axisLineWidth = 1f
+                labelCount = dataList.size.coerceAtMost(6)
+                textSize = 10f
+                textColor = Color.BLACK
+            }
+
+            // Y-axis configuration
+            axisLeft.apply {
+                axisMinimum = 0f
+                granularity = 1000f
+                setDrawGridLines(true)
+                gridColor = Color.parseColor("#EEEEEE")
+                gridLineWidth = 1f
+                setDrawAxisLine(true)
+                axisLineColor = Color.DKGRAY
+                axisLineWidth = 1f
+                textSize = 10f
+                textColor = Color.BLACK
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return when {
+                            value >= 1000 -> "${(value / 1000).toInt()}K"
+                            else -> value.toInt().toString()
+                        }
+                    }
+                }
+            }
+
+            axisRight.isEnabled = false
+
+            // Interaction
+            setTouchEnabled(true)
+            isDragEnabled = true
+            setScaleEnabled(true)
+            setPinchZoom(true)
+            setDoubleTapToZoomEnabled(true)
+
+            // Animation
+            animateXY(1000, 1000)
+
+            invalidate()
+        }
+    }
+
+    private fun showNoDataState() {
+        binding.barChart.visibility = View.GONE
+        binding.lineChart.visibility = View.GONE
+        connState.visibility = View.VISIBLE
+        connState.text = getString(R.string.no_data_available)
+    }
+
+    private fun hideConnectionState() {
+        connWait.visibility = View.GONE
+        connState.visibility = View.GONE
+    }
+
+    // Network methods
+    private fun getConnectionState() {
+        if (isConnected()) {
+            showLoadingState()
+            getSummaries()
+        } else {
+            showOfflineState()
+        }
+    }
+
+    private fun isConnected(): Boolean {
         val connectivityManager = requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = connectivityManager.activeNetworkInfo
         return netInfo?.isConnected == true
     }
 
-    private fun isOffline(msg: String) {
-        connState.text = msg
+    private fun showLoadingState() {
+        connWait.visibility = View.VISIBLE
+        connState.visibility = View.GONE
+        binding.barChart.visibility = View.GONE
+        binding.lineChart.visibility = View.GONE
+    }
+
+    private fun showOfflineState() {
+        connWait.visibility = View.GONE
+        connState.visibility = View.VISIBLE
+        connState.text = getString(R.string.str_no_internet_connection)
+        binding.barChart.visibility = View.GONE
+        binding.lineChart.visibility = View.GONE
     }
 
     private fun getSummaries() {
-        connWait.visibility = View.VISIBLE
-
         val retrofit = Retrofit.Builder()
             .baseUrl(kon.LINK_PROCESS)
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -152,173 +495,47 @@ class Frag_Graph : Fragment() {
         call.enqueue(object : Callback<SummaryResponse> {
             override fun onResponse(call: Call<SummaryResponse>, response: Response<SummaryResponse>) {
                 connWait.visibility = View.GONE
+
                 if (response.isSuccessful && response.body() != null) {
                     val summaryResponse = response.body()!!
                     summariesList = ArrayList(summaryResponse.summarizer?.toList().orEmpty())
 
-                    // Transform the data for the chart
-                    val chartData = summariesList.map { summary ->
-                        ChartDataItem(
-                            date = formatDate(summary.summary_Created),
-                            received = summary.summary_Received.toFloat(),
-                            sent = summary.summary_Sent.toFloat(),
-                            unknown = summary.summary_Unknown.toFloat()
-                        )
+                    if (summariesList.isNotEmpty()) {
+                        val chartData = summariesList.map { summary ->
+                            ChartDataItem(
+                                date = formatDate(summary.summary_Created),
+                                received = summary.summary_Received.toFloat(),
+                                sent = summary.summary_Sent.toFloat(),
+                                unknown = summary.summary_Unknown.toFloat()
+                            )
+                        }
+                        viewModel.updateChartData(chartData)
+                    } else {
+                        showNoDataState()
                     }
-
-                    // Update ViewModel with the data from API
-                    viewModel.updateChartData(chartData)
-
-                    println("API Data received: ${summariesList.size} items")
-                    println("Chart data: $chartData")
                 } else {
                     Toast.makeText(context, "Failed to fetch data", Toast.LENGTH_LONG).show()
+                    showNoDataState()
                 }
             }
 
             override fun onFailure(call: Call<SummaryResponse>, t: Throwable) {
                 connWait.visibility = View.GONE
-                isOffline("Unknown error has occurred, please try again later")
                 Toast.makeText(context, t.message ?: "Unknown error", Toast.LENGTH_LONG).show()
                 Log.e(kon.TAGGED, t.message ?: "Unknown error")
+                showNoDataState()
             }
         })
     }
 
     private fun formatDate(dateString: String): String {
         return try {
-            // Convert "2025-10-30 12:17:15" to "Oct 30" or similar shorter format
-            val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
-            val outputFormat = java.text.SimpleDateFormat("MMM dd", java.util.Locale.getDefault())
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
             val date = inputFormat.parse(dateString)
             outputFormat.format(date)
         } catch (e: Exception) {
-            // If parsing fails, return the original string or a shortened version
-            dateString.substring(5, 10) // Returns "10-30" from "2025-10-30 12:17:15"
+            dateString.substring(5, 10) // Fallback: "MM-dd"
         }
-    }
-
-    private fun ChartStacked(dataList: List<Frag_Graph_VM.SummaryEntry>) {
-        val entries = dataList.mapIndexed { index, item ->
-            BarEntry(index.toFloat(), floatArrayOf(item.received, item.sent, item.unknown))
-        }
-
-        val dataSet = BarDataSet(entries, "Transaction Breakdown").apply {
-            setColors(Color.GREEN, Color.RED, Color.GRAY)
-            stackLabels = arrayOf("Received", "Sent", "Unknown")
-            valueTextColor = Color.WHITE
-            valueTextSize = 10f
-        }
-
-        binding.barChart.apply {
-            data = BarData(dataSet).apply {
-                barWidth = 0.5f
-                setValueTextColor(Color.WHITE)
-            }
-
-            description.isEnabled = false
-            setFitBars(true)
-            legend.isEnabled = true
-            setScaleEnabled(true)
-
-            // 👇 Enable interactivity
-            setPinchZoom(true)
-            isDoubleTapToZoomEnabled = true
-            isDragEnabled = true
-            setVisibleXRangeMaximum(5f)
-
-            // Move view to show latest data if there are many entries
-            if (dataSet.entryCount > 5) {
-                moveViewToX(dataSet.entryCount.toFloat() - 5f)
-            }
-
-            legend.apply {
-                isEnabled = true
-                verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-                horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-                orientation = Legend.LegendOrientation.HORIZONTAL
-                setDrawInside(false)
-                form = Legend.LegendForm.SQUARE
-                formSize = 12f
-                textSize = 12f
-                xEntrySpace = 12f
-            }
-
-            xAxis.apply {
-                valueFormatter = IndexAxisValueFormatter(dataList.map { it.date })
-                position = XAxis.XAxisPosition.BOTTOM
-                granularity = 1f
-                setDrawGridLines(false)
-                labelCount = dataList.size
-                textSize = 10f
-            }
-
-            axisRight.isEnabled = false
-            axisLeft.axisMinimum = 0f
-            axisLeft.textSize = 10f
-
-            animateY(1000)
-            invalidate()
-        }
-    }
-
-    // Optional: Line chart implementation
-    private fun ChartLines(dataList: List<Frag_Graph_VM.SummaryEntry>) {
-        val receivedEntries = mutableListOf<Entry>()
-        val sentEntries = mutableListOf<Entry>()
-        val unknownEntries = mutableListOf<Entry>()
-        val dates = mutableListOf<String>()
-
-        dataList.forEachIndexed { index, item ->
-            receivedEntries.add(Entry(index.toFloat(), item.received))
-            sentEntries.add(Entry(index.toFloat(), item.sent))
-            unknownEntries.add(Entry(index.toFloat(), item.unknown))
-            dates.add(item.date)
-        }
-
-        val receivedSet = LineDataSet(receivedEntries, "Received").apply {
-            color = Color.GREEN
-            circleRadius = 4f
-            setDrawValues(false)
-            lineWidth = 2f
-        }
-
-        val sentSet = LineDataSet(sentEntries, "Sent").apply {
-            color = Color.RED
-            circleRadius = 4f
-            setDrawValues(false)
-            lineWidth = 2f
-        }
-
-        val unknownSet = LineDataSet(unknownEntries, "Unknown").apply {
-            color = Color.GRAY
-            circleRadius = 4f
-            setDrawValues(false)
-            lineWidth = 2f
-        }
-
-//        binding.lineChart.apply {
-//            data = LineData(receivedSet, sentSet, unknownSet)
-//
-//            xAxis.apply {
-//                position = XAxis.XAxisPosition.BOTTOM
-//                granularity = 1f
-//                valueFormatter = IndexAxisValueFormatter(dates)
-//                setDrawGridLines(false)
-//            }
-//
-//            axisLeft.axisMinimum = 0f
-//            axisRight.isEnabled = false
-//            description.isEnabled = false
-//
-//            legend.isEnabled = true
-//            setTouchEnabled(true)
-//            isDragEnabled = true
-//            setScaleEnabled(true)
-//            setPinchZoom(true)
-//
-//            animateXY(1000, 1000)
-//            invalidate()
-//        }
     }
 }

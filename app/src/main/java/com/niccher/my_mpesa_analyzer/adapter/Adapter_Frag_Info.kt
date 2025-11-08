@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,10 @@ class Adapter_Frag_Info(private val context: Context, private val items: List<In
 
     private val appInfoBottomSheet: BottomSheetDialog = BottomSheetDialog(context).apply {
         setContentView(R.layout.part_sheet_app_info)
+    }
+
+    private val appCreditsBottomSheet: BottomSheetDialog = BottomSheetDialog(context).apply {
+        setContentView(R.layout.part_sheet_app_credits)
     }
 
     private val kon: Konstants = Konstants
@@ -68,7 +73,7 @@ class Adapter_Frag_Info(private val context: Context, private val items: List<In
             when (currentItem.name_title) {
                 "Profile" -> showProfileBottomSheet()
                 "App Info" -> showAppInfoBottomSheet()
-                "App Credits" -> showAppCredits()
+                "App Credits" -> showAppCreditsBottomSheet()
                 else -> Toast.makeText(context, "${currentItem.name_title} clicked", Toast.LENGTH_SHORT).show()
             }
         }
@@ -129,8 +134,38 @@ class Adapter_Frag_Info(private val context: Context, private val items: List<In
         appInfoBottomSheet.show()
     }
 
-    private fun showAppCredits() {
-        Toast.makeText(context, "App Credits - Coming Soon", Toast.LENGTH_SHORT).show()
+    private fun showAppCreditsBottomSheet() {
+        // Set click listeners for library cards
+        appCreditsBottomSheet.findViewById<CardView>(R.id.card_mpandroid_chart)?.setOnClickListener {
+            openLibraryWebsite("https://github.com/PhilJay/MPAndroidChart")
+        }
+
+        appCreditsBottomSheet.findViewById<CardView>(R.id.card_retrofit)?.setOnClickListener {
+            openLibraryWebsite("https://github.com/square/retrofit")
+        }
+
+        appCreditsBottomSheet.findViewById<CardView>(R.id.card_material)?.setOnClickListener {
+            openLibraryWebsite("https://github.com/material-components/material-components-android")
+        }
+
+        appCreditsBottomSheet.findViewById<CardView>(R.id.card_other_libs)?.setOnClickListener {
+            Toast.makeText(context, "Other amazing libraries", Toast.LENGTH_SHORT).show()
+        }
+
+        appCreditsBottomSheet.findViewById<CardView>(R.id.card_credits_back)?.setOnClickListener {
+            appCreditsBottomSheet.dismiss()
+        }
+
+        appCreditsBottomSheet.show()
+    }
+
+    private fun openLibraryWebsite(url: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(context, "Cannot open browser", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun getItemCount() = items.size

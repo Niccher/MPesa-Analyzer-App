@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/backgroud">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/app_info_icon"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginTop="-60dp"
+            android:background="@drawable/rect_corners"
+            android:padding="@dimen/_20sdp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/app_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/app_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/app_info_icon"
+            android:paddingBottom="@dimen/_24sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_info_icon">
+
+            <TextView
+                android:id="@+id/app_info_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="@string/app_name"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/app_info_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/app_info_name"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Version 1.0.0"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/app_info_name" />
+
+            <TextView
+                android:id="@+id/app_info_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/app_info_version"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:gravity="center"
+                android:text="M-Pesa SMS Parser and Analyzer"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/app_info_version" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/app_info_layout"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_18sdp"
+            app:layout_constraintTop_toBottomOf="@id/app_info_layout">
+
+            <!-- Features Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_features"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:padding="@dimen/_12sdp">
+
+                    <ImageView
+                        android:id="@+id/icon_features"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@mipmap/app_info"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_features_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:text="App Features"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_18sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/icon_features"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/icon_features"
+                        app:layout_constraintTop_toTopOf="@id/icon_features" />
+
+                    <TextView
+                        android:id="@+id/txt_features"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="• M-Pesa SMS Parsing\n• Transaction Categorization\n• Data Visualization\n• Offline Processing"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/icon_features" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Permissions Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_permissions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintTop_toBottomOf="@id/card_features">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:padding="@dimen/_12sdp">
+
+                    <ImageView
+                        android:id="@+id/icon_permissions"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@mipmap/app_privacy"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_permissions_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:text="Permissions"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_18sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/icon_permissions"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/icon_permissions"
+                        app:layout_constraintTop_toTopOf="@id/icon_permissions" />
+
+                    <TextView
+                        android:id="@+id/txt_permissions"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="• Read SMS: Parse M-Pesa messages\n• Internet: Fetch updates\n• Storage: Backup data"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/icon_permissions" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Developer Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_developer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintTop_toBottomOf="@id/card_permissions">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:padding="@dimen/_12sdp">
+
+                    <ImageView
+                        android:id="@+id/icon_developer"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@mipmap/app_credits"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_developer_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:text="Developer"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_18sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/icon_developer"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/icon_developer"
+                        app:layout_constraintTop_toTopOf="@id/icon_developer" />
+
+                    <TextView
+                        android:id="@+id/txt_developer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="Developed with ❤️ for M-Pesa users. Your data stays secure on your device."
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/icon_developer" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Close Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_app_info_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintTop_toBottomOf="@id/card_developer">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:padding="@dimen/_4sdp">
+
+                    <ImageView
+                        android:id="@+id/btn_app_info_back"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@mipmap/user_back"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:text="Close"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_20sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/btn_app_info_back"
+                        app:layout_constraintStart_toEndOf="@id/btn_app_info_back"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

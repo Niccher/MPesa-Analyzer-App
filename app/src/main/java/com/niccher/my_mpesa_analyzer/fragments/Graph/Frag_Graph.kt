@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -25,7 +26,6 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
@@ -53,9 +53,11 @@ class Frag_Graph : Fragment() {
     // Views
     private lateinit var connState: TextView
     private lateinit var connWait: ProgressBar
-    private lateinit var btnChartToggle: MaterialButton
     private lateinit var toolbar: MaterialToolbar
     private lateinit var toolbarTitle: TextView
+    private lateinit var chartTypeContainer: View
+    private lateinit var iconChartType: ImageView
+    private lateinit var iconDropdown: ImageView
 
     // Dependencies
     private lateinit var jsonProcesses: JsonProcesses
@@ -108,9 +110,11 @@ class Frag_Graph : Fragment() {
     private fun initializeViews() {
         connState = binding.connNoInternet
         connWait = binding.connWaitInternet
-        btnChartToggle = binding.btnChartToggle
         toolbar = binding.toolbar
         toolbarTitle = binding.toolbarTitle
+        chartTypeContainer = binding.chartTypeContainer
+        iconChartType = binding.iconChartType
+        iconDropdown = binding.iconDropdown
 
         // Hide connection elements initially
         connWait.visibility = View.GONE
@@ -122,23 +126,26 @@ class Frag_Graph : Fragment() {
     }
 
     private fun setupToggleButton() {
-        btnChartToggle.setOnClickListener {
+        // Set initial icon
+        updateChartTypeIcon()
+
+        // Set click listener on the entire container
+        chartTypeContainer.setOnClickListener {
             toggleChartType()
         }
+
+        // Add ripple effect programmatically
+        chartTypeContainer.isClickable = true
+        chartTypeContainer.isFocusable = true
     }
 
     private fun toggleChartType() {
         currentChartType = when (currentChartType) {
-            ChartType.STACKED_BAR -> {
-                btnChartToggle.setIconResource(R.drawable.ic_bar_chart)
-                ChartType.LINE_GRAPH
-            }
-            ChartType.LINE_GRAPH -> {
-                btnChartToggle.setIconResource(R.drawable.ic_line_chart)
-                ChartType.STACKED_BAR
-            }
+            ChartType.STACKED_BAR -> ChartType.LINE_GRAPH
+            ChartType.LINE_GRAPH -> ChartType.STACKED_BAR
         }
         updateToolbarTitle()
+        updateChartTypeIcon()
         refreshChartsWithCurrentData()
     }
 
@@ -148,6 +155,14 @@ class Frag_Graph : Fragment() {
             ChartType.LINE_GRAPH -> getString(R.string.graphs_line_graph)
         }
         toolbarTitle.text = title
+    }
+
+    private fun updateChartTypeIcon() {
+        val iconRes = when (currentChartType) {
+            ChartType.STACKED_BAR -> R.drawable.ic_bar_chart
+            ChartType.LINE_GRAPH -> R.drawable.ic_line_chart
+        }
+        iconChartType.setImageResource(iconRes)
     }
 
     private fun setupChartObservers() {
@@ -208,6 +223,9 @@ class Frag_Graph : Fragment() {
                 setValueTextSize(10f)
             }
 
+            // FIX: Chart padding to ensure X-axis is visible
+            setExtraOffsets(20f, 20f, 20f, 40f) // Left, Top, Right, Bottom (extra space for X-axis)
+
             // Chart styling
             setDrawBarShadow(false)
             setDrawValueAboveBar(true)
@@ -223,6 +241,7 @@ class Frag_Graph : Fragment() {
             description.text = "Transaction Breakdown Over Time"
             description.textSize = 12f
             description.textColor = Color.DKGRAY
+            description.setPosition(description.xOffset, description.yOffset + 20f) // Move description up
 
             // Legend configuration
             legend.isEnabled = false
@@ -234,8 +253,9 @@ class Frag_Graph : Fragment() {
             legend.textColor = Color.BLACK
             legend.form = Legend.LegendForm.SQUARE
             legend.formSize = 12f
+            legend.yOffset = 10f // Move legend down a bit
 
-            // X-axis configuration
+            // FIX: X-axis configuration for better visibility
             xAxis.apply {
                 valueFormatter = IndexAxisValueFormatter(dataList.map { it.date })
                 position = XAxis.XAxisPosition.BOTTOM
@@ -245,10 +265,16 @@ class Frag_Graph : Fragment() {
                 gridLineWidth = 1f
                 setDrawAxisLine(true)
                 axisLineColor = Color.DKGRAY
-                axisLineWidth = 1f
+                axisLineWidth = 2f // Thicker axis line
                 labelCount = dataList.size.coerceAtMost(6)
-                textSize = 10f
+                textSize = 11f
                 textColor = Color.BLACK
+                yOffset = 8f // Move labels down
+                setAvoidFirstLastClipping(true) // Prevent first/last label clipping
+                setCenterAxisLabels(false)
+
+                // Ensure labels are not cut off
+                setLabelCount(dataList.size, true)
             }
 
             // Y-axis configuration
@@ -260,7 +286,7 @@ class Frag_Graph : Fragment() {
                 gridLineWidth = 1f
                 setDrawAxisLine(true)
                 axisLineColor = Color.DKGRAY
-                axisLineWidth = 1f
+                axisLineWidth = 2f
                 textSize = 10f
                 textColor = Color.BLACK
                 valueFormatter = object : ValueFormatter() {
@@ -271,6 +297,7 @@ class Frag_Graph : Fragment() {
                         }
                     }
                 }
+                xOffset = 10f // Move Y-axis labels left a bit
             }
 
             axisRight.isEnabled = false
@@ -281,6 +308,10 @@ class Frag_Graph : Fragment() {
             setScaleEnabled(true)
             setPinchZoom(true)
             setDoubleTapToZoomEnabled(true)
+
+            // FIX: Ensure chart fits properly
+            fitScreen()
+            setVisibleXRangeMaximum(6f) // Show reasonable number of bars
 
             // Animation
             animateY(1000)
@@ -357,6 +388,9 @@ class Frag_Graph : Fragment() {
                 setValueTextColor(Color.BLACK)
             }
 
+            // FIX: Chart padding to ensure X-axis is visible
+            setExtraOffsets(20f, 20f, 20f, 40f) // Left, Top, Right, Bottom (extra space for X-axis)
+
             // Chart styling
             setDrawGridBackground(false)
             setDrawBorders(true)
@@ -368,6 +402,7 @@ class Frag_Graph : Fragment() {
             description.text = "Transaction Trends Over Time"
             description.textSize = 12f
             description.textColor = Color.DKGRAY
+            description.setPosition(description.xOffset, description.yOffset + 20f) // Move description up
 
             // Legend configuration
             legend.isEnabled = false
@@ -379,8 +414,9 @@ class Frag_Graph : Fragment() {
             legend.textColor = Color.BLACK
             legend.form = Legend.LegendForm.LINE
             legend.formSize = 12f
+            legend.yOffset = 10f // Move legend down a bit
 
-            // X-axis configuration
+            // FIX: X-axis configuration for better visibility
             xAxis.apply {
                 valueFormatter = IndexAxisValueFormatter(dates)
                 position = XAxis.XAxisPosition.BOTTOM
@@ -390,10 +426,16 @@ class Frag_Graph : Fragment() {
                 gridLineWidth = 1f
                 setDrawAxisLine(true)
                 axisLineColor = Color.DKGRAY
-                axisLineWidth = 1f
+                axisLineWidth = 2f // Thicker axis line
                 labelCount = dataList.size.coerceAtMost(6)
-                textSize = 10f
+                textSize = 11f
                 textColor = Color.BLACK
+                yOffset = 8f // Move labels down
+                setAvoidFirstLastClipping(true) // Prevent first/last label clipping
+                setCenterAxisLabels(false)
+
+                // Ensure labels are not cut off
+                setLabelCount(dataList.size, true)
             }
 
             // Y-axis configuration
@@ -405,7 +447,7 @@ class Frag_Graph : Fragment() {
                 gridLineWidth = 1f
                 setDrawAxisLine(true)
                 axisLineColor = Color.DKGRAY
-                axisLineWidth = 1f
+                axisLineWidth = 2f
                 textSize = 10f
                 textColor = Color.BLACK
                 valueFormatter = object : ValueFormatter() {
@@ -416,6 +458,7 @@ class Frag_Graph : Fragment() {
                         }
                     }
                 }
+                xOffset = 10f // Move Y-axis labels left a bit
             }
 
             axisRight.isEnabled = false
@@ -426,6 +469,10 @@ class Frag_Graph : Fragment() {
             setScaleEnabled(true)
             setPinchZoom(true)
             setDoubleTapToZoomEnabled(true)
+
+            // FIX: Ensure chart fits properly
+            fitScreen()
+            setVisibleXRangeMaximum(6f) // Show reasonable number of points
 
             // Animation
             animateXY(1000, 1000)
@@ -446,7 +493,7 @@ class Frag_Graph : Fragment() {
         connState.visibility = View.GONE
     }
 
-    // Network methods
+    // Network methods (same as before)
     private fun getConnectionState() {
         if (isConnected()) {
             showLoadingState()

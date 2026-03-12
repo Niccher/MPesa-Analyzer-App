@@ -34,6 +34,23 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.ArrayList
 
+import android.app.AlertDialog
+import android.os.Environment
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.itextpdf.text.Document
+import com.itextpdf.text.Element
+import com.itextpdf.text.Paragraph
+import com.itextpdf.text.Phrase
+import com.itextpdf.text.pdf.PdfPCell
+import com.itextpdf.text.pdf.PdfPTable
+import com.itextpdf.text.pdf.PdfWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 class Frag_History : Fragment() {
 
     private var _binding: FragHistoryBinding? = null
@@ -41,6 +58,7 @@ class Frag_History : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var connState: TextView
     private lateinit var connWait: ProgressBar
+    private lateinit var fabExport: ExtendedFloatingActionButton
 
     private lateinit var jsonProcesses: JsonProcesses
     private lateinit var kon: Konstants
@@ -79,6 +97,15 @@ class Frag_History : Fragment() {
 
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        fabExport = fragHistory.findViewById(R.id.fab_export)
+        fabExport.setOnClickListener {
+            if (summariesList.isNotEmpty()) {
+                showExportDialog()
+            } else {
+                Toast.makeText(requireContext(), "No data to export", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         // Load data ONCE — uses cache when offline
         viewLifecycleOwner.lifecycleScope.launch {
@@ -146,6 +173,85 @@ class Frag_History : Fragment() {
             connWait.visibility = View.GONE
             isOffline("Offline • Showing cached data")
             Log.e(kon.TAGGED, "History: ${e.message}", e)
+        }
+    }
+
+    private fun showExportDialog() {
+        val options = arrayOf("Export to CSV", "Export to PDF")
+        AlertDialog.Builder(requireContext())
+            .setTitle("Export History")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> exportToCsv()
+                    1 -> exportToPdf()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun exportToCsv() {
+        try {
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val file = File(downloadsDir, "MPesa_History_$timestamp.csv")
+            val fos = FileOutputStream(file)
+            val writer = OutputStreamWriter(fos)
+
+            writer.append("Date,Sent,Received,Total Interactions,Reference UUID\n")
+            for (summary in summariesList) {
+                // Formatting fields minimally and avoiding potential CSV conflicts by using basic values
+                writer.append("${summary.summary_Created},${summary.summary_Sent},${summary.summary_Received},${summary.summary_Count},${summary.summary_Loot_Uuid}\n")
+            }
+
+            writer.close()
+            fos.close()
+            Toast.makeText(requireContext(), "Exported to Downloads folder", Toast.LENGTH_LONG).show()
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Failed to export CSV: ${e.message}", Toast.LENGTH_LONG).show()
+            Log.e(kon.TAGGED, "exportToCsv: ${e.message}", e)
+        }
+    }
+
+    private fun exportToPdf() {
+        try {
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val file = File(downloadsDir, "MPesa_History_$timestamp.pdf")
+
+            val document = Document()
+            PdfWriter.getInstance(document, FileOutputStream(file))
+            document.open()
+
+            document.add(Paragraph("M-Pesa Analyzer - Transaction History\n\n"))
+
+            val table = PdfPTable(4)
+            table.widthPercentage = 100f
+
+            // Add Headers
+            val headers = arrayOf("Date", "Sent", "Received", "Interactions")
+            for (header in headers) {
+                val cell = PdfPCell(Phrase(header))
+                cell.horizontalAlignment = Element.ALIGN_CENTER
+                table.addCell(cell)
+            }
+
+            // Add Data
+            for (summary in summariesList) {
+                table.addCell(summary.summary_Created)
+                table.addCell(summary.summary_Sent)
+                table.addCell(summary.summary_Received)
+                table.addCell(summary.summary_Count)
+            }
+
+            document.add(table)
+            document.close()
+
+            Toast.makeText(requireContext(), "Exported to Downloads folder as PDF", Toast.LENGTH_LONG).show()
+
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Failed to export PDF: ${e.message}", Toast.LENGTH_LONG).show()
+            Log.e(kon.TAGGED, "exportToPdf: ${e.message}", e)
         }
     }
 

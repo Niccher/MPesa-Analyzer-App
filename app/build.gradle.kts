@@ -79,6 +79,9 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 //    implementation("com.jjoe64:graphview:4.2.2")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    
+    // PDF Generation
+    implementation("com.itextpdf:itextg:5.5.10")
 
 //    implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.11.0")

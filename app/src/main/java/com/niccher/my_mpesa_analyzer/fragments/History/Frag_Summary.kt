@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
@@ -307,7 +308,11 @@ class Frag_Summary : Fragment() {
 
     private fun getSmsListingFor(category: String) {
         if (category.isNotEmpty()) {
-            Toast.makeText(activity, "Category as $category", Toast.LENGTH_SHORT).show()
+            val bundle = Bundle()
+            bundle.putString("filter_category", category)
+            
+            requireActivity().findNavController(R.id.nav_host_fragment_activity_bottom)
+                .navigate(R.id.navi_transactions, bundle)
         } else {
             Toast.makeText(activity, "Null Category", Toast.LENGTH_SHORT).show()
         }

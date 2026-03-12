@@ -18,6 +18,12 @@
         tools:layout="@layout/frag_graph" />
 
     <fragment
+        android:id="@+id/navi_transactions"
+        android:name="com.niccher.my_mpesa_analyzer.fragments.History.Frag_Transactions"
+        android:label="Search"
+        tools:layout="@layout/frag_transactions" />
+
+    <fragment
         android:id="@+id/navi_history"
         android:name="com.niccher.my_mpesa_analyzer.fragments.History.Frag_History"
         android:label="@string/title_history"

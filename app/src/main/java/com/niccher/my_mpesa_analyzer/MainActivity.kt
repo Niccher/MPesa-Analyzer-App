@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.navi_home, R.id.navi_graph, R.id.navi_history, R.id.navi_info
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         checkAndRequestSmsPermission()

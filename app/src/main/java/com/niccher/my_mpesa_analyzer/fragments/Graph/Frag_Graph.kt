@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -37,6 +38,7 @@ import com.niccher.my_mpesa_analyzer.helpers.SummaryResponse
 import com.niccher.my_mpesa_analyzer.interfaces.JsonProcesses
 import com.niccher.my_mpesa_analyzer.konstants.Konstants
 import com.niccher.my_mpesa_analyzer.models.Mod_Summaries
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -99,7 +101,10 @@ class Frag_Graph : Fragment() {
         setupToolbar()
         setupToggleButton()
         setupChartObservers()
-        getConnectionState()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            getSummaries()
+        }
     }
 
     override fun onDestroyView() {
@@ -493,16 +498,6 @@ class Frag_Graph : Fragment() {
         connState.visibility = View.GONE
     }
 
-    // Network methods (same as before)
-    private fun getConnectionState() {
-        if (isConnected()) {
-            showLoadingState()
-            getSummaries()
-        } else {
-            showOfflineState()
-        }
-    }
-
     private fun isConnected(): Boolean {
         val connectivityManager = requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = connectivityManager.activeNetworkInfo
@@ -524,55 +519,66 @@ class Frag_Graph : Fragment() {
         binding.lineChart.visibility = View.GONE
     }
 
-    private fun getSummaries() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(kon.LINK_PROCESS)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(ServiceGenerators.getUnsafeOkHttpClient())
-            .build()
+    private suspend fun getSummaries() {
+        val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
 
-        jsonProcesses = retrofit.create(JsonProcesses::class.java)
+        try {
+            showLoadingState()
 
-        val parameters = mutableMapOf<String, String>()
-        parameters["varUser"] = pref.getPrefsAuth("auth", requireContext())
-        parameters["varDev"] = pref.getPrefsAuth("print", requireActivity())
+            val params = mapOf(
+                "varUser" to pref.getPrefsAuth("auth", requireContext()),
+                "varDev" to pref.getPrefsAuth("print", requireActivity())
+            )
 
-        val call = jsonProcesses.getSummary(parameters)
+            val response = jsonProcesses.getSummary(params)
 
-        call.enqueue(object : Callback<SummaryResponse> {
-            override fun onResponse(call: Call<SummaryResponse>, response: Response<SummaryResponse>) {
-                connWait.visibility = View.GONE
+            // Safely check if we have data
+            val summarizerList = response.summarizer?.takeIf { it.isNotEmpty() }
 
-                if (response.isSuccessful && response.body() != null) {
-                    val summaryResponse = response.body()!!
-                    summariesList = ArrayList(summaryResponse.summarizer?.toList().orEmpty())
+            if (summarizerList != null) {
+                val chartData = summarizerList.mapNotNull { summary ->
+                    // Safely convert strings to Float, skip invalid entries
+                    val received = summary.summary_Received.safeToFloat()
+                    val sent = summary.summary_Sent.safeToFloat()
+                    val unknown = summary.summary_Unknown.safeToFloat()
 
-                    if (summariesList.isNotEmpty()) {
-                        val chartData = summariesList.map { summary ->
-                            ChartDataItem(
-                                date = formatDate(summary.summary_Created),
-                                received = summary.summary_Received.toFloat(),
-                                sent = summary.summary_Sent.toFloat(),
-                                unknown = summary.summary_Unknown.toFloat()
-                            )
-                        }
-                        viewModel.updateChartData(chartData)
-                    } else {
-                        showNoDataState()
-                    }
+                    // If any value is invalid, skip this entry
+                    if (received == null || sent == null || unknown == null) return@mapNotNull null
+
+                    ChartDataItem(
+                        date = formatDate(summary.summary_Created ?: ""),
+                        received = received,
+                        sent = sent,
+                        unknown = unknown
+                    )
+                }
+
+                if (chartData.isNotEmpty()) {
+                    viewModel.updateChartData(chartData)
                 } else {
-                    Toast.makeText(context, "Failed to fetch data", Toast.LENGTH_LONG).show()
                     showNoDataState()
                 }
-            }
-
-            override fun onFailure(call: Call<SummaryResponse>, t: Throwable) {
-                connWait.visibility = View.GONE
-                Toast.makeText(context, t.message ?: "Unknown error", Toast.LENGTH_LONG).show()
-                Log.e(kon.TAGGED, t.message ?: "Unknown error")
+            } else {
                 showNoDataState()
             }
-        })
+
+        } catch (e: Exception) {
+            connWait.visibility = View.GONE
+            // This catch runs ONLY if no cache exists
+            if (!isConnected()) {
+                Toast.makeText(context, "No internet • Showing last saved data", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, "Network error • Check connection", Toast.LENGTH_LONG).show()
+            }
+            Log.d("GraphCache", "Served from cache or failed: ${e.message}")
+            showNoDataState()
+        }
+    }
+
+    fun String.safeToFloat(): Float? = try {
+        this.replace(",", "").trim().toFloat()
+    } catch (e: Exception) {
+        null
     }
 
     private fun formatDate(dateString: String): String {

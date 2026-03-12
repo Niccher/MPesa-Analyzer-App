@@ -19,6 +19,7 @@
             android:padding="@dimen/_20sdp"
             android:scaleType="centerCrop"
             android:src="@mipmap/app_credits"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="MissingConstraints" />
@@ -27,8 +28,8 @@
             android:id="@+id/app_credits_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/app_credits_icon"
             android:paddingBottom="@dimen/_24sdp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_credits_icon">
 
@@ -48,7 +49,6 @@
                 android:id="@+id/app_credits_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/app_credits_title"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:text="Open Source Libraries"
                 android:textSize="@dimen/_14sdp"
@@ -60,7 +60,6 @@
                 android:id="@+id/app_credits_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/app_credits_subtitle"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
@@ -76,9 +75,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/app_credits_layout"
             android:layout_marginTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_18sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_credits_layout">
 
             <!-- MPAndroidChart Card -->
@@ -155,6 +155,7 @@
                 android:layout_margin="@dimen/_16sdp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_mpandroid_chart">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -220,6 +221,7 @@
                 android:layout_margin="@dimen/_16sdp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_retrofit">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -285,6 +287,7 @@
                 android:layout_margin="@dimen/_16sdp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_material">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -340,6 +343,7 @@
                 android:layout_margin="@dimen/_16sdp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_other_libs">
 
                 <androidx.constraintlayout.widget.ConstraintLayout

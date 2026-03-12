@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -25,11 +26,13 @@ import com.niccher.my_mpesa_analyzer.helpers.SummaryResponse
 import com.niccher.my_mpesa_analyzer.interfaces.JsonProcesses
 import com.niccher.my_mpesa_analyzer.konstants.Konstants
 import com.niccher.my_mpesa_analyzer.models.Mod_Summaries
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.ArrayList
 
 class Frag_History : Fragment() {
 
@@ -45,7 +48,8 @@ class Frag_History : Fragment() {
     private lateinit var pref: Prefs
 
     private var gson: Gson = GsonBuilder().setLenient().create()
-    private var summariesList: ArrayList<Mod_Summaries> = ArrayList()
+//    private var summariesList: ArrayList<Mod_Summaries> = ArrayList()
+    private var summariesList: MutableList<Mod_Summaries> = mutableListOf()
 
 
     // This property is only valid between onCreateView and
@@ -71,11 +75,15 @@ class Frag_History : Fragment() {
         connState = fragHistory.findViewById(R.id.conn_no_internet)
         connWait = fragHistory.findViewById(R.id.conn_wait_internet)
         connWait.visibility = View.GONE
+        connState.visibility = View.GONE
 
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        getConnectionState()
+        // Load data ONCE — uses cache when offline
+        viewLifecycleOwner.lifecycleScope.launch {
+            getSummaries()
+        }
 
         return fragHistory
     }
@@ -87,7 +95,6 @@ class Frag_History : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         setTitle("History")
     }
 
@@ -103,66 +110,43 @@ class Frag_History : Fragment() {
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
-    fun getConnectionState() {
-        if (isConnected()) {
-            connWait.visibility = View.VISIBLE
-            connState.visibility = View.GONE
-            getSummaries()
-        } else {
-            connWait.visibility = View.GONE
-            recyclerView.visibility = View.GONE
-            isOffline("No internet connection at the moment")
-        }
-    }
-
-    fun isConnected(): Boolean {
-        val connectivityManager = requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netInfo = connectivityManager.activeNetworkInfo
-        return netInfo?.isConnected == true
-    }
-
     private fun isOffline(msg: String) {
+        connWait.visibility = View.GONE
+        connState.visibility = View.VISIBLE
         connState.text = msg
+        recyclerView.visibility = View.GONE
     }
 
-    private fun getSummaries() {
-        connWait.visibility = View.VISIBLE
+    private suspend fun getSummaries() {
+        try {
+            connWait.visibility = View.VISIBLE
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(kon.LINK_PROCESS)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(ServiceGenerators.getUnsafeOkHttpClient())
-            .build()
+            val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
+            val parameters = mapOf(
+                "varUser" to pref.getPrefsAuth("auth", requireContext()),
+                "varDev" to pref.getPrefsAuth("print", requireActivity())
+            )
 
-        jsonProcesses = retrofit.create(JsonProcesses::class.java)
+            val response = jsonProcesses.getSummary(parameters)
+            summariesList = response.summarizer?.toMutableList() ?: mutableListOf()
 
-        val parameters = mutableMapOf<String, String>()
-        parameters["varUser"] = pref.getPrefsAuth("auth", requireContext())
-        parameters["varDev"] = pref.getPrefsAuth("print", requireActivity())
+            if (summariesList.isNotEmpty()) {
+                summariesAdapter = Adapter_Frag_History(summariesList as ArrayList<Mod_Summaries>, requireActivity())
+                recyclerView.adapter = summariesAdapter
+                summariesAdapter.notifyDataSetChanged()
 
-        val call = jsonProcesses.getSummary(parameters)
-        call.enqueue(object : Callback<SummaryResponse> {
-            override fun onResponse(call: Call<SummaryResponse>, response: Response<SummaryResponse>) {
                 connWait.visibility = View.GONE
-                if (response.isSuccessful && response.body() != null) {
-                    val summaryResponse = response.body()!!
-                    summariesList = ArrayList(summaryResponse.summarizer?.toList().orEmpty())
-                    summariesAdapter = Adapter_Frag_History(summariesList, requireActivity())
-                    recyclerView.adapter = summariesAdapter
-                    summariesAdapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(context, "Failed to fetch data", Toast.LENGTH_LONG).show()
-                }
+                connState.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            } else {
+                isOffline("No data available")
             }
 
-            override fun onFailure(call: Call<SummaryResponse>, t: Throwable) {
-                connWait.visibility = View.GONE
-                isOffline("Unknown error has occurred, please try again later")
-                Toast.makeText(context, t.message ?: "Unknown error", Toast.LENGTH_LONG).show()
-                Log.e(kon.TAGGED, t.message ?: "Unknown error")
-            }
-        })
-
+        } catch (e: Exception) {
+            connWait.visibility = View.GONE
+            isOffline("Offline • Showing cached data")
+            Log.e(kon.TAGGED, "History: ${e.message}", e)
+        }
     }
 
 }

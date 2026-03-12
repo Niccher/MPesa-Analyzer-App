@@ -19,6 +19,7 @@
             android:padding="@dimen/_20sdp"
             android:scaleType="centerCrop"
             android:src="@mipmap/app_logo"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="MissingConstraints" />
@@ -27,8 +28,8 @@
             android:id="@+id/app_info_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/app_info_icon"
             android:paddingBottom="@dimen/_24sdp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_info_icon">
 
@@ -48,7 +49,6 @@
                 android:id="@+id/app_info_version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/app_info_name"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:text="Version 1.0.0"
                 android:textSize="@dimen/_14sdp"
@@ -60,7 +60,6 @@
                 android:id="@+id/app_info_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/app_info_version"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
@@ -76,9 +75,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/app_info_layout"
             android:layout_marginTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_18sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_info_layout">
 
             <!-- Features Card -->
@@ -144,6 +144,7 @@
                 android:layout_margin="@dimen/_16sdp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_features">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -198,6 +199,7 @@
                 android:layout_margin="@dimen/_16sdp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_permissions">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -252,6 +254,7 @@
                 android:layout_margin="@dimen/_16sdp"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_developer">
 
                 <androidx.constraintlayout.widget.ConstraintLayout

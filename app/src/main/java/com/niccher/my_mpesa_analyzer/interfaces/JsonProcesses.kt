@@ -10,10 +10,9 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface JsonProcesses {
-
     @FormUrlEncoded
     @POST("get/my_uploads")
-    fun getSummary(@FieldMap fields: Map<String, String>): Call<SummaryResponse>
+    suspend fun getSummary(@FieldMap fields: Map<String, String>): SummaryResponse
 
     @FormUrlEncoded
     @POST("get/my_summary_calculations")

@@ -193,13 +193,19 @@ class Frag_Home : Fragment() {
     private fun calc_Loot() {
         pref_loot_counter = requireActivity().getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(kon.LINK_PROCESS)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(ServiceGenerators.getUnsafeOkHttpClient())
-            .build()
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(kon.LINK_PROCESS)
+//            .addConverterFactory(GsonConverterFactory.create(gson))
+//            .client(ServiceGenerators.getUnsafeOkHttpClient(requireContext()))
+//            .build()
+//
+//        jsonProcesses = retrofit.create(JsonProcesses::class.java)
 
-        jsonProcesses = retrofit.create(JsonProcesses::class.java)
+//        val jsonProcesses by lazy {
+//            ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
+//        }
+
+        val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
 
         val parameters = mapOf(
             "varUser" to prefs.getPrefsAuth("auth", requireContext()),
@@ -283,7 +289,7 @@ class Frag_Home : Fragment() {
         fun Parser_Upload(files: File, filename: String) {
             progressBar.visibility = View.VISIBLE
 
-            val service = ServiceGenerators.createService(JsonUploadLoot::class.java)
+            val service = ServiceGenerators.createService(JsonUploadLoot::class.java, requireContext())
             val file = files
             val requestFile = RequestBody.create("*/*".toMediaTypeOrNull(), file)
 

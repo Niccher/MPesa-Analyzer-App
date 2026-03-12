@@ -80,7 +80,7 @@ class Sign_In : AppCompatActivity() {
                     val retrofit = Retrofit.Builder()
                         .baseUrl(kon.UPLOAD_AUTH_URL)
                         .addConverterFactory(GsonConverterFactory.create(gson))
-                        .client(ServiceGenerators.getUnsafeOkHttpClient())
+                        .client(ServiceGenerators.getUnsafeOkHttpClient(this))
                         .build()
 
                     jsonAuthUser = retrofit.create(JsonAuthUser::class.java)
@@ -145,7 +145,7 @@ class Sign_In : AppCompatActivity() {
             val retrofit = Retrofit.Builder()
                 .baseUrl(kon.LINK_PROCESS)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(ServiceGenerators.getUnsafeOkHttpClient())
+                .client(ServiceGenerators.getUnsafeOkHttpClient(this))
                 .build()
 
             jsonFonePrint = retrofit.create(JsonFonePrint::class.java)

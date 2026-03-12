@@ -314,13 +314,15 @@ class Frag_Summary : Fragment() {
     }
 
     private fun getSummaries(loot_name: String) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(kon.LINK_PROCESS)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(ServiceGenerators.getUnsafeOkHttpClient())
-            .build()
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(kon.LINK_PROCESS)
+//            .addConverterFactory(GsonConverterFactory.create(gson))
+//            .client(ServiceGenerators.getUnsafeOkHttpClient(requireContext()))
+//            .build()
+//
+//        jsonProcesses = retrofit.create(JsonProcesses::class.java)
 
-        jsonProcesses = retrofit.create(JsonProcesses::class.java)
+        val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
 
         val parameters = HashMap<String, String>()
         parameters["varUser"] = pref.getPrefsAuth("auth", requireContext())
@@ -414,13 +416,7 @@ class Frag_Summary : Fragment() {
     }
 
     private fun setLootToDelete(loot_uuid: String) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(kon.LINK_PROCESS)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(ServiceGenerators.getUnsafeOkHttpClient())
-            .build()
-
-        jsonProcesses = retrofit.create(JsonProcesses::class.java)
+        val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
 
         val parameters = HashMap<String, String>()
         parameters["varUser"] = pref.getPrefsAuth("auth", requireContext())

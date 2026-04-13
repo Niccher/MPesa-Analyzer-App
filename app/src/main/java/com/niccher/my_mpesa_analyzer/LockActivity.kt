@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import com.niccher.my_mpesa_analyzer.helpers.AppPrefs
 import com.niccher.my_mpesa_analyzer.helpers.BiometricHelper
 
 class LockActivity : AppCompatActivity() {
@@ -12,12 +13,18 @@ class LockActivity : AppCompatActivity() {
     private lateinit var biometricHelper: BiometricHelper
 
     companion object {
-        // Reset to false on every app launch - controlled by MainActivity.onPause
         var isUnlocked: Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // If biometric is disabled, skip lock entirely
+        if (!AppPrefs.isBiometricEnabled(this)) {
+            isUnlocked = true
+            finish()
+            return
+        }
         setContentView(R.layout.activity_lock)
 
         // Prevent screenshots/peeking in recent apps

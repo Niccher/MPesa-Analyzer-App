@@ -12,10 +12,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.niccher.my_mpesa_analyzer.databinding.ActivityMainBinding
+import com.niccher.my_mpesa_analyzer.helpers.AppPrefs
 import com.niccher.my_mpesa_analyzer.R
 
 class MainActivity : AppCompatActivity() {
@@ -26,8 +30,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Apply saved theme preference before inflation
+        if (AppPrefs.isDarkThemeEnabled(this)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Register the toolbar as the action bar so the options menu renders
+        setSupportActionBar(binding.toolbar)
 
         // Hardening: Prevent screenshots and peeking in recent apps
         window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
@@ -42,10 +56,48 @@ class MainActivity : AppCompatActivity() {
                 R.id.navi_home, R.id.navi_graph, R.id.navi_transactions, R.id.navi_history, R.id.navi_info
             )
         )
+        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Hide bottom navigation bar when in Settings or Profile
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navi_settings, R.id.navi_profile -> {
+                    navView.visibility = View.GONE
+                }
+                else -> {
+                    navView.visibility = View.VISIBLE
+                }
+            }
+        }
 
         checkAndRequestSmsPermission()
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.options_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_activity_bottom)
+        return when (item.itemId) {
+            R.id.menu_settings -> {
+                navController.navigate(R.id.navi_settings)
+                true
+            }
+            R.id.menu_profile -> {
+                navController.navigate(R.id.navi_profile)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_activity_bottom)
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     override fun onStart() {

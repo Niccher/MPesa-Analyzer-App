@@ -1,189 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/part_txt_frame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/_4sdp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/part_txt_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/info_box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:paddingBottom="@dimen/_8sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/info_box1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:background="@drawable/bg_rect_frame"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/info_box2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_24sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <LinearLayout
-                        android:id="@+id/box_received"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/txt_received"
-                            android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/part_txt_incoming"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:paddingStart="@dimen/_10sdp"
-                            android:text="@string/txt_missing_digit"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/box_sent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/box_received">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/tag_sent"
-                            android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_16sdp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/part_txt_sent"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:paddingStart="@dimen/_10sdp"
-                            android:text="@string/txt_missing_digit"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_16sdp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/box_unknown"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/box_sent">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/tag_unknown"
-                            android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/part_txt_unknown"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:paddingStart="@dimen/_10sdp"
-                            android:text="@string/txt_missing_digit"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/part_txt_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/txt_missing_digit"
-                    android:textAppearance="@style/ShapeAppearance.Material3.MediumComponent"
-                    android:textColor="@color/primarytext"
-                    android:textSize="@dimen/_16sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@id/info_box2"
-                    app:layout_constraintStart_toStartOf="@id/info_box2"
-                    app:layout_constraintTop_toBottomOf="@id/info_box2" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:src="@mipmap/list_monies"
-                app:civ_border_width="@dimen/_2sdp"
-                app:civ_circle_background_color="#C3C3C3"
-                app:layout_constraintBottom_toBottomOf="@id/info_box1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/info_box1" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/bg_rectangle">
-
+        <!-- Date Pill -->
         <TextView
             android:id="@+id/part_txt_date"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="04 December 2018"
-            android:textColor="@color/white" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_label"
+            android:backgroundTint="@color/signupsignintextcolor"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="Dec 04 18:30:00"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Total interactions badge -->
+        <TextView
+            android:id="@+id/part_txt_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Interactions: 5"
+            android:textColor="@color/secondarytext"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/part_txt_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/part_txt_date" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/linecolor"
+            app:layout_constraintTop_toBottomOf="@id/part_txt_date" />
+
+        <!-- Columns for Sent / Received / Unknown -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider">
+
+            <!-- Received Column -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Received"
+                    android:textColor="@color/primarytext"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/part_txt_incoming"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="0.00"
+                    android:textColor="@color/bg_green"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Sent Column -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sent"
+                    android:textColor="@color/primarytext"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/part_txt_sent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="0.00"
+                    android:textColor="@color/bg_red"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Unknown Column -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unknown"
+                    android:textColor="@color/primarytext"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/part_txt_unknown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="0.00"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</RelativeLayout>
+</androidx.cardview.widget.CardView>

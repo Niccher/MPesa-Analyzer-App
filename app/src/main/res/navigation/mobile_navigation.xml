@@ -34,4 +34,17 @@
         android:name="com.niccher.my_mpesa_analyzer.fragments.Info.Frag_Info"
         android:label="@string/title_info"
         tools:layout="@layout/frag_info" />
+
+    <fragment
+        android:id="@+id/navi_settings"
+        android:name="com.niccher.my_mpesa_analyzer.fragments.Settings.Frag_Settings"
+        android:label="Settings"
+        tools:layout="@layout/frag_settings" />
+
+    <fragment
+        android:id="@+id/navi_profile"
+        android:name="com.niccher.my_mpesa_analyzer.fragments.Profile.Frag_Profile"
+        android:label="Profile"
+        tools:layout="@layout/frag_profile" />
+
 </navigation>

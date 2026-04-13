@@ -27,7 +27,7 @@ class Adapter_Frag_History(
         val part_unknown: TextView = itemView.findViewById(R.id.part_txt_unknown)
         val part_receive: TextView = itemView.findViewById(R.id.part_txt_incoming)
         val part_count: TextView = itemView.findViewById(R.id.part_txt_total)
-        val part_frame: ConstraintLayout = itemView.findViewById(R.id.part_txt_frame)
+        val part_frame: androidx.cardview.widget.CardView = itemView.findViewById(R.id.part_txt_frame)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

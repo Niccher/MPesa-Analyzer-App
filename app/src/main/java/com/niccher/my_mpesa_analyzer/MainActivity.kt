@@ -12,6 +12,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import android.view.View
+import android.view.WindowManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.niccher.my_mpesa_analyzer.databinding.ActivityMainBinding
 import com.niccher.my_mpesa_analyzer.R
@@ -26,6 +28,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Hardening: Prevent screenshots and peeking in recent apps
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
 
         val navView: BottomNavigationView = binding.navView
 
@@ -48,9 +53,23 @@ class MainActivity : AppCompatActivity() {
         checkAndRequestSmsPermission()
     }
 
+    override fun onStop() {
+        super.onStop()
+        // Reset the lock when the app is fully hidden (NOT onPause, which fires on system dialogs too)
+        LockActivity.isUnlocked = false
+    }
+
     override fun onResume() {
         super.onResume()
+        checkLock()
         checkAndRequestSmsPermission()
+    }
+
+    private fun checkLock() {
+        if (!LockActivity.isUnlocked) {
+            val intent = android.content.Intent(this, LockActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun checkAndRequestSmsPermission() {

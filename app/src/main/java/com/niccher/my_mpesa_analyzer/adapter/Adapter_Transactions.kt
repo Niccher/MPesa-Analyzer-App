@@ -53,6 +53,17 @@ class Adapter_Transactions(private var transList: ArrayList<Mod_Transaction>) :
             else -> R.color.colorPrimaryDark
         }
         holder.txtAmount.setTextColor(ContextCompat.getColor(holder.itemView.context, colorRes))
+
+        val badgeColorRes = when (trans.type.lowercase()) {
+            "received" -> R.color.bg_green
+            "sent" -> R.color.bg_red
+            "paybill" -> R.color.purple_700
+            "withdraw" -> R.color.teal_700
+            else -> R.color.colorPrimaryDark
+        }
+        holder.txtType.backgroundTintList = android.content.res.ColorStateList.valueOf(
+            ContextCompat.getColor(holder.itemView.context, badgeColorRes)
+        )
     }
 
     override fun getItemCount(): Int = transList.size

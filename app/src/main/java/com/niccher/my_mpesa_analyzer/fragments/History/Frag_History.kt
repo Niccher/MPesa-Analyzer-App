@@ -57,7 +57,7 @@ class Frag_History : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var connState: TextView
-    private lateinit var connWait: ProgressBar
+    private lateinit var connWait: android.widget.LinearLayout
     private lateinit var fabExport: ExtendedFloatingActionButton
 
     private lateinit var jsonProcesses: JsonProcesses

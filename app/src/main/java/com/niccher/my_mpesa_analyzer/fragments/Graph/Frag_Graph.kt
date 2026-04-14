@@ -54,7 +54,7 @@ class Frag_Graph : Fragment() {
 
     // Views
     private lateinit var connState: TextView
-    private lateinit var connWait: ProgressBar
+    private lateinit var connWait: android.widget.LinearLayout
     private lateinit var toolbar: MaterialToolbar
     private lateinit var toolbarTitle: TextView
     private lateinit var chartTypeContainer: View

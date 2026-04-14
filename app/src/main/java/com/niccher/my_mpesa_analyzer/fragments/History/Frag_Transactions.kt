@@ -37,8 +37,7 @@ class Frag_Transactions : Fragment() {
     private lateinit var chipGroup: ChipGroup
     private lateinit var btnDateFilter: Button
     private lateinit var txtEmpty: TextView
-    private lateinit var progressLoading: ProgressBar
-    private lateinit var txtLoading: TextView
+    private lateinit var progressLoading: android.widget.LinearLayout
 
     private var allTransactions = ArrayList<Mod_Transaction>()
     private var currentFilterType = "all"
@@ -53,8 +52,7 @@ class Frag_Transactions : Fragment() {
         chipGroup = root.findViewById(R.id.chip_group_filters)
         btnDateFilter = root.findViewById<Button>(R.id.btn_date_filter)
         txtEmpty = root.findViewById<TextView>(R.id.txt_empty)
-        progressLoading = root.findViewById<ProgressBar>(R.id.progress_loading)
-        txtLoading = root.findViewById<TextView>(R.id.txt_loading)
+        progressLoading = root.findViewById<android.widget.LinearLayout>(R.id.progress_loading)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = Adapter_Transactions(ArrayList())
@@ -141,7 +139,6 @@ class Frag_Transactions : Fragment() {
 
         lifecycleScope.launch {
             progressLoading.visibility = View.VISIBLE
-            txtLoading.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
             txtEmpty.visibility = View.GONE
 
@@ -175,7 +172,6 @@ class Frag_Transactions : Fragment() {
             allTransactions.addAll(transactions)
             
             progressLoading.visibility = View.GONE
-            txtLoading.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
             
             applyFilters()

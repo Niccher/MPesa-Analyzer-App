@@ -117,8 +117,10 @@ class Frag_Summary : Fragment() {
     private lateinit var lin_lay_error_org: LinearLayout
     private lateinit var lin_lay_error_failed: LinearLayout
 
-    private lateinit var lin_loot_delete: LinearLayout
+    private lateinit var lin_loot_delete: com.google.android.material.button.MaterialButton
     private lateinit var layout_interactions: LinearLayout
+    private lateinit var progress_bar: android.widget.LinearLayout
+    private lateinit var scroll_view: android.widget.ScrollView
 
     private var lood_uuid: String = ""
     private lateinit var jsonProcesses: JsonProcesses
@@ -232,6 +234,8 @@ class Frag_Summary : Fragment() {
 
         lin_loot_delete = summarizer.findViewById(R.id.summary_Loot_Delete)
         layout_interactions = summarizer.findViewById(R.id.summary_interactions_layout)
+        progress_bar = summarizer.findViewById(R.id.summary_progress_bar)
+        scroll_view = summarizer.findViewById(R.id.summary_scroll_view)
 
         lood_uuid = ""
 
@@ -335,9 +339,18 @@ class Frag_Summary : Fragment() {
         parameters["varLootUuid"] = loot_name
 
         val call = jsonProcesses.getSummaryCalc(parameters)
+        
+        progress_bar.visibility = View.VISIBLE
+        scroll_view.visibility = View.GONE
+        layout_interactions.visibility = View.GONE
+        
         call.enqueue(object : Callback<Mod_Loot_Summary> {
             override fun onResponse(call: Call<Mod_Loot_Summary>, response: Response<Mod_Loot_Summary>) {
                 if (response.isSuccessful && response.body() != null) {
+                    progress_bar.visibility = View.GONE
+                    scroll_view.visibility = View.VISIBLE
+                    layout_interactions.visibility = View.VISIBLE
+                    
                     val mod_loot_summary = response.body()!!
 
                     var all_rec = 0
@@ -405,15 +418,31 @@ class Frag_Summary : Fragment() {
                     tv_error_org.text = mod_loot_summary.loot_summarizer.count_Error_Receiver_Org
                     tv_error_failed.text = mod_loot_summary.loot_summarizer.count_Error_Failed
 
-                    val lootCreated = mod_loot_summary.loot_summarizer.loot_Created.split(" ")
-                    tv_gen_time.text = lootCreated[1]
-                    tv_gen_date.text = lootCreated[0]
+                    try {
+                        val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+                        val dateOutputFormat = java.text.SimpleDateFormat("EEEE, MMM dd", java.util.Locale.getDefault())
+                        val timeOutputFormat = java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault())
+                        val parsedDate = inputFormat.parse(mod_loot_summary.loot_summarizer.loot_Created)
+                        if (parsedDate != null) {
+                            tv_gen_date.text = dateOutputFormat.format(parsedDate)
+                            tv_gen_time.text = timeOutputFormat.format(parsedDate)
+                        } else {
+                            val lootCreated = mod_loot_summary.loot_summarizer.loot_Created.split(" ")
+                            tv_gen_date.text = lootCreated[0]
+                            tv_gen_time.text = lootCreated.getOrNull(1) ?: ""
+                        }
+                    } catch (e: Exception) {
+                        val lootCreated = mod_loot_summary.loot_summarizer.loot_Created.split(" ")
+                        tv_gen_date.text = lootCreated[0]
+                        tv_gen_time.text = lootCreated.getOrNull(1) ?: ""
+                    }
 
                     getClickedAction(mod_loot_summary.loot_summarizer.loot_Uuid)
                 }
             }
 
             override fun onFailure(call: Call<Mod_Loot_Summary>, t: Throwable) {
+                progress_bar.visibility = View.GONE
                 Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again")
                 Log.e(kon.TAGGED, t.message ?: "Unknown error")
             }
@@ -452,11 +481,7 @@ class Frag_Summary : Fragment() {
     }
 
     private fun backtoHistory() {
-        val frag_history = Frag_History()
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_activity_bottom, frag_history)
-        fragmentTransaction.commit()
+        requireActivity().findNavController(R.id.nav_host_fragment_activity_bottom).navigateUp()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

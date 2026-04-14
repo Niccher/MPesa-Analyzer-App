@@ -14,4 +14,16 @@
         android:title="Settings"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/navi_app_info"
+        android:icon="@drawable/ic_info"
+        android:title="App Info"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/navi_app_credits"
+        android:icon="@drawable/ic_info"
+        android:title="App Credits"
+        app:showAsAction="never" />
+
 </menu>

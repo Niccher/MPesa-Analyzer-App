@@ -53,16 +53,16 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navi_home, R.id.navi_graph, R.id.navi_transactions, R.id.navi_history, R.id.navi_info
+                R.id.navi_home, R.id.navi_graph, R.id.navi_transactions, R.id.navi_history
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // Hide bottom navigation bar when in Settings or Profile
+        // Hide bottom navigation bar when in Settings or Profile or Info or Credits
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navi_settings, R.id.navi_profile -> {
+                R.id.navi_settings, R.id.navi_profile, R.id.navi_app_info, R.id.navi_app_credits -> {
                     navView.visibility = View.GONE
                 }
                 else -> {
@@ -89,6 +89,14 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_profile -> {
                 navController.navigate(R.id.navi_profile)
+                true
+            }
+            R.id.navi_app_info -> {
+                navController.navigate(R.id.navi_app_info)
+                true
+            }
+            R.id.navi_app_credits -> {
+                navController.navigate(R.id.navi_app_credits)
                 true
             }
             else -> super.onOptionsItemSelected(item)

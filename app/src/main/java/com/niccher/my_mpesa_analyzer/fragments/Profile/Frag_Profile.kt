@@ -25,14 +25,16 @@ class Frag_Profile : Fragment() {
             Konstants.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE
         )
 
-        val username = prefs.getString("user_name", "User") ?: "User"
-        val email = prefs.getString("user_email", "") ?: ""
-        val memberSince = prefs.getString("member_since", "") ?: ""
+        val username = prefs.getString("userName", "User")?.replaceFirstChar { it.uppercase() } ?: "User"
+        val email = prefs.getString("userEmail", "") ?: ""
+        val memberSince = prefs.getString("time", "") ?: ""
 
         view.findViewById<TextView>(R.id.tv_username).text = username
-        if (email.isNotBlank()) view.findViewById<TextView>(R.id.tv_email).text = email
-        if (memberSince.isNotBlank()) {
-            view.findViewById<TextView>(R.id.tv_member_since).text = "Member since $memberSince"
+        if (email.isNotBlank() && email != "nullable") {
+            view.findViewById<TextView>(R.id.tv_email).text = email
+        }
+        if (memberSince.isNotBlank() && memberSince != "nullable") {
+            view.findViewById<TextView>(R.id.tv_member_since).text = "Logged in at $memberSince"
         }
     }
 }

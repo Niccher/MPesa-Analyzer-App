@@ -30,10 +30,16 @@
         tools:layout="@layout/frag_history" />
 
     <fragment
-        android:id="@+id/navi_info"
-        android:name="com.niccher.my_mpesa_analyzer.fragments.Info.Frag_Info"
-        android:label="@string/title_info"
-        tools:layout="@layout/frag_info" />
+        android:id="@+id/navi_app_info"
+        android:name="com.niccher.my_mpesa_analyzer.fragments.Info.Frag_App_Info"
+        android:label="App Info"
+        tools:layout="@layout/frag_app_info" />
+
+    <fragment
+        android:id="@+id/navi_app_credits"
+        android:name="com.niccher.my_mpesa_analyzer.fragments.Info.Frag_App_Credits"
+        android:label="App Credits"
+        tools:layout="@layout/frag_app_credits" />
 
     <fragment
         android:id="@+id/navi_settings"

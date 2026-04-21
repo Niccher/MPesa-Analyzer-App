@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.cronet.embedded)
     implementation(libs.constraintlayout)
     implementation(libs.androidx.cardview)
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

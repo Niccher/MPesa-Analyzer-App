@@ -54,12 +54,14 @@ class Frag_Graph : Fragment() {
 
     // Views
     private lateinit var connState: TextView
-    private lateinit var connWait: android.widget.LinearLayout
-    private lateinit var toolbar: MaterialToolbar
+    private lateinit var connWait: View
     private lateinit var toolbarTitle: TextView
     private lateinit var chartTypeContainer: View
     private lateinit var iconChartType: ImageView
+    private lateinit var txtChartType: TextView
     private lateinit var iconDropdown: ImageView
+    private lateinit var kpiTotalReceived: TextView
+    private lateinit var kpiTotalSent: TextView
 
     // Dependencies
     private lateinit var jsonProcesses: JsonProcesses
@@ -115,11 +117,13 @@ class Frag_Graph : Fragment() {
     private fun initializeViews() {
         connState = binding.connNoInternet
         connWait = binding.connWaitInternet
-        toolbar = binding.toolbar
-        toolbarTitle = binding.toolbarTitle
-        chartTypeContainer = binding.chartTypeContainer
         iconChartType = binding.iconChartType
+        txtChartType = binding.txtChartType
         iconDropdown = binding.iconDropdown
+        kpiTotalReceived = binding.kpiTotalReceived
+        kpiTotalSent = binding.kpiTotalSent
+        chartTypeContainer = binding.chartTypeContainer
+        toolbarTitle = binding.toolbarTitle
 
         // Hide connection elements initially
         connWait.visibility = View.GONE
@@ -127,7 +131,7 @@ class Frag_Graph : Fragment() {
     }
 
     private fun setupToolbar() {
-        toolbarTitle.text = getString(R.string.graphs_stacked_bar) // Default title
+        binding.toolbarTitle.text = "Financial Analytics"
     }
 
     private fun setupToggleButton() {
@@ -155,19 +159,16 @@ class Frag_Graph : Fragment() {
     }
 
     private fun updateToolbarTitle() {
-        val title = when (currentChartType) {
-            ChartType.STACKED_BAR -> getString(R.string.graphs_stacked_bar)
-            ChartType.LINE_GRAPH -> getString(R.string.graphs_line_graph)
-        }
-        toolbarTitle.text = title
+        // No longer updating title based on chart type in the new layout
     }
 
     private fun updateChartTypeIcon() {
-        val iconRes = when (currentChartType) {
-            ChartType.STACKED_BAR -> R.drawable.ic_bar_chart
-            ChartType.LINE_GRAPH -> R.drawable.ic_line_chart
+        val (iconRes, label) = when (currentChartType) {
+            ChartType.STACKED_BAR -> R.drawable.ic_bar_chart to "Bar"
+            ChartType.LINE_GRAPH -> R.drawable.ic_line_chart to "Line"
         }
         iconChartType.setImageResource(iconRes)
+        txtChartType.text = label
     }
 
     private fun setupChartObservers() {
@@ -190,11 +191,25 @@ class Frag_Graph : Fragment() {
 
     private fun refreshCharts(dataList: List<Frag_Graph_VM.SummaryEntry>) {
         hideConnectionState()
+        updateKPICards(dataList)
 
         when (currentChartType) {
             ChartType.STACKED_BAR -> showStackedBarChart(dataList)
             ChartType.LINE_GRAPH -> showLineChart(dataList)
         }
+    }
+
+    private fun updateKPICards(dataList: List<Frag_Graph_VM.SummaryEntry>) {
+        var totalReceived = 0f
+        var totalSent = 0f
+        
+        dataList.forEach {
+            totalReceived += it.received
+            totalSent += it.sent
+        }
+        
+        kpiTotalReceived.text = "Ksh ${String.format("%.2f", totalReceived)}"
+        kpiTotalSent.text = "Ksh ${String.format("%.2f", totalSent)}"
     }
 
     private fun showStackedBarChart(dataList: List<Frag_Graph_VM.SummaryEntry>) {
@@ -505,14 +520,14 @@ class Frag_Graph : Fragment() {
     }
 
     private fun showLoadingState() {
-        connWait.visibility = View.VISIBLE
+        binding.connWaitInternet.visibility = View.VISIBLE
         connState.visibility = View.GONE
         binding.barChart.visibility = View.GONE
         binding.lineChart.visibility = View.GONE
     }
 
     private fun showOfflineState() {
-        connWait.visibility = View.GONE
+        binding.connWaitInternet.visibility = View.GONE
         connState.visibility = View.VISIBLE
         connState.text = getString(R.string.str_no_internet_connection)
         binding.barChart.visibility = View.GONE
@@ -563,7 +578,7 @@ class Frag_Graph : Fragment() {
             }
 
         } catch (e: Exception) {
-            connWait.visibility = View.GONE
+            binding.connWaitInternet.visibility = View.GONE
             // This catch runs ONLY if no cache exists
             if (!isConnected()) {
                 Toast.makeText(context, "No internet • Showing last saved data", Toast.LENGTH_LONG).show()

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_16sdp"
+    app:cardCornerRadius="@dimen/_8sdp"
+    app:cardElevation="@dimen/_4sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_16sdp">
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Local Spending Insights"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/dialog_spending_chart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_300sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            app:layout_constraintTop_toBottomOf="@id/dialog_title" />
+
+        <TextView
+            android:id="@+id/dialog_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="Summary..."
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/dialog_spending_chart" />
+
+        <TextView
+            android:id="@+id/btn_close_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:background="@drawable/rect_btn"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="Close"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/dialog_summary" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

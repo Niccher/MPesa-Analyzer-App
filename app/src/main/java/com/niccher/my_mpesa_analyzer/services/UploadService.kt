@@ -6,6 +6,7 @@ import android.app.Service
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import android.provider.Telephony
@@ -51,7 +52,11 @@ class UploadService : Service() {
             .setOngoing(true)
             .build()
 
-        startForeground(NOTIFICATION_ID, notification)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+        } else {
+            startForeground(NOTIFICATION_ID, notification)
+        }
 
         Thread {
             Parser_SMS(this)

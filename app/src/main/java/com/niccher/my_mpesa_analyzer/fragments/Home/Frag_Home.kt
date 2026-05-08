@@ -41,6 +41,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.*
 import java.util.*
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.utils.ColorTemplate
+import com.niccher.my_mpesa_analyzer.helpers.MpesaParser
 
 class Frag_Home : Fragment() {
 
@@ -62,6 +70,7 @@ class Frag_Home : Fragment() {
     private lateinit var perm_request: TextView
 
     private lateinit var progressBar: ProgressBar
+    private lateinit var btn_view_insights: TextView
 
     private val CODE_READ_SMS = 102
     private val CODE_READ_STORAGE = 104
@@ -87,6 +96,7 @@ class Frag_Home : Fragment() {
         perm_status = solv.findViewById(R.id.card_text_permission)
         perm_request = solv.findViewById(R.id.card_text_req_permission)
         progressBar = solv.findViewById(R.id.home_upload_state)
+        btn_view_insights = solv.findViewById(R.id.btn_view_insights)
 
         perm_request.visibility = View.GONE
         progressBar.visibility = View.GONE
@@ -109,6 +119,10 @@ class Frag_Home : Fragment() {
         }
 
         last_time.text = prefs.getTimeStamp(requireActivity())
+
+        btn_view_insights.setOnClickListener {
+            showInsightsDialog()
+        }
 
         return solv
     }
@@ -152,6 +166,90 @@ class Frag_Home : Fragment() {
             perm_status.text = getText(R.string.string_dialog_permission_denied)
             perm_request.visibility = View.VISIBLE
         }
+    }
+
+    private fun showInsightsDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_insights, null)
+        val dialog = AlertDialog.Builder(requireContext(), R.style.CustomDialogTheme)
+            .setView(dialogView)
+            .create()
+
+        val chart = dialogView.findViewById<PieChart>(R.id.dialog_spending_chart)
+        val closeBtn = dialogView.findViewById<TextView>(R.id.btn_close_dialog)
+        val title = dialogView.findViewById<TextView>(R.id.dialog_title)
+        val summaryTxt = dialogView.findViewById<TextView>(R.id.dialog_summary)
+
+        title.text = "Insights: Last 10 Days"
+        closeBtn.setOnClickListener { dialog.dismiss() }
+
+        chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: com.github.mikephil.charting.data.Entry?, h: Highlight?) {
+                if (e == null) return
+                val entry = e as PieEntry
+                chart.centerText = "${entry.label}\nKsh ${entry.value}"
+            }
+
+            override fun onNothingSelected() {
+                chart.centerText = "Local Insights"
+            }
+        })
+
+        updateChart(chart, summaryTxt)
+        dialog.show()
+    }
+
+    private fun updateChart(chart: PieChart, summaryTxt: TextView) {
+        val messages = mutableListOf<String>()
+        val cr: ContentResolver = requireContext().contentResolver
+        
+        val tenDaysAgo = System.currentTimeMillis() - (10L * 24 * 60 * 60 * 1000)
+        val selection = "${Telephony.Sms.DATE} >= ?"
+        val selectionArgs = arrayOf(tenDaysAgo.toString())
+        
+        val cursor = cr.query(Telephony.Sms.CONTENT_URI, arrayOf(Telephony.Sms.BODY), selection, selectionArgs, null)
+        
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                val body = cursor.getString(0)
+                if (body.contains("MPESA", ignoreCase = true)) {
+                    messages.add(body)
+                }
+            }
+            cursor.close()
+        }
+
+        val spendingMap = MpesaParser.getSpendingByCategory(messages)
+        val entries = mutableListOf<PieEntry>()
+        val summaryBuilder = StringBuilder()
+        
+        for ((category, amount) in spendingMap) {
+            if (amount > 0) {
+                entries.add(PieEntry(amount, category))
+                summaryBuilder.append("• $category: Ksh $amount\n")
+            }
+        }
+
+        if (entries.isEmpty()) {
+            chart.setNoDataText("No MPESA transactions found locally.")
+            summaryTxt.text = "No transactions found in the last 10 days."
+            chart.invalidate()
+            return
+        }
+
+        summaryTxt.text = summaryBuilder.toString()
+
+        val dataSet = PieDataSet(entries, "Spending Distribution")
+        dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+        dataSet.valueTextSize = 12f
+        dataSet.valueTextColor = android.graphics.Color.BLACK
+
+        val data = PieData(dataSet)
+        chart.data = data
+        chart.description.isEnabled = false
+        chart.centerText = "Local Insights"
+        chart.setEntryLabelColor(android.graphics.Color.BLACK)
+        chart.animateY(1000)
+        chart.invalidate()
     }
 
 

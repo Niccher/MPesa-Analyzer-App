@@ -31,7 +31,7 @@
                     android:id="@+id/cat_point_loot_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date"
+                    android:text="@string/str_date_59"
                     android:textColor="@color/signupsignintextcolor"
                     android:textStyle="bold"
                     android:textSize="16sp"
@@ -40,7 +40,7 @@
                     android:id="@+id/cat_point_loot_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Time"
+                    android:text="@string/str_time_56"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="8dp"
-                        android:text="General Interactions"
+                        android:text="@string/str_general_interactions_39"
                         android:textColor="@color/signupsignintextcolor"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -99,7 +99,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -108,7 +108,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="All"
+                                android:text="@string/str_all_32"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -137,7 +137,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -146,7 +146,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Balance"
+                                android:text="@string/str_balance_42"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -175,7 +175,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -184,7 +184,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Fuliza"
+                                android:text="@string/str_fuliza_31"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -213,7 +213,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -222,7 +222,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Received"
+                                android:text="@string/str_received_46"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -251,7 +251,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -260,7 +260,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Sent"
+                                android:text="@string/str_sent_74"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -289,7 +289,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -298,7 +298,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Withdraw"
+                                android:text="@string/str_withdraw_40"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -327,7 +327,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -336,7 +336,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Wrong Pin"
+                                android:text="@string/str_wrong_pin_55"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -365,7 +365,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -374,7 +374,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Unknown"
+                                android:text="@string/str_unknown_34"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -404,7 +404,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Sent Breakdown"
+                        android:text="@string/str_sent_breakdown_37"
                         android:textColor="@color/signupsignintextcolor"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -438,7 +438,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -447,7 +447,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="All Sent"
+                                android:text="@string/str_all_sent_73"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -476,7 +476,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -485,7 +485,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="To MPESA"
+                                android:text="@string/str_to_mpesa_41"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -514,7 +514,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -523,7 +523,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="To Mshwari"
+                                android:text="@string/str_to_mshwari_36"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -552,7 +552,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -561,7 +561,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Lipa Na MPESA"
+                                android:text="@string/str_lipa_na_mpesa_48"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -590,7 +590,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -599,7 +599,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Mini Statement"
+                                android:text="@string/str_mini_statement_65"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -628,7 +628,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -637,7 +637,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Cancelled"
+                                android:text="@string/str_cancelled_58"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -667,7 +667,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Received Breakdown"
+                        android:text="@string/str_received_breakdown_28"
                         android:textColor="@color/signupsignintextcolor"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -701,7 +701,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -710,7 +710,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="All Received"
+                                android:text="@string/str_all_received_57"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -739,7 +739,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -748,7 +748,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="From MPESA"
+                                android:text="@string/str_from_mpesa_33"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -777,7 +777,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -786,7 +786,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="From Mshwari"
+                                android:text="@string/str_from_mshwari_62"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -815,7 +815,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -824,7 +824,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="From NCBA"
+                                android:text="@string/str_from_ncba_71"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -853,7 +853,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -862,7 +862,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="From I&amp;M"
+                                android:text="@string/str_from_i_amp_m_70"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -891,7 +891,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -900,7 +900,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Reversal"
+                                android:text="@string/str_reversal_63"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -929,7 +929,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -938,7 +938,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="From KCB"
+                                android:text="@string/str_from_kcb_44"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -968,7 +968,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Balance Inquiries"
+                        android:text="@string/str_balance_inquiries_43"
                         android:textColor="@color/signupsignintextcolor"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -1002,7 +1002,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1011,7 +1011,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="All Balance"
+                                android:text="@string/str_all_balance_61"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1040,7 +1040,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1049,7 +1049,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="MPESA Bal"
+                                android:text="@string/str_mpesa_bal_50"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1078,7 +1078,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1087,7 +1087,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Mshwari Bal"
+                                android:text="@string/str_mshwari_bal_69"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1116,7 +1116,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1125,7 +1125,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="KCB Bal"
+                                android:text="@string/str_kcb_bal_30"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1155,7 +1155,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Fuliza Interactions"
+                        android:text="@string/str_fuliza_interactions_35"
                         android:textColor="@color/signupsignintextcolor"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -1189,7 +1189,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1198,7 +1198,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="All Fuliza"
+                                android:text="@string/str_all_fuliza_66"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1227,7 +1227,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1236,7 +1236,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Opt In"
+                                android:text="@string/str_opt_in_67"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1265,7 +1265,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1274,7 +1274,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Opt Out"
+                                android:text="@string/str_opt_out_29"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1303,7 +1303,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1312,7 +1312,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Limit"
+                                android:text="@string/str_limit_53"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1341,7 +1341,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1350,7 +1350,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Loan Taken"
+                                android:text="@string/str_loan_taken_68"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1379,7 +1379,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1388,7 +1388,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Mini Statement"
+                                android:text="@string/str_mini_statement_65"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1418,7 +1418,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Errors and Failures"
+                        android:text="@string/str_errors_and_failures_52"
                         android:textColor="@color/signupsignintextcolor"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -1452,7 +1452,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1461,7 +1461,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="All Errors"
+                                android:text="@string/str_all_errors_54"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1490,7 +1490,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1499,7 +1499,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Wrong PIN"
+                                android:text="@string/str_wrong_pin_45"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1528,7 +1528,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1537,7 +1537,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Insufficient"
+                                android:text="@string/str_insufficient_72"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1566,7 +1566,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1575,7 +1575,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Bad Merchant"
+                                android:text="@string/str_bad_merchant_49"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1604,7 +1604,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1613,7 +1613,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Bad Receiver"
+                                android:text="@string/str_bad_receiver_38"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1642,7 +1642,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1651,7 +1651,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Bad Org"
+                                android:text="@string/str_bad_org_47"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1680,7 +1680,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="0"
+                                android:text="@string/str_0_27"
                                 android:textColor="@color/bg_green"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1689,7 +1689,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Failed"
+                                android:text="@string/str_failed_60"
                                 android:textColor="@color/primarytext"
                                 android:textSize="12sp"
                                 android:textAlignment="center"/>
@@ -1704,7 +1704,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Delete Summary"
+                android:text="@string/str_delete_summary_51"
                 android:textColor="@color/white"
                 app:backgroundTint="@color/bg_red"
                 app:cornerRadius="8dp" />
@@ -1732,7 +1732,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Loading data..."
+            android:text="@string/str_loading_data_64"
             android:textColor="#333333"
             android:textStyle="bold"
             android:textSize="16sp" />

@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Appearance"
+            android:text="@string/str_appearance_15"
             android:textColor="@color/signupsignintextcolor"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -60,14 +60,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dark Theme"
+                            android:text="@string/str_dark_theme_18"
                             android:textColor="@color/primarytext"
                             android:textSize="16sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Switch the app to dark mode"
+                            android:text="@string/str_switch_the_app_to_da_20"
                             android:textColor="@color/secondarytext"
                             android:textSize="13sp"/>
                     </LinearLayout>
@@ -85,7 +85,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Security"
+            android:text="@string/str_security_17"
             android:textColor="@color/signupsignintextcolor"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -128,14 +128,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Biometric Lock"
+                            android:text="@string/str_biometric_lock_16"
                             android:textColor="@color/primarytext"
                             android:textSize="16sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Require fingerprint/face to open app"
+                            android:text="@string/str_require_fingerprint_19"
                             android:textColor="@color/secondarytext"
                             android:textSize="13sp"/>
                     </LinearLayout>

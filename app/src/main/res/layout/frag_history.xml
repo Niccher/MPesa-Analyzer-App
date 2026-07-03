@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Loading data..."
+                android:text="@string/str_loading_data_4"
                 android:textColor="#333333"
                 android:textStyle="bold"
                 android:textSize="16sp" />
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Export"
+            android:text="@string/str_export_5"
             android:textColor="@color/white"
             app:iconTint="@color/white"
             android:backgroundTint="@color/colorPrimaryDark"

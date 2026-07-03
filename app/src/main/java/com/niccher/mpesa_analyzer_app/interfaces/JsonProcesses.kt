@@ -1,0 +1,41 @@
+package com.niccher.mpesa_analyzer_app.interfaces
+
+import com.niccher.mpesa_analyzer_app.helpers.SummaryResponse
+import com.niccher.mpesa_analyzer_app.models.Mod_Loot_Summary
+import com.niccher.mpesa_analyzer_app.models.Mod_My_Loot_Count
+import com.niccher.mpesa_analyzer_app.models.Mod_Summaries
+import retrofit2.Call
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
+
+interface JsonProcesses {
+    @FormUrlEncoded
+    @POST("get/my_uploads")
+    suspend fun getSummary(@FieldMap fields: Map<String, String>): SummaryResponse
+
+    @FormUrlEncoded
+    @POST("get/my_summary_calculations")
+    fun getSummaryCalc(@FieldMap fields: Map<String, String>): Call<Mod_Loot_Summary>
+
+    @FormUrlEncoded
+    @POST("get/my_uploads_count")
+    fun getLootCount(@FieldMap fields: Map<String, String>): Call<Mod_My_Loot_Count>
+
+    @FormUrlEncoded
+    @POST("get/my_uploads_graph")
+    fun getLootGraph(@FieldMap fields: Map<String, String>): Call<Mod_Summaries>
+
+//    @FormUrlEncoded
+//    @POST("get/my_uploads_category_count")
+//    fun getLootCountCategories(@FieldMap fields: Map<String, String>): Call<SummaryLootResponse>
+//
+//    @FormUrlEncoded
+//    @POST("get/list_all_sms_in_category")
+//    fun getAllSmsInCategory(@FieldMap fields: Map<String, String>): Call<SummaryLootResponse>
+//
+//    @FormUrlEncoded
+//    @POST("set/delete_loot_by_uuid")
+//    fun getLootDelete(@FieldMap fields: Map<String, String>): Call<ModLootDelete>
+
+}

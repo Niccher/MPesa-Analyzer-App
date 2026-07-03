@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:121585324251:android:e992d67e9fac2b4ef03cfe",
         "android_client_info": {
-          "package_name": "com.niccher.my_mpesa_analyzer"
+          "package_name": "com.niccher.mpesa_analyzer_app"
         }
       },
       "oauth_client": [
@@ -38,7 +38,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:121585324251:android:beecd411b71169e1f03cfe",
         "android_client_info": {
-          "package_name": "com.niccher.pctophonecopier"
+          "package_name": "com.niccher.mpesa_analyzer_app"
         }
       },
       "oauth_client": [

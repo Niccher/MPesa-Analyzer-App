@@ -24,7 +24,7 @@
             android:layout_marginEnd="@dimen/_8sdp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Financial Analytics"
+            android:text="@string/str_financial_analytics_126"
             android:textColor="@color/white"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold"
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
-                android:text="Bar"
+                android:text="@string/str_bar_128"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="bold" />
@@ -101,7 +101,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Received"
+                    android:text="@string/str_total_received_131"
                     android:textColor="#757575"
                     android:textSize="@dimen/_9sdp" />
 
@@ -109,7 +109,7 @@
                     android:id="@+id/kpi_total_received"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ksh 0.0"
+                    android:text="@string/str_ksh_0_0_132"
                     android:textColor="#4CAF50"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
@@ -133,7 +133,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Sent"
+                    android:text="@string/str_total_sent_127"
                     android:textColor="#757575"
                     android:textSize="@dimen/_9sdp" />
 
@@ -141,7 +141,7 @@
                     android:id="@+id/kpi_total_sent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ksh 0.0"
+                    android:text="@string/str_ksh_0_0_132"
                     android:textColor="#F44336"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
@@ -184,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
-                    android:text="Received"
+                    android:text="@string/str_received_129"
                     android:textColor="#333333"
                     android:textSize="@dimen/_9sdp" />
 
@@ -197,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
-                    android:text="Sent"
+                    android:text="@string/str_sent_133"
                     android:textColor="#333333"
                     android:textSize="@dimen/_9sdp" />
 
@@ -209,7 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:text="Other"
+                    android:text="@string/str_other_125"
                     android:textColor="#333333"
                     android:textSize="@dimen/_9sdp" />
             </LinearLayout>
@@ -236,7 +236,7 @@
                 android:id="@+id/conn_no_internet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No Data Available"
+                android:text="@string/str_no_data_available_130"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

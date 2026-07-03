@@ -27,7 +27,7 @@
             android:backgroundTint="@color/signupsignintextcolor"
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"
-            android:text="Dec 04 18:30:00"
+            android:text="@string/str_dec_04_18_30_00_21"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -39,7 +39,7 @@
             android:id="@+id/part_txt_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Interactions: 5"
+            android:text="@string/str_interactions__5_22"
             android:textColor="@color/secondarytext"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/part_txt_date"
@@ -76,7 +76,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Received"
+                    android:text="@string/str_received_23"
                     android:textColor="@color/primarytext"
                     android:textSize="12sp" />
 
@@ -85,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="0.00"
+                    android:text="@string/str_0_00_24"
                     android:textColor="@color/bg_green"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -102,7 +102,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sent"
+                    android:text="@string/str_sent_25"
                     android:textColor="@color/primarytext"
                     android:textSize="12sp" />
 
@@ -111,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="0.00"
+                    android:text="@string/str_0_00_24"
                     android:textColor="@color/bg_red"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -128,7 +128,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Unknown"
+                    android:text="@string/str_unknown_26"
                     android:textColor="@color/primarytext"
                     android:textSize="12sp" />
 
@@ -137,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="0.00"
+                    android:text="@string/str_0_00_24"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold" />

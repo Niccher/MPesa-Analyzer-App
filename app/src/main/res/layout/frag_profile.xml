@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="User"
+                    android:text="@string/str_user_83"
                     android:textColor="@color/signupsignintextcolor"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="user@email.com"
+                    android:text="@string/str_user_email_com_85"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"/>
 
@@ -62,7 +62,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Account Info"
+            android:text="@string/str_account_info_86"
             android:textColor="@color/signupsignintextcolor"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="16dp"
-                    android:text="Member since —"
+                    android:text="@string/str_member_since_84"
                     android:textColor="@color/primarytext"
                     android:textSize="14sp"/>
             </LinearLayout>

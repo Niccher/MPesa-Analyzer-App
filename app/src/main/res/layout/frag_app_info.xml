@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Application Details"
+            android:text="@string/str_application_details_121"
             android:textColor="@color/signupsignintextcolor"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MyMpesaAnalyser"
+                    android:text="@string/str_mympesaanalyser_118"
                     android:textColor="@color/primarytext"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Version 1.0.0"
+                    android:text="@string/str_version_1_0_0_115"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"
                     android:layout_marginTop="4dp"/>
@@ -55,7 +55,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="What it does"
+                    android:text="@string/str_what_it_does_119"
                     android:textColor="@color/primarytext"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -64,7 +64,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MyMpesaAnalyser acts as your personal financial assistant. It automatically categorizes and visualizes your M-PESA SMS transactions, transforming raw text messages into rich, interactive graphs, deep search functionality, and simple financial summaries so you can track cash-flow trends clearly."
+                    android:text="@string/str_mympesaanalyser_acts_117"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"
                     android:layout_marginTop="6dp"/>
@@ -72,7 +72,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="How it does it"
+                    android:text="@string/str_how_it_does_it_120"
                     android:textColor="@color/primarytext"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -81,7 +81,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="The application securely reads M-PESA transactions entirely on-device. By utilizing rigorous regex matching strategies against your SMS inbox format, it extracts exact monetary values, timestamps, and interaction classifications (Sent, Received, Paybill, Withdrawals). The parsing strictly respects your privacy—information remains sandboxed on your device behind robust Biometric Lock safeguards without arbitrary third-party cloud data uploads."
+                    android:text="@string/str_the_application_secu_116"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"
                     android:layout_marginTop="6dp"/>

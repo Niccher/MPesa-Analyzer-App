@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Credits &amp; Acknowledgements"
+            android:text="@string/str_credits__amp__acknow_145"
             android:textColor="@color/signupsignintextcolor"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Developer"
+                    android:text="@string/str_developer_139"
                     android:textColor="@color/primarytext"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Niccher \nLead Architect and Full-Stack Developer specializing in Android Finance Automation."
+                    android:text="@string/str_niccher__nlead_archi_140"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>
@@ -62,7 +62,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Open Source Libraries Used"
+                    android:text="@string/str_open_source_librarie_135"
                     android:textColor="@color/primarytext"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
@@ -70,7 +70,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="• MPAndroidChart"
+                    android:text="@string/str_mpandroidchart_136"
                     android:textColor="@color/primarytext"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -78,7 +78,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Powering the smooth, interactive data visualizations and stacked bar architectures inside the graphs fragment."
+                    android:text="@string/str_powering_the_smooth_144"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>
@@ -86,7 +86,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="• Retrofit &amp; Gson"
+                    android:text="@string/str_retrofit__amp__gso_137"
                     android:textColor="@color/primarytext"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -94,7 +94,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Utilized for robust HTTP communication, background sync state validation, and seamless JSON object deserialization."
+                    android:text="@string/str_utilized_for_robust_138"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>
@@ -102,7 +102,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="• AndroidX Biometric"
+                    android:text="@string/str_androidx_biometric_134"
                     android:textColor="@color/primarytext"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -110,7 +110,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Implements advanced, non-bypassable hardware cryptography to ensure the app stays locked via fingerprint or face ID to protect user isolation."
+                    android:text="@string/str_implements_advanced_143"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>
@@ -118,7 +118,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="• Material Components"
+                    android:text="@string/str_material_component_142"
                     android:textColor="@color/primarytext"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -126,7 +126,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Supplies the foundational Material theme layouts, ripples, structured cards, and polished visual interactions shaping the application."
+                    android:text="@string/str_supplies_the_foundat_141"
                     android:textColor="@color/secondarytext"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>

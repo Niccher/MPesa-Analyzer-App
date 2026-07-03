@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.niccher.my_mpesa_analyzer"
+    namespace = "com.niccher.mpesa_analyzer_app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.niccher.my_mpesa_analyzer"
+        applicationId = "com.niccher.mpesa_analyzer_app"
         minSdk = 29
         targetSdk = 35
         versionCode = 1

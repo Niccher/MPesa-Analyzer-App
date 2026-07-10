@@ -16,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.niccher.mpesa_analyzer_app.R
-import com.niccher.mpesa_analyzer_app.auth.Sign_In
+import com.niccher.mpesa_analyzer_app.auth.TokenAuthActivity
 import com.niccher.mpesa_analyzer_app.fragments.Info.Info_Data
 import com.niccher.mpesa_analyzer_app.konstants.Konstants
 
@@ -90,7 +90,7 @@ class Adapter_Frag_Info(private val context: Context, private val items: List<In
             val prefLogging = context.getSharedPreferences(kon.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE)
             prefLogging.edit().clear().apply()
 
-            val logoutIntent = Intent(context, Sign_In::class.java).apply {
+            val logoutIntent = Intent(context, TokenAuthActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(logoutIntent)

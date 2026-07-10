@@ -18,8 +18,12 @@ object ServiceGenerators {
     private const val CACHE_SIZE = 10L * 1024 * 1024  // 10 MB cache
 
     fun <S> createService(serviceClass: Class<S>, context: Context): S {
+        var baseUrl = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getBackendUrl(context)
+        if (!baseUrl.endsWith("/")) baseUrl += "/"
+        baseUrl += "process/"
+
         val retrofit = Retrofit.Builder()
-            .baseUrl(kon.LINK_PROCESS)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(getUnsafeOkHttpClient(context))
             .build()

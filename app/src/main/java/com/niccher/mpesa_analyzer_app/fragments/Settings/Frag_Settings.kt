@@ -40,5 +40,23 @@ class Frag_Settings : Fragment() {
         switchBiometric.setOnCheckedChangeListener { _, isChecked ->
             AppPrefs.setBiometricEnabled(requireContext(), isChecked)
         }
+
+        val etBackendUrl = view.findViewById<android.widget.EditText>(R.id.et_settings_backend_url)
+        val btnSaveUrl = view.findViewById<android.widget.Button>(R.id.btn_settings_save_url)
+
+        val currentUrl = AppPrefs.getBackendUrl(requireContext())
+        if (currentUrl.isNotEmpty()) {
+            etBackendUrl.setText(currentUrl)
+        }
+
+        btnSaveUrl.setOnClickListener {
+            val url = etBackendUrl.text.toString().trim()
+            if (url.isNotEmpty()) {
+                AppPrefs.setBackendUrl(requireContext(), url)
+                android.widget.Toast.makeText(requireContext(), "Backend URL saved. Please restart the app for changes to take effect.", android.widget.Toast.LENGTH_LONG).show()
+            } else {
+                android.widget.Toast.makeText(requireContext(), "URL cannot be empty", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

@@ -16,4 +16,8 @@ interface JsonAuthUser {
     @POST("login")
 //    fun createLogin(@FieldMap fields: String): Call<Mod_User_Auth>
     fun createLogin(@FieldMap fields: Map<String, String>): Call<Mod_User_Auth>
+
+    @FormUrlEncoded
+    @POST("verify_token")
+    fun verifyToken(@FieldMap fields: Map<String, String>): Call<Mod_User_Auth>
 }

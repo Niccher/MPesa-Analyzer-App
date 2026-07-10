@@ -12,8 +12,8 @@ android {
         applicationId = "com.niccher.mpesa_analyzer_app"
         minSdk = 29
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -97,5 +97,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     // For ViewModel scope (if using ViewModel)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+    
+    // ZXing Barcode Scanner
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
 }

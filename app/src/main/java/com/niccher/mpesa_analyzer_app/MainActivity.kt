@@ -77,6 +77,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.options_menu, menu)
+        if (menu.javaClass.simpleName == "MenuBuilder") {
+            try {
+                val m = menu.javaClass.getDeclaredMethod("setOptionalIconsVisible", java.lang.Boolean.TYPE)
+                m.isAccessible = true
+                m.invoke(menu, true)
+            } catch (e: Exception) {
+                Log.e("Menu", "Could not set optional icons visible", e)
+            }
+        }
         return true
     }
 

@@ -6,10 +6,6 @@ object Konstants {
 
     const val SPLASH_TIME = 1500
 
-    private const val STRING_IP = "https://mympesa.chegecache.co.ke"
-    const val UPLOAD_FILE_URL = "$STRING_IP/process/"
-    const val UPLOAD_AUTH_URL = "$STRING_IP/auth/"
-    const val LINK_PROCESS = "$STRING_IP/process/"
 
     const val SHARED_AUTH_LOGIN = "auth_login"
     const val SHARED_AUTH_REGISTER = "auth_register"

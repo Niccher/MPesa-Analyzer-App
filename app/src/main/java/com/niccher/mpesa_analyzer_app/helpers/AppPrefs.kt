@@ -23,4 +23,12 @@ object AppPrefs {
 
     fun setDarkThemeEnabled(context: Context, enabled: Boolean) =
         prefs(context).edit().putBoolean(KEY_DARK_THEME_ENABLED, enabled).apply()
+
+    const val KEY_BACKEND_URL = "backend_url"
+
+    fun getBackendUrl(context: Context): String =
+        prefs(context).getString(KEY_BACKEND_URL, "") ?: ""
+
+    fun setBackendUrl(context: Context, url: String) =
+        prefs(context).edit().putString(KEY_BACKEND_URL, url).apply()
 }

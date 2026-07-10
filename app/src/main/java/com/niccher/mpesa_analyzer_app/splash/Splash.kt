@@ -13,8 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.niccher.mpesa_analyzer_app.MainActivity
 import com.niccher.mpesa_analyzer_app.R
-import com.niccher.mpesa_analyzer_app.auth.Sign_In
-import com.niccher.mpesa_analyzer_app.auth.Sign_up
+import com.niccher.mpesa_analyzer_app.auth.TokenAuthActivity
 import com.niccher.mpesa_analyzer_app.konstants.Konstants
 
 class Splash : AppCompatActivity() {
@@ -52,12 +51,15 @@ class Splash : AppCompatActivity() {
             handler.post {
                 progressText.visibility = View.GONE
 
-                val loginStatus = checkValidity()
-
-                val intent = if (checkValidity() == "1") {
-                    Intent(this, MainActivity::class.java)
+                val currentUrl = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getBackendUrl(this@Splash)
+                val intent = if (currentUrl.isEmpty()) {
+                    Intent(this@Splash, SetupActivity::class.java)
                 } else {
-                    Intent(this, Sign_In::class.java)
+                    if (checkValidity() == "1") {
+                        Intent(this@Splash, MainActivity::class.java)
+                    } else {
+                        Intent(this@Splash, com.niccher.mpesa_analyzer_app.auth.TokenAuthActivity::class.java)
+                    }
                 }
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)

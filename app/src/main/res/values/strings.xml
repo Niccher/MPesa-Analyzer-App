@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Mpesa Analyzer</string>
+    <string name="app_name">Mpesa Analyzer</string>
 
     <string name="summary_interactions_general">Summary Interactions</string>
     <string name="summary_interactions_incoming">Received Interactions</string>

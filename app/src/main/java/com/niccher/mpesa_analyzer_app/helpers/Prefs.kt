@@ -22,7 +22,7 @@ class Prefs {
             sharedEditor?.putString("last_upload_name", fileName)
             sharedEditor?.putString("last_upload_time", timeAt)
             sharedEditor?.apply()
-            Log.e(kon.TAGGED, "get_FileType: as SMS") // Use Konstants object
+            Log.i(kon.TAGGED, "get_FileType: as SMS") // Use Konstants object
         }
     }
 

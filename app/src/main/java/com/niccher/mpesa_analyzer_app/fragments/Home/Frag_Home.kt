@@ -124,7 +124,31 @@ class Frag_Home : Fragment() {
             showInsightsDialog()
         }
 
+        // Register receiver for upload complete
+        val filter = android.content.IntentFilter("MPESA_UPLOAD_COMPLETE")
+        requireActivity().registerReceiver(uploadReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+
         return solv
+    }
+
+    private val uploadReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: android.content.Intent?) {
+            if (intent?.action == "MPESA_UPLOAD_COMPLETE") {
+                // Refresh timestamp
+                last_time.text = prefs.getTimeStamp(requireActivity())
+                // Refresh loot count
+                text_get_loot_count.text = "Synced ${prefs.getPrefsAuth("loot_count", requireActivity())} times."
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        try {
+            requireActivity().unregisterReceiver(uploadReceiver)
+        } catch (e: Exception) {
+            // Ignore if not registered
+        }
     }
 
     private fun reqPermission(permission: String, requestCode: Int) {

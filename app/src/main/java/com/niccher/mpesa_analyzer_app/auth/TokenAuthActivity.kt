@@ -12,6 +12,7 @@ import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
 import com.niccher.mpesa_analyzer_app.MainActivity
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.interfaces.JsonAuthUser
+import com.niccher.mpesa_analyzer_app.konstants.Konstants
 import com.niccher.mpesa_analyzer_app.models.Mod_User_Auth
 import retrofit2.Call
 import retrofit2.Callback
@@ -72,12 +73,13 @@ class TokenAuthActivity : AppCompatActivity() {
                         Toast.makeText(this@TokenAuthActivity, "Device Linked Successfully!", Toast.LENGTH_SHORT).show()
 
                         // Save session to SharedPreferences
-                        getSharedPreferences("SHARED_AUTH_LOGIN", MODE_PRIVATE).edit().apply {
+                        getSharedPreferences(Konstants.SHARED_AUTH_LOGIN, MODE_PRIVATE).edit().apply {
                             putString("status", body.status)
                             putString("message", body.message)
                             putString("time", body.time)
                             putString("userid", body.userid)
-                            putString("uuId", body.uuid)
+                            putString("uuId", token) // Overwrite placeholder with the real token so Prefs.kt loads it properly
+                            putString("token", token) // Also save explicitly as token
                             putString("user_name", body.user_name)
                             putString("user_email", body.user_email)
                             apply()

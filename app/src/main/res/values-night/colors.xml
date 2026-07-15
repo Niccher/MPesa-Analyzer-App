@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="mainlinerlayoutcolor">#0F172A</color>
+    <color name="primarytext">#94A3B8</color>
+    <color name="secondarytext">#64748B</color>
+    <color name="signupsignintextcolor">#818CF8</color>
+    <color name="colorPrimary">#1E293B</color>
+    <color name="colorPrimaryDark">#818CF8</color>
+    <color name="linecolor">#334155</color>
+
+</resources>

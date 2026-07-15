@@ -1,6 +1,7 @@
 package com.niccher.mpesa_analyzer_app.interfaces
 
 import com.niccher.mpesa_analyzer_app.models.Mod_User_Auth
+import com.niccher.mpesa_analyzer_app.models.Mod_User_Info
 import retrofit2.Call
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
@@ -15,7 +16,6 @@ interface JsonAuthUser {
 
     @FormUrlEncoded
     @POST("login")
-//    fun createLogin(@FieldMap fields: String): Call<Mod_User_Auth>
     fun createLogin(@FieldMap fields: Map<String, String>): Call<Mod_User_Auth>
 
     @FormUrlEncoded
@@ -33,4 +33,8 @@ interface JsonAuthUser {
     fun delete_data(
         @Field("varToken") token: String?
     ): Call<com.niccher.mpesa_analyzer_app.models.Mod_Delete_Account>
+
+    @FormUrlEncoded
+    @POST("get/user_info")
+    fun getUserInfo(@Field("varId") userId: String): Call<Mod_User_Info>
 }

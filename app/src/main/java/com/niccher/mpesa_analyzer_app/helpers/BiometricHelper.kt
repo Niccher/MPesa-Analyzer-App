@@ -23,7 +23,7 @@ class BiometricHelper(private val activity: AppCompatActivity) {
 
     fun showBiometricPrompt(
         title: String = "App Lock",
-        subtitle: String = "Authenticate to unlock MyMpesaAnalyser",
+        subtitle: String = "Authenticate to unlock Mpesa Analyzer",
         onSuccess: () -> Unit,
         onError: (String) -> Unit,
         onFail: () -> Unit

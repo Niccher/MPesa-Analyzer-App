@@ -75,6 +75,7 @@ class Frag_Home : Fragment() {
     private val CODE_READ_SMS = 102
     private val CODE_READ_STORAGE = 104
     private val CODE_WRITE_STORAGE = 106
+    private val CODE_POST_NOTIFICATIONS = 108
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,12 +111,11 @@ class Frag_Home : Fragment() {
         perm_request.setOnClickListener {
             Log.e("Perm /*- ", "perm_request")
             reqPermission(Manifest.permission.READ_SMS, CODE_READ_SMS)
+            requestNotificationPermissionIfNeeded()
         }
 
         text_get_and_upload.setOnClickListener {
-            val intent = android.content.Intent(requireContext(), com.niccher.mpesa_analyzer_app.services.UploadService::class.java)
-            androidx.core.content.ContextCompat.startForegroundService(requireContext(), intent)
-            android.widget.Toast.makeText(requireContext(), "Upload started in background", android.widget.Toast.LENGTH_SHORT).show()
+            startFetchAndSync()
         }
 
         last_time.text = prefs.getTimeStamp(requireActivity())
@@ -124,22 +124,162 @@ class Frag_Home : Fragment() {
             showInsightsDialog()
         }
 
+        // Ensure device fingerprint exists if user already has a token from an older build
+        ensureDeviceFingerprint()
+
         // Register receiver for upload complete
-        val filter = android.content.IntentFilter("MPESA_UPLOAD_COMPLETE")
+        val filter = android.content.IntentFilter(
+            com.niccher.mpesa_analyzer_app.services.UploadService.ACTION_UPLOAD_COMPLETE
+        )
         requireActivity().registerReceiver(uploadReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+
+        requestNotificationPermissionIfNeeded()
 
         return solv
     }
 
     private val uploadReceiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: android.content.Intent?) {
-            if (intent?.action == "MPESA_UPLOAD_COMPLETE") {
-                // Refresh timestamp
+            if (intent?.action == com.niccher.mpesa_analyzer_app.services.UploadService.ACTION_UPLOAD_COMPLETE) {
+                val success = intent.getBooleanExtra(
+                    com.niccher.mpesa_analyzer_app.services.UploadService.EXTRA_SUCCESS,
+                    false
+                )
+                val message = intent.getStringExtra(
+                    com.niccher.mpesa_analyzer_app.services.UploadService.EXTRA_MESSAGE
+                ) ?: ""
+                val count = intent.getIntExtra(
+                    com.niccher.mpesa_analyzer_app.services.UploadService.EXTRA_COUNT,
+                    0
+                )
+
+                Log.i(kon.TAGGED, "Broadcast received: success=$success count=$count msg=$message")
+
+                progressBar.visibility = View.GONE
                 last_time.text = prefs.getTimeStamp(requireActivity())
-                // Refresh loot count
-                text_get_loot_count.text = "Synced ${prefs.getPrefsAuth("loot_count", requireActivity())} times."
+
+                // Read the updated count from SharedPreferences
+                val syncedCount = prefs.getPrefsAuth("loot_count", requireActivity())
+                text_get_loot_count.text = "Synced $syncedCount times."
+                Log.i(kon.TAGGED, "Updated UI: Synced $syncedCount times")
+
+                // Refresh from server so count matches web
+                calc_Loot()
+
+                Toast.makeText(
+                    requireContext(),
+                    if (success) message.ifBlank { "Sync complete" } else "Sync failed: $message",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    requireActivity(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    CODE_POST_NOTIFICATIONS
+                )
+            }
+        }
+    }
+
+    private fun ensureDeviceFingerprint() {
+        val token = prefs.getPrefsAuth("auth", requireContext())
+        if (token.isBlank() || token == "nullable") return
+
+        if (!com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint.isRegistered(requireContext())) {
+            Log.i(kon.TAGGED, "Device fingerprint missing — registering from Home")
+            com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint.register(requireContext()) { ok, msg ->
+                Log.i(kon.TAGGED, "Home device register ok=$ok msg=$msg")
+                if (!ok) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Device registration failed: $msg. Re-link with token/QR.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        } else {
+            Log.d(kon.TAGGED, "Device fingerprint already registered")
+        }
+    }
+
+    private fun startFetchAndSync() {
+        // SMS permission
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.READ_SMS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            AlertDialog.Builder(requireActivity()).apply {
+                setTitle("SMS permission required")
+                setMessage("Grant SMS permission so the app can fetch MPESA messages.")
+                setPositiveButton("Grant") { _, _ ->
+                    requestPermissions(arrayOf(Manifest.permission.READ_SMS), CODE_READ_SMS)
+                }
+                setNegativeButton("Cancel", null)
+                show()
+            }
+            return
+        }
+
+        val backendUrl = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getBackendUrl(requireContext())
+        if (backendUrl.isBlank()) {
+            Toast.makeText(requireContext(), "Backend URL not set. Open Setup first.", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val token = prefs.getPrefsAuth("auth", requireContext())
+        if (token.isBlank() || token == "nullable") {
+            Toast.makeText(
+                requireContext(),
+                "Not linked. Open token login and enter/scan your access token.",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
+        val printId = prefs.getPrefsAuth("print", requireContext())
+        Log.i(kon.TAGGED, "startFetchAndSync: printId='$printId'")
+        if (printId.isBlank() || printId == "nullable") {
+            Log.w(kon.TAGGED, "Device ID missing, attempting registration")
+            Toast.makeText(requireContext(), "Registering device fingerprint…", Toast.LENGTH_SHORT).show()
+            progressBar.visibility = View.VISIBLE
+            com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint.register(requireContext()) { ok, msg ->
+                progressBar.visibility = View.GONE
+                Log.i(kon.TAGGED, "Device registration result: ok=$ok msg=$msg")
+                if (ok) {
+                    launchUploadService()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Device registration failed: $msg. Re-link with token/QR.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+            return
+        }
+
+        launchUploadService()
+    }
+
+    private fun launchUploadService() {
+        progressBar.visibility = View.VISIBLE
+        val intent = android.content.Intent(
+            requireContext(),
+            com.niccher.mpesa_analyzer_app.services.UploadService::class.java
+        )
+        androidx.core.content.ContextCompat.startForegroundService(requireContext(), intent)
+        Toast.makeText(requireContext(), "Upload started in background", Toast.LENGTH_SHORT).show()
+        Log.i(kon.TAGGED, "Fetch and Sync: UploadService started")
     }
 
     override fun onDestroyView() {

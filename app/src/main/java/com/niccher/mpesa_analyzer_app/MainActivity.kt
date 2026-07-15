@@ -142,10 +142,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkAndRequestSmsPermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_SMS), perm_sms)
-        } else {
-            //readSms() // Read SMS if permission is already granted
+        val needed = mutableListOf<String>()
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            needed.add(android.Manifest.permission.READ_SMS)
+        }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                needed.add(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        if (needed.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, needed.toTypedArray(), perm_sms)
         }
     }
 
@@ -153,10 +164,11 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             perm_sms -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //readSms() // Read SMS after permission is granted
-                } else {
-                    Toast.makeText(this, "SMS permission denied", Toast.LENGTH_SHORT).show()
+                val results = permissions.zip(grantResults.toTypedArray()).toMap()
+                val smsOk = results[android.Manifest.permission.READ_SMS]
+                    ?.let { it == PackageManager.PERMISSION_GRANTED } ?: true
+                if (!smsOk) {
+                    Toast.makeText(this, "SMS permission denied — Fetch and Sync will not work", Toast.LENGTH_LONG).show()
                 }
             }
         }

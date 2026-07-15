@@ -104,9 +104,7 @@ class Frag_Graph : Fragment() {
         setupToggleButton()
         setupChartObservers()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            getSummaries()
-        }
+        getSummaries()
     }
 
     override fun onDestroyView() {
@@ -200,16 +198,16 @@ class Frag_Graph : Fragment() {
     }
 
     private fun updateKPICards(dataList: List<Frag_Graph_VM.SummaryEntry>) {
-        var totalReceived = 0f
-        var totalSent = 0f
+        var totalReceived = 0
+        var totalSent = 0
         
         dataList.forEach {
-            totalReceived += it.received
-            totalSent += it.sent
+            totalReceived += it.received.toInt()
+            totalSent += it.sent.toInt()
         }
         
-        kpiTotalReceived.text = "Ksh ${String.format("%.2f", totalReceived)}"
-        kpiTotalSent.text = "Ksh ${String.format("%.2f", totalSent)}"
+        kpiTotalReceived.text = "$totalReceived Times"
+        kpiTotalSent.text = "$totalSent Times"
     }
 
     private fun showStackedBarChart(dataList: List<Frag_Graph_VM.SummaryEntry>) {
@@ -534,60 +532,62 @@ class Frag_Graph : Fragment() {
         binding.lineChart.visibility = View.GONE
     }
 
-    private suspend fun getSummaries() {
+    private fun getSummaries() {
         val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
 
-        try {
-            showLoadingState()
+        showLoadingState()
 
-            val params = mapOf(
-                "varUser" to pref.getPrefsAuth("auth", requireContext()),
-                "varDev" to pref.getPrefsAuth("print", requireActivity())
-            )
+        val params = mapOf(
+            "varUser" to pref.getPrefsAuth("auth", requireContext()),
+            "varDev" to pref.getPrefsAuth("print", requireActivity())
+        )
 
-            val response = jsonProcesses.getSummary(params)
+        jsonProcesses.getSummary(params).enqueue(object : Callback<SummaryResponse> {
+            override fun onResponse(call: Call<SummaryResponse>, response: Response<SummaryResponse>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    val summarizerList = body.summarizer?.takeIf { it.isNotEmpty() }
 
-            // Safely check if we have data
-            val summarizerList = response.summarizer?.takeIf { it.isNotEmpty() }
+                    if (summarizerList != null) {
+                        val chartData = summarizerList.mapNotNull { summary ->
+                            val received = summary.summary_Received.safeToFloat()
+                            val sent = summary.summary_Sent.safeToFloat()
+                            val unknown = summary.summary_Unknown.safeToFloat()
 
-            if (summarizerList != null) {
-                val chartData = summarizerList.mapNotNull { summary ->
-                    // Safely convert strings to Float, skip invalid entries
-                    val received = summary.summary_Received.safeToFloat()
-                    val sent = summary.summary_Sent.safeToFloat()
-                    val unknown = summary.summary_Unknown.safeToFloat()
+                            if (received == null || sent == null || unknown == null) return@mapNotNull null
 
-                    // If any value is invalid, skip this entry
-                    if (received == null || sent == null || unknown == null) return@mapNotNull null
+                            ChartDataItem(
+                                date = formatDate(summary.summary_Created ?: ""),
+                                received = received,
+                                sent = sent,
+                                unknown = unknown
+                            )
+                        }
 
-                    ChartDataItem(
-                        date = formatDate(summary.summary_Created ?: ""),
-                        received = received,
-                        sent = sent,
-                        unknown = unknown
-                    )
-                }
-
-                if (chartData.isNotEmpty()) {
-                    viewModel.updateChartData(chartData)
+                        if (chartData.isNotEmpty()) {
+                            viewModel.updateChartData(chartData)
+                        } else {
+                            showNoDataState()
+                        }
+                    } else {
+                        showNoDataState()
+                    }
                 } else {
                     showNoDataState()
                 }
-            } else {
-                showNoDataState()
             }
 
-        } catch (e: Exception) {
-            binding.connWaitInternet.visibility = View.GONE
-            // This catch runs ONLY if no cache exists
-            if (!isConnected()) {
-                Toast.makeText(context, "No internet • Showing last saved data", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(context, "Network error • Check connection", Toast.LENGTH_LONG).show()
+            override fun onFailure(call: Call<SummaryResponse>, t: Throwable) {
+                binding.connWaitInternet.visibility = View.GONE
+                if (!isConnected()) {
+                    Toast.makeText(context, "No internet • Showing last saved data", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context, "Network error • Check connection", Toast.LENGTH_LONG).show()
+                }
+                Log.d("GraphCache", "Served from cache or failed: ${t.message}")
+                showNoDataState()
             }
-            Log.d("GraphCache", "Served from cache or failed: ${e.message}")
-            showNoDataState()
-        }
+        })
     }
 
     fun String.safeToFloat(): Float? = try {
@@ -598,12 +598,38 @@ class Frag_Graph : Fragment() {
 
     private fun formatDate(dateString: String): String {
         return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
-            val date = inputFormat.parse(dateString)
-            outputFormat.format(date)
+            // Handle Unix timestamp (seconds since epoch)
+            val timestamp = dateString.toLongOrNull()
+            if (timestamp != null) {
+                // Valid Unix timestamps are > 1000000000 (year 2001) and < 2147483647 (year 2038 for 32-bit)
+                // Year-only values like "2026" are 4 digits, not valid timestamps
+                if (timestamp > 1000000000L && timestamp < 2147483647L && dateString.length >= 10) {
+                    // Seconds timestamp (10 digits for years 2001-2038)
+                    val outputFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+                    outputFormat.format(timestamp * 1000)
+                } else if (timestamp > 1000000000000L) {
+                    // Milliseconds timestamp (13 digits)
+                    val outputFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+                    outputFormat.format(timestamp)
+                } else {
+                    // Not a valid timestamp, treat as formatted date string
+                    throw NumberFormatException("Not a timestamp")
+                }
+            } else {
+                // Handle formatted date string "yyyy-MM-dd HH:mm:ss"
+                throw NumberFormatException("Not a number")
+            }
         } catch (e: Exception) {
-            dateString.substring(5, 10) // Fallback: "MM-dd"
+            // Handle formatted date string "yyyy-MM-dd HH:mm:ss"
+            return try {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                val outputFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+                val date = inputFormat.parse(dateString)
+                outputFormat.format(date)
+            } catch (e2: Exception) {
+                // Fallback: try to extract MM-dd from string
+                if (dateString.length >= 10) dateString.substring(5, 10) else dateString
+            }
         }
     }
 }

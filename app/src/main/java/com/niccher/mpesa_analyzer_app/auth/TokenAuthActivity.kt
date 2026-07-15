@@ -2,6 +2,7 @@ package com.niccher.mpesa_analyzer_app.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
 import com.niccher.mpesa_analyzer_app.MainActivity
 import com.niccher.mpesa_analyzer_app.R
+import com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint
 import com.niccher.mpesa_analyzer_app.interfaces.JsonAuthUser
 import com.niccher.mpesa_analyzer_app.konstants.Konstants
 import com.niccher.mpesa_analyzer_app.models.Mod_User_Auth
@@ -18,6 +20,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Links the handset to a web-generated access token (typed or QR-scanned).
+ * On success, immediately registers a device fingerprint so uploads have a valid varDevId.
+ */
 class TokenAuthActivity : AppCompatActivity() {
 
     private lateinit var edtToken: TextInputEditText
@@ -27,7 +33,7 @@ class TokenAuthActivity : AppCompatActivity() {
     private val barcodeLauncher = registerForActivityResult(ScanContract()) { result ->
         if (result.contents != null) {
             edtToken.setText(result.contents)
-            verifyToken(result.contents)
+            verifyToken(result.contents.trim())
         } else {
             Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
         }
@@ -61,6 +67,10 @@ class TokenAuthActivity : AppCompatActivity() {
     }
 
     private fun verifyToken(token: String) {
+        btnSubmit.isEnabled = false
+        btnScanQr.isEnabled = false
+        Toast.makeText(this, "Verifying token…", Toast.LENGTH_SHORT).show()
+
         val map = HashMap<String, String>()
         map["token"] = token
 
@@ -70,38 +80,87 @@ class TokenAuthActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
                     if (body.status == "1") {
-                        Toast.makeText(this@TokenAuthActivity, "Device Linked Successfully!", Toast.LENGTH_SHORT).show()
-
-                        // Save session to SharedPreferences
+                        // Save session first
                         getSharedPreferences(Konstants.SHARED_AUTH_LOGIN, MODE_PRIVATE).edit().apply {
                             putString("status", body.status)
                             putString("message", body.message)
                             putString("time", body.time)
                             putString("userid", body.userid)
-                            putString("uuId", token) // Overwrite placeholder with the real token so Prefs.kt loads it properly
-                            putString("token", token) // Also save explicitly as token
+                            putString("uuId", token)
+                            putString("token", token)
                             putString("user_name", body.user_name)
                             putString("user_email", body.user_email)
                             apply()
                         }
 
-                        startActivity(
-                            Intent(this@TokenAuthActivity, MainActivity::class.java).apply {
-                                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        Log.i(Konstants.TAGGED, "Token verified — registering device fingerprint")
+                        Toast.makeText(
+                            this@TokenAuthActivity,
+                            "Token OK — registering device…",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        // Register device fingerprint (token entry OR QR path both land here)
+                        DeviceFingerprint.register(this@TokenAuthActivity) { ok, message ->
+                            btnSubmit.isEnabled = true
+                            btnScanQr.isEnabled = true
+                            Log.i(Konstants.TAGGED, "TokenAuth device register ok=$ok msg=$message")
+                            if (ok) {
+                                Toast.makeText(
+                                    this@TokenAuthActivity,
+                                    "Device linked successfully!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                goToMain()
+                            } else {
+                                // Token is valid but device print failed — still allow entry,
+                                // but warn; upload will re-try / block with a clear message.
+                                Toast.makeText(
+                                    this@TokenAuthActivity,
+                                    "Linked, but device register failed: $message",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                goToMain()
                             }
-                        )
-                        finish()
+                        }
                     } else {
+                        btnSubmit.isEnabled = true
+                        btnScanQr.isEnabled = true
                         Toast.makeText(this@TokenAuthActivity, body.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this@TokenAuthActivity, "Server error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    btnSubmit.isEnabled = true
+                    btnScanQr.isEnabled = true
+                    Toast.makeText(
+                        this@TokenAuthActivity,
+                        "Server error: ${response.code()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
             override fun onFailure(call: Call<Mod_User_Auth>, t: Throwable) {
-                Toast.makeText(this@TokenAuthActivity, "Network Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                btnSubmit.isEnabled = true
+                btnScanQr.isEnabled = true
+                Toast.makeText(
+                    this@TokenAuthActivity,
+                    "Network Error: ${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
+    }
+
+    private fun goToMain() {
+        startActivity(
+            Intent(this@TokenAuthActivity, MainActivity::class.java).apply {
+                addFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+                )
+            }
+        )
+        finish()
     }
 }

@@ -38,14 +38,29 @@ class Adapter_Frag_History(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val summary = summariesList[position]
 
-        val format = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
+        // Handle both Unix timestamp and formatted date string
+        val dateStr = summary.summary_Created
         try {
-            val dateTime = format.parse(summary.summary_Created)
-            val dateFormat = SimpleDateFormat("MMM dd HH:mm:ss", Locale.getDefault())
-            val dated = dateFormat.format(dateTime)
-            holder.part_date.text = dated
+            val timestamp = dateStr.toLongOrNull()
+            val formattedDate = if (timestamp != null) {
+                if (timestamp > 1000000000000L) {
+                    // Milliseconds timestamp
+                    SimpleDateFormat("MMM dd HH:mm:ss", Locale.getDefault()).format(timestamp)
+                } else if (timestamp > 1000000000L) {
+                    // Seconds timestamp
+                    SimpleDateFormat("MMM dd HH:mm:ss", Locale.getDefault()).format(timestamp * 1000)
+                } else {
+                    dateStr
+                }
+            } else {
+                // Already formatted date string
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                val outputFormat = SimpleDateFormat("MMM dd HH:mm:ss", Locale.getDefault())
+                outputFormat.format(inputFormat.parse(dateStr))
+            }
+            holder.part_date.text = formattedDate
         } catch (ex: Exception) {
-            holder.part_date.text = summary.summary_Created
+            holder.part_date.text = dateStr
         }
 
         holder.part_sent.text = summary.summary_Sent

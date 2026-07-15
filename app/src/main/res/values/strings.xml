@@ -104,7 +104,7 @@
 
 
     <string name="str_authenticate_to_cont_1">Authenticate to continue</string>
-    <string name="str_mympesaanalyser_2">MyMpesaAnalyser</string>
+    <string name="str_mympesaanalyser_2">Mpesa Analyzer</string>
     <string name="str_unlock_with_biometri_3">Unlock with Biometrics</string>
     <string name="str_loading_data_4">Loading data...</string>
     <string name="str_export_5">Export</string>
@@ -219,8 +219,8 @@
     <string name="str_open_source_librarie_114">Open Source Libraries</string>
     <string name="str_version_1_0_0_115">Version 1.0.0</string>
     <string name="str_the_application_secu_116">The application securely reads M-PESA transactions entirely on-device. By utilizing rigorous regex matching strategies against your SMS inbox format, it extracts exact monetary values, timestamps, and interaction classifications (Sent, Received, Paybill, Withdrawals). The parsing strictly respects your privacy—information remains sandboxed on your device behind robust Biometric Lock safeguards without arbitrary third-party cloud data uploads.</string>
-    <string name="str_mympesaanalyser_acts_117">MyMpesaAnalyser acts as your personal financial assistant. It automatically categorizes and visualizes your M-PESA SMS transactions, transforming raw text messages into rich, interactive graphs, deep search functionality, and simple financial summaries so you can track cash-flow trends clearly.</string>
-    <string name="str_mympesaanalyser_118">MyMpesaAnalyser</string>
+    <string name="str_mympesaanalyser_acts_117">Mpesa Analyzer acts as your personal financial assistant. It automatically categorizes and visualizes your M-PESA SMS transactions, transforming raw text messages into rich, interactive graphs, deep search functionality, and simple financial summaries so you can track cash-flow trends clearly.</string>
+    <string name="str_mympesaanalyser_118">Mpesa Analyzer</string>
     <string name="str_what_it_does_119">What it does</string>
     <string name="str_how_it_does_it_120">How it does it</string>
     <string name="str_application_details_121">Application Details</string>
@@ -235,6 +235,7 @@
     <string name="str_no_data_available_130">No Data Available</string>
     <string name="str_total_received_131">Total Received</string>
     <string name="str_ksh_0_0_132">Ksh 0.0</string>
+    <string name="str_zero_times">0 Times</string>
     <string name="str_sent_133">Sent</string>
     <string name="str_androidx_biometric_134">• AndroidX Biometric</string>
     <string name="str_open_source_librarie_135">Open Source Libraries Used</string>

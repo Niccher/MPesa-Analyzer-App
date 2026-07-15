@@ -8,10 +8,13 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.RotateAnimation
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.gson.Gson
@@ -25,107 +28,99 @@ import com.niccher.mpesa_analyzer_app.models.Mod_Loot_Summary
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class Frag_Summary : Fragment() {
 
     private lateinit var kon: Konstants
     private lateinit var activity: AppCompatActivity
+    private lateinit var pref: Prefs
 
-    private lateinit var tv_gen_all: TextView
-    private lateinit var tv_gen_bal: TextView
-    private lateinit var tv_gen_fuliza: TextView
-    private lateinit var tv_gen_recv: TextView
-    private lateinit var tv_gen_sent: TextView
-    private lateinit var tv_gen_withdraw: TextView
-    private lateinit var tv_gen_wrong_pin: TextView
-    private lateinit var tv_gen_unknown: TextView
-    private lateinit var tv_gen_time: TextView
-    private lateinit var tv_gen_date: TextView
+    // Header views
+    private lateinit var tvGenDate: TextView
+    private lateinit var tvGenTime: TextView
+    private lateinit var tvTotalInteractions: TextView
 
-    private lateinit var tv_sent_all: TextView
-    private lateinit var tv_sent_mpesa: TextView
-    private lateinit var tv_sent_mshwari: TextView
-    private lateinit var tv_sent_lnm: TextView
-    private lateinit var tv_sent_mini: TextView
-    private lateinit var tv_sent_cancel: TextView
+    // Quick stats
+    private lateinit var tvQuickReceived: TextView
+    private lateinit var tvQuickSent: TextView
+    private lateinit var tvQuickUnknown: TextView
+    private lateinit var tvQuickFuliza: TextView
 
-    private lateinit var tv_rec_all: TextView
-    private lateinit var tv_rec_bank: TextView
-    private lateinit var tv_rec_mshwari: TextView
-    private lateinit var tv_rec_ncba: TextView
-    private lateinit var tv_rec_im: TextView
-    private lateinit var tv_rec_kcb: TextView
-    private lateinit var tv_rec_reversal: TextView
+    // Section content containers
+    private lateinit var llGeneralContent: LinearLayout
+    private lateinit var llSentContent: LinearLayout
+    private lateinit var llReceivedContent: LinearLayout
+    private lateinit var llBalanceContent: LinearLayout
+    private lateinit var llFulizaContent: LinearLayout
+    private lateinit var llErrorsContent: LinearLayout
 
-    private lateinit var tv_bal_all: TextView
-    private lateinit var tv_bal_mpesa: TextView
-    private lateinit var tv_bal_mshwari: TextView
-    private lateinit var tv_bal_kcb: TextView
+    // Expand icons
+    private lateinit var ivExpandGeneral: ImageView
+    private lateinit var ivExpandSent: ImageView
+    private lateinit var ivExpandReceived: ImageView
+    private lateinit var ivExpandBalance: ImageView
+    private lateinit var ivExpandFuliza: ImageView
+    private lateinit var ivExpandErrors: ImageView
 
-    private lateinit var tv_fuliza_all: TextView
-    private lateinit var tv_fuliza_opt_in: TextView
-    private lateinit var tv_fuliza_opt_out: TextView
-    private lateinit var tv_fuliza_limit: TextView
-    private lateinit var tv_fuliza_loan: TextView
-    private lateinit var tv_fuliza_mini: TextView
+    // Metric value TextViews - General
+    private lateinit var tvGenAll: TextView
+    private lateinit var tvGenBalance: TextView
+    private lateinit var tvGenFuliza: TextView
+    private lateinit var tvGenReceived: TextView
+    private lateinit var tvGenSent: TextView
+    private lateinit var tvGenWithdraw: TextView
+    private lateinit var tvGenWrongPin: TextView
+    private lateinit var tvGenUnknown: TextView
 
-    private lateinit var tv_error_all: TextView
-    private lateinit var tv_error_pin: TextView
-    private lateinit var tv_error_less: TextView
-    private lateinit var tv_error_merchant: TextView
-    private lateinit var tv_error_receiver: TextView
-    private lateinit var tv_error_org: TextView
-    private lateinit var tv_error_failed: TextView
+    // Metric value TextViews - Sent
+    private lateinit var tvSentAll: TextView
+    private lateinit var tvSentMpesa: TextView
+    private lateinit var tvSentMshwari: TextView
+    private lateinit var tvSentLnm: TextView
+    private lateinit var tvSentMini: TextView
+    private lateinit var tvSentCancel: TextView
 
-    private lateinit var lin_lay_gen_all: LinearLayout
-    private lateinit var lin_lay_gen_bal: LinearLayout
-    private lateinit var lin_lay_gen_fuliza: LinearLayout
-    private lateinit var lin_lay_gen_recv: LinearLayout
-    private lateinit var lin_lay_gen_sent: LinearLayout
-    private lateinit var lin_lay_gen_withdraw: LinearLayout
-    private lateinit var lin_lay_gen_wrong_pin: LinearLayout
-    private lateinit var lin_lay_gen_unknown: LinearLayout
-    private lateinit var lin_lay_gen_time: LinearLayout
-    private lateinit var lin_lay_gen_date: LinearLayout
+    // Metric value TextViews - Received
+    private lateinit var tvRecAll: TextView
+    private lateinit var tvRecMpesa: TextView
+    private lateinit var tvRecMshwari: TextView
+    private lateinit var tvRecNcba: TextView
+    private lateinit var tvRecIm: TextView
+    private lateinit var tvRecReversal: TextView
+    private lateinit var tvRecKcb: TextView
 
-    private lateinit var lin_lay_rec_all: LinearLayout
-    private lateinit var lin_lay_rec_bank: LinearLayout
-    private lateinit var lin_lay_rec_mshwari: LinearLayout
-    private lateinit var lin_lay_rec_ncba: LinearLayout
-    private lateinit var lin_lay_rec_im: LinearLayout
-    private lateinit var lin_lay_rec_reversal: LinearLayout
+    // Metric value TextViews - Balance
+    private lateinit var tvBalAll: TextView
+    private lateinit var tvBalMpesa: TextView
+    private lateinit var tvBalMshwari: TextView
+    private lateinit var tvBalKcb: TextView
 
-    private lateinit var lin_lay_bal_all: LinearLayout
-    private lateinit var lin_lay_bal_mpesa: LinearLayout
-    private lateinit var lin_lay_bal_mshwari: LinearLayout
-    private lateinit var lin_lay_bal_kcb: LinearLayout
+    // Metric value TextViews - Fuliza
+    private lateinit var tvFulizaAll: TextView
+    private lateinit var tvFulizaOptIn: TextView
+    private lateinit var tvFulizaOptOut: TextView
+    private lateinit var tvFulizaLimit: TextView
+    private lateinit var tvFulizaLoan: TextView
+    private lateinit var tvFulizaMini: TextView
 
-    private lateinit var lin_lay_fuliza_all: LinearLayout
-    private lateinit var lin_lay_fuliza_opt_in: LinearLayout
-    private lateinit var lin_lay_fuliza_opt_out: LinearLayout
-    private lateinit var lin_lay_fuliza_limit: LinearLayout
-    private lateinit var lin_lay_fuliza_loan: LinearLayout
-    private lateinit var lin_lay_fuliza_mini: LinearLayout
+    // Metric value TextViews - Errors
+    private lateinit var tvErrorAll: TextView
+    private lateinit var tvErrorPin: TextView
+    private lateinit var tvErrorLess: TextView
+    private lateinit var tvErrorReceiver: TextView
+    private lateinit var tvErrorOrg: TextView
+    private lateinit var tvErrorFailed: TextView
 
-    private lateinit var lin_lay_error_all: LinearLayout
-    private lateinit var lin_lay_error_pin: LinearLayout
-    private lateinit var lin_lay_error_less: LinearLayout
-    private lateinit var lin_lay_error_merchant: LinearLayout
-    private lateinit var lin_lay_error_receiver: LinearLayout
-    private lateinit var lin_lay_error_org: LinearLayout
-    private lateinit var lin_lay_error_failed: LinearLayout
+    // Other views
+    private lateinit var btnDeleteSummary: com.google.android.material.button.MaterialButton
+    private lateinit var layoutInteractions: LinearLayout
+    private lateinit var progressBar: LinearLayout
+    private lateinit var scrollView: NestedScrollView
+    private lateinit var emptyState: LinearLayout
 
-    private lateinit var lin_loot_delete: com.google.android.material.button.MaterialButton
-    private lateinit var layout_interactions: LinearLayout
-    private lateinit var progress_bar: android.widget.LinearLayout
-    private lateinit var scroll_view: android.widget.ScrollView
-
-    private var lood_uuid: String = ""
+    private var lootUuid: String = ""
     private lateinit var jsonProcesses: JsonProcesses
     private var gson: Gson? = null
-    private lateinit var pref: Prefs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,106 +137,140 @@ class Frag_Summary : Fragment() {
         supportActionBar?.apply {
             title = "Summary Info"
             setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
         }
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val summarizer = inflater.inflate(R.layout.frag_summary, container, false)
+        val view = inflater.inflate(R.layout.frag_summary, container, false)
 
-        tv_gen_all = summarizer.findViewById(R.id.cat_point_gen_all)
-        tv_gen_bal = summarizer.findViewById(R.id.cat_point_gen_bal)
-        tv_gen_fuliza = summarizer.findViewById(R.id.cat_point_gen_fuliza)
-        tv_gen_recv = summarizer.findViewById(R.id.cat_point_gen_received)
-        tv_gen_sent = summarizer.findViewById(R.id.cat_point_gen_sent)
-        tv_gen_withdraw = summarizer.findViewById(R.id.cat_point_gen_withdraw)
-        tv_gen_wrong_pin = summarizer.findViewById(R.id.cat_point_gen_wrong_pin)
-        tv_gen_unknown = summarizer.findViewById(R.id.cat_point_gen_unknown)
+        // Header views
+        tvGenDate = view.findViewById(R.id.cat_point_loot_date)
+        tvGenTime = view.findViewById(R.id.cat_point_loot_time)
+        tvTotalInteractions = view.findViewById(R.id.tv_total_interactions)
 
-        tv_sent_all = summarizer.findViewById(R.id.cat_point_sent_all)
-        tv_sent_mpesa = summarizer.findViewById(R.id.cat_point_sent_mpesa)
-        tv_sent_mshwari = summarizer.findViewById(R.id.cat_point_sent_mshwari)
-        tv_sent_lnm = summarizer.findViewById(R.id.cat_point_sent_lnm)
-        tv_sent_mini = summarizer.findViewById(R.id.cat_point_sent_mini)
-        tv_sent_cancel = summarizer.findViewById(R.id.cat_point_sent_cancel)
+        // Quick stats
+        tvQuickReceived = view.findViewById(R.id.tv_quick_received)
+        tvQuickSent = view.findViewById(R.id.tv_quick_sent)
+        tvQuickUnknown = view.findViewById(R.id.tv_quick_unknown)
+        tvQuickFuliza = view.findViewById(R.id.tv_quick_fuliza)
 
-        tv_rec_all = summarizer.findViewById(R.id.cat_point_rec_all)
-        tv_rec_bank = summarizer.findViewById(R.id.cat_point_rec_bal)
-        tv_rec_mshwari = summarizer.findViewById(R.id.cat_point_rec_mshwari)
-        tv_rec_ncba = summarizer.findViewById(R.id.cat_point_rec_ncba)
-        tv_rec_im = summarizer.findViewById(R.id.cat_point_rec_im)
-        tv_rec_reversal = summarizer.findViewById(R.id.cat_point_rec_reversal)
-        tv_rec_kcb = summarizer.findViewById(R.id.cat_point_rec_kcb)
+        // Content containers
+        llGeneralContent = view.findViewById(R.id.ll_general_content)
+        llSentContent = view.findViewById(R.id.ll_sent_content)
+        llReceivedContent = view.findViewById(R.id.ll_received_content)
+        llBalanceContent = view.findViewById(R.id.ll_balance_content)
+        llFulizaContent = view.findViewById(R.id.ll_fuliza_content)
+        llErrorsContent = view.findViewById(R.id.ll_errors_content)
 
-        tv_bal_all = summarizer.findViewById(R.id.cat_point_bal_all)
-        tv_bal_mpesa = summarizer.findViewById(R.id.cat_point_bal_mpesa)
-        tv_bal_mshwari = summarizer.findViewById(R.id.cat_point_bal_mshwari)
-        tv_bal_kcb = summarizer.findViewById(R.id.cat_point_bal_kcb)
+        // Expand icons
+        ivExpandGeneral = view.findViewById(R.id.iv_expand_general)
+        ivExpandSent = view.findViewById(R.id.iv_expand_sent)
+        ivExpandReceived = view.findViewById(R.id.iv_expand_received)
+        ivExpandBalance = view.findViewById(R.id.iv_expand_balance)
+        ivExpandFuliza = view.findViewById(R.id.iv_expand_fuliza)
+        ivExpandErrors = view.findViewById(R.id.iv_expand_errors)
 
-        tv_fuliza_all = summarizer.findViewById(R.id.cat_point_fuliza_all)
-        tv_fuliza_opt_in = summarizer.findViewById(R.id.cat_point_fuliza_opt_in)
-        tv_fuliza_opt_out = summarizer.findViewById(R.id.cat_point_fuliza_opt_out)
-        tv_fuliza_limit = summarizer.findViewById(R.id.cat_point_fuliza_limit)
-        tv_fuliza_loan = summarizer.findViewById(R.id.cat_point_fuliza_loan)
-        tv_fuliza_mini = summarizer.findViewById(R.id.cat_point_fuliza_mini)
+        // General metrics
+        tvGenAll = view.findViewById<View>(R.id.item_gen_all).findViewById<TextView>(R.id.tv_metric_value)
+        tvGenBalance = view.findViewById<View>(R.id.item_gen_balance).findViewById<TextView>(R.id.tv_metric_value)
+        tvGenFuliza = view.findViewById<View>(R.id.item_gen_fuliza).findViewById<TextView>(R.id.tv_metric_value)
+        tvGenReceived = view.findViewById<View>(R.id.item_gen_received).findViewById<TextView>(R.id.tv_metric_value)
+        tvGenSent = view.findViewById<View>(R.id.item_gen_sent).findViewById<TextView>(R.id.tv_metric_value)
+        tvGenWithdraw = view.findViewById<View>(R.id.item_gen_withdraw).findViewById<TextView>(R.id.tv_metric_value)
+        tvGenWrongPin = view.findViewById<View>(R.id.item_gen_wrong_pin).findViewById<TextView>(R.id.tv_metric_value)
+        tvGenUnknown = view.findViewById<View>(R.id.item_gen_unknown).findViewById<TextView>(R.id.tv_metric_value)
 
-        tv_error_all = summarizer.findViewById(R.id.cat_point_error_all)
-        tv_error_pin = summarizer.findViewById(R.id.cat_point_error_pin)
-        tv_error_less = summarizer.findViewById(R.id.cat_point_error_less)
-        tv_error_merchant = summarizer.findViewById(R.id.cat_point_error_merchant)
-        tv_error_receiver = summarizer.findViewById(R.id.cat_point_error_receiver)
-        tv_error_org = summarizer.findViewById(R.id.cat_point_error_org)
-        tv_error_failed = summarizer.findViewById(R.id.cat_point_error_failed)
+        // Sent metrics
+        tvSentAll = view.findViewById<View>(R.id.item_sent_all).findViewById<TextView>(R.id.tv_metric_value)
+        tvSentMpesa = view.findViewById<View>(R.id.item_sent_mpesa).findViewById<TextView>(R.id.tv_metric_value)
+        tvSentMshwari = view.findViewById<View>(R.id.item_sent_mshwari).findViewById<TextView>(R.id.tv_metric_value)
+        tvSentLnm = view.findViewById<View>(R.id.item_sent_lnm).findViewById<TextView>(R.id.tv_metric_value)
+        tvSentMini = view.findViewById<View>(R.id.item_sent_mini).findViewById<TextView>(R.id.tv_metric_value)
+        tvSentCancel = view.findViewById<View>(R.id.item_sent_cancel).findViewById<TextView>(R.id.tv_metric_value)
 
-        tv_gen_time = summarizer.findViewById(R.id.cat_point_loot_time)
-        tv_gen_date = summarizer.findViewById(R.id.cat_point_loot_date)
+        // Received metrics
+        tvRecAll = view.findViewById<View>(R.id.item_rec_all).findViewById<TextView>(R.id.tv_metric_value)
+        tvRecMpesa = view.findViewById<View>(R.id.item_rec_mpesa).findViewById<TextView>(R.id.tv_metric_value)
+        tvRecMshwari = view.findViewById<View>(R.id.item_rec_mshwari).findViewById<TextView>(R.id.tv_metric_value)
+        tvRecNcba = view.findViewById<View>(R.id.item_rec_ncba).findViewById<TextView>(R.id.tv_metric_value)
+        tvRecIm = view.findViewById<View>(R.id.item_rec_im).findViewById<TextView>(R.id.tv_metric_value)
+        tvRecReversal = view.findViewById<View>(R.id.item_rec_reversal).findViewById<TextView>(R.id.tv_metric_value)
+        tvRecKcb = view.findViewById<View>(R.id.item_rec_kcb).findViewById<TextView>(R.id.tv_metric_value)
 
-        lin_lay_gen_all = summarizer.findViewById(R.id.summary_gen_All)
-        lin_lay_gen_bal = summarizer.findViewById(R.id.summary_Gen_Balance)
-        lin_lay_gen_fuliza = summarizer.findViewById(R.id.summary_Gen_Fuliza)
-        lin_lay_gen_recv = summarizer.findViewById(R.id.summary_Gen_Received)
-        lin_lay_gen_sent = summarizer.findViewById(R.id.summary_Gen_Sent)
-        lin_lay_gen_withdraw = summarizer.findViewById(R.id.summary_Gen_Withdraw)
-        lin_lay_gen_wrong_pin = summarizer.findViewById(R.id.summary_Gen_Wrong_Pin)
-        lin_lay_gen_unknown = summarizer.findViewById(R.id.summary_Gen_Unknown)
+        // Balance metrics
+        tvBalAll = view.findViewById<View>(R.id.item_bal_all).findViewById<TextView>(R.id.tv_metric_value)
+        tvBalMpesa = view.findViewById<View>(R.id.item_bal_mpesa).findViewById<TextView>(R.id.tv_metric_value)
+        tvBalMshwari = view.findViewById<View>(R.id.item_bal_mshwari).findViewById<TextView>(R.id.tv_metric_value)
+        tvBalKcb = view.findViewById<View>(R.id.item_bal_kcb).findViewById<TextView>(R.id.tv_metric_value)
 
-        lin_lay_rec_all = summarizer.findViewById(R.id.summary_Received_All)
-        lin_lay_rec_bank = summarizer.findViewById(R.id.summary_Rec_Mpesa)
-        lin_lay_rec_mshwari = summarizer.findViewById(R.id.summary_Rec_Mshwari)
-        lin_lay_rec_ncba = summarizer.findViewById(R.id.summary_Rec_NCBA)
-        lin_lay_rec_im = summarizer.findViewById(R.id.summary_Rec_IM)
-        lin_lay_rec_reversal = summarizer.findViewById(R.id.summary_Rec_Reversal)
+        // Fuliza metrics
+        tvFulizaAll = view.findViewById<View>(R.id.item_fuliza_all).findViewById<TextView>(R.id.tv_metric_value)
+        tvFulizaOptIn = view.findViewById<View>(R.id.item_fuliza_opt_in).findViewById<TextView>(R.id.tv_metric_value)
+        tvFulizaOptOut = view.findViewById<View>(R.id.item_fuliza_opt_out).findViewById<TextView>(R.id.tv_metric_value)
+        tvFulizaLimit = view.findViewById<View>(R.id.item_fuliza_limit).findViewById<TextView>(R.id.tv_metric_value)
+        tvFulizaLoan = view.findViewById<View>(R.id.item_fuliza_loan).findViewById<TextView>(R.id.tv_metric_value)
+        tvFulizaMini = view.findViewById<View>(R.id.item_fuliza_mini).findViewById<TextView>(R.id.tv_metric_value)
 
-        lin_lay_bal_all = summarizer.findViewById(R.id.summary_ball_All)
-        lin_lay_bal_mpesa = summarizer.findViewById(R.id.summary_Bal_mpesa)
-        lin_lay_bal_mshwari = summarizer.findViewById(R.id.summary_Bal_mshwari)
-        lin_lay_bal_kcb = summarizer.findViewById(R.id.summary_Bal_KCB)
+        // Error metrics
+        tvErrorAll = view.findViewById<View>(R.id.item_error_all).findViewById<TextView>(R.id.tv_metric_value)
+        tvErrorPin = view.findViewById<View>(R.id.item_error_pin).findViewById<TextView>(R.id.tv_metric_value)
+        tvErrorLess = view.findViewById<View>(R.id.item_error_less).findViewById<TextView>(R.id.tv_metric_value)
+        tvErrorReceiver = view.findViewById<View>(R.id.item_error_receiver).findViewById<TextView>(R.id.tv_metric_value)
+        tvErrorOrg = view.findViewById<View>(R.id.item_error_org).findViewById<TextView>(R.id.tv_metric_value)
+        tvErrorFailed = view.findViewById<View>(R.id.item_error_failed).findViewById<TextView>(R.id.tv_metric_value)
 
-        lin_lay_fuliza_all = summarizer.findViewById(R.id.summary_Fuliza_All)
-        lin_lay_fuliza_opt_in = summarizer.findViewById(R.id.summary_Fuliza_Opt_In)
-        lin_lay_fuliza_opt_out = summarizer.findViewById(R.id.summary_Fuliza_Opt_Out)
-        lin_lay_fuliza_limit = summarizer.findViewById(R.id.summary_Fuliza_Limit)
-        lin_lay_fuliza_loan = summarizer.findViewById(R.id.summary_Fuliza_Loan)
-        lin_lay_fuliza_mini = summarizer.findViewById(R.id.summary_Fuliza_Mini)
+        // Other views
+        btnDeleteSummary = view.findViewById(R.id.btn_delete_summary)
+        layoutInteractions = view.findViewById(R.id.summary_interactions_layout)
+        progressBar = view.findViewById(R.id.summary_progress_bar)
+        scrollView = view.findViewById(R.id.summary_scroll_view)
+        emptyState = view.findViewById(R.id.summary_error_state)
 
-        lin_lay_error_all = summarizer.findViewById(R.id.summary_Error_All)
-        lin_lay_error_pin = summarizer.findViewById(R.id.summary_Error_Pin)
-        lin_lay_error_less = summarizer.findViewById(R.id.summary_Error_Less)
-        lin_lay_error_merchant = summarizer.findViewById(R.id.summary_Error_Merchant)
-        lin_lay_error_receiver = summarizer.findViewById(R.id.summary_Error_Receiver)
-        lin_lay_error_org = summarizer.findViewById(R.id.summary_Error_Org)
-        lin_lay_error_failed = summarizer.findViewById(R.id.summary_Error_Failed)
+        // Setup expand/collapse listeners
+        setupExpandListeners()
 
-        lin_loot_delete = summarizer.findViewById(R.id.summary_Loot_Delete)
-        layout_interactions = summarizer.findViewById(R.id.summary_interactions_layout)
-        progress_bar = summarizer.findViewById(R.id.summary_progress_bar)
-        scroll_view = summarizer.findViewById(R.id.summary_scroll_view)
+        // Delete button
+        btnDeleteSummary.setOnClickListener {
+            if (lootUuid.isNotEmpty()) {
+                Toast.makeText(requireContext(), "Delete not implemented", Toast.LENGTH_SHORT).show()
+            }
+        }
 
-        lood_uuid = ""
+        // Retry button
+        view.findViewById<TextView>(R.id.tv_retry).setOnClickListener {
+            getConnectionState()
+        }
 
         getConnectionState()
 
-        return summarizer
+        return view
+    }
+
+    private fun setupExpandListeners() {
+        val expandPairs = listOf(
+            ivExpandGeneral to llGeneralContent,
+            ivExpandSent to llSentContent,
+            ivExpandReceived to llReceivedContent,
+            ivExpandBalance to llBalanceContent,
+            ivExpandFuliza to llFulizaContent,
+            ivExpandErrors to llErrorsContent
+        )
+
+        expandPairs.forEach { (icon, content) ->
+            icon.setOnClickListener {
+                val isVisible = content.visibility == View.VISIBLE
+                content.visibility = if (isVisible) View.GONE else View.VISIBLE
+                icon.animate().rotation(if (isVisible) 0f else 180f).duration = 200
+                icon.startAnimation(RotateAnimation(
+                    if (isVisible) 180f else 0f,
+                    if (isVisible) 0f else 180f,
+                    android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f,
+                    android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f
+                ).apply { duration = 200; fillAfter = true })
+            }
+        }
     }
 
     override fun onResume() {
@@ -256,65 +285,242 @@ class Frag_Summary : Fragment() {
         if (netInfo != null && netInfo.isConnected) {
             getReferences()
         } else {
-            layout_interactions.visibility = View.GONE
-            Toast.makeText(activity, "No internet connection at the moment", Toast.LENGTH_LONG).show()
+            showOfflineState()
         }
     }
 
+    private fun showOfflineState() {
+        progressBar.visibility = View.GONE
+        scrollView.visibility = View.GONE
+        layoutInteractions.visibility = View.GONE
+        emptyState.visibility = View.VISIBLE
+    }
+
     private fun getReferences() {
-        val sent_data = arguments
-        if (sent_data != null) {
-            val st_name = sent_data.getString("summary_loot_name")
-            if (!st_name.isNullOrEmpty()) {
-                getSummaries(st_name)
+        val sentData = arguments
+        if (sentData != null) {
+            val stName = sentData.getString("summary_loot_name")
+            if (!stName.isNullOrEmpty()) {
+                getSummaries(stName)
             }
         }
     }
 
-    private fun getClickedAction(count_Loot_Uuid: String) {
-        lin_lay_gen_all.setOnClickListener { getSmsListingFor("lin_lay_gen_all") }
-        lin_lay_gen_bal.setOnClickListener { getSmsListingFor("lin_lay_gen_bal") }
-        lin_lay_gen_fuliza.setOnClickListener { getSmsListingFor("lin_lay_gen_fuliza") }
-        lin_lay_gen_recv.setOnClickListener { getSmsListingFor("lin_lay_gen_recv") }
-        lin_lay_gen_sent.setOnClickListener { getSmsListingFor("lin_lay_gen_sent") }
-        lin_lay_gen_withdraw.setOnClickListener { getSmsListingFor("lin_lay_gen_withdraw") }
-        lin_lay_gen_wrong_pin.setOnClickListener { getSmsListingFor("lin_lay_gen_wrong_pin") }
-        lin_lay_gen_unknown.setOnClickListener { getSmsListingFor("lin_lay_gen_unknown") }
+    private fun getSummaries(lootName: String) {
+        val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
 
-        lin_lay_rec_all.setOnClickListener { getSmsListingFor("lin_lay_rec_all") }
-        lin_lay_rec_bank.setOnClickListener { getSmsListingFor("Received from Mpesa") }
-        lin_lay_rec_mshwari.setOnClickListener { getSmsListingFor("Received from Mshwari") }
-        lin_lay_rec_ncba.setOnClickListener { getSmsListingFor("Received from NCBA") }
-        lin_lay_rec_im.setOnClickListener { getSmsListingFor("Received from IM") }
-        lin_lay_rec_reversal.setOnClickListener { getSmsListingFor("Received from Reversal") }
+        val parameters = HashMap<String, String>()
+        parameters["varUser"] = pref.getPrefsAuth("auth", requireContext())
+        parameters["varDev"] = pref.getPrefsAuth("print", requireActivity())
+        parameters["varLootUuid"] = lootName
 
-        lin_lay_bal_all.setOnClickListener { getSmsListingFor("lin_lay_bal_all") }
-        lin_lay_bal_mpesa.setOnClickListener { getSmsListingFor("Get MPESA Balance") }
-        lin_lay_bal_mshwari.setOnClickListener { getSmsListingFor("Get MShwari Balance") }
-        lin_lay_bal_kcb.setOnClickListener { getSmsListingFor("Get KCB Balance") }
+        val call = jsonProcesses.getSummaryCalc(parameters)
 
-        lin_lay_fuliza_all.setOnClickListener { getSmsListingFor("lin_lay_fuliza_all") }
-        lin_lay_fuliza_opt_in.setOnClickListener { getSmsListingFor("Fuliza Opt In") }
-        lin_lay_fuliza_opt_out.setOnClickListener { getSmsListingFor("Fuliza Leave") }
-        lin_lay_fuliza_limit.setOnClickListener { getSmsListingFor("Fuliza Limit") }
-        lin_lay_fuliza_loan.setOnClickListener { getSmsListingFor("Fuliza Loan Taken") }
-        lin_lay_fuliza_mini.setOnClickListener { getSmsListingFor("Fuliza Mini Statement") }
+        progressBar.visibility = View.VISIBLE
+        scrollView.visibility = View.GONE
+        layoutInteractions.visibility = View.GONE
+        emptyState.visibility = View.GONE
 
-        lin_lay_error_all.setOnClickListener { getSmsListingFor("lin_lay_error_all") }
-        lin_lay_error_pin.setOnClickListener { getSmsListingFor("Wrong Pin") }
-        lin_lay_error_less.setOnClickListener { getSmsListingFor("Insufficient funds") }
-        lin_lay_error_merchant.setOnClickListener { getSmsListingFor("Wrong Merchant") }
-        lin_lay_error_receiver.setOnClickListener { getSmsListingFor("Receiver not in Service") }
-        lin_lay_error_org.setOnClickListener { getSmsListingFor("Org not in Service") }
-        lin_lay_error_failed.setOnClickListener { getSmsListingFor("Transaction Cancelled") }
-        lin_loot_delete.setOnClickListener { getSmsListingFor("Delete Loot") }
+        call.enqueue(object : Callback<Mod_Loot_Summary> {
+            override fun onResponse(call: Call<Mod_Loot_Summary>, response: Response<Mod_Loot_Summary>) {
+                if (response.isSuccessful && response.body() != null) {
+                    progressBar.visibility = View.GONE
+                    scrollView.visibility = View.VISIBLE
+                    layoutInteractions.visibility = View.VISIBLE
+                    emptyState.visibility = View.GONE
+
+                    val modLootSummary = response.body()!!
+
+                    val s = modLootSummary.loot_summarizer
+
+                    // Header date/time
+                    try {
+                        val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+                        val dateOutputFormat = java.text.SimpleDateFormat("EEEE, MMM dd", java.util.Locale.getDefault())
+                        val timeOutputFormat = java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault())
+                        val parsedDate = inputFormat.parse(s.loot_Created)
+                        if (parsedDate != null) {
+                            tvGenDate.text = java.text.SimpleDateFormat("EEEE, MMM dd", java.util.Locale.getDefault()).format(parsedDate)
+                            tvGenTime.text = java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault()).format(parsedDate)
+                        } else {
+                            val lootCreated = s.loot_Created.split(" ")
+                            tvGenDate.text = lootCreated[0]
+                            tvGenTime.text = lootCreated.getOrNull(1) ?: ""
+                        }
+                    } catch (e: Exception) {
+                        val lootCreated = s.loot_Created.split(" ")
+                        tvGenDate.text = lootCreated[0]
+                        tvGenTime.text = lootCreated.getOrNull(1) ?: ""
+                    }
+
+                    // Quick stats
+                    val allSent = (s.count_Sent_to_MPESA.toIntOrNull() ?: 0) +
+                            (s.count_Sent_to_Mshwari.toIntOrNull() ?: 0) +
+                            (s.count_Sent_to_LNM.toIntOrNull() ?: 0) +
+                            (s.count_Sent_Mini.toIntOrNull() ?: 0) +
+                            (s.count_Sent_Cancel.toIntOrNull() ?: 0)
+                    val allRec = (s.count_Get_from_MPESA.toIntOrNull() ?: 0) +
+                            (s.count_Get_from_KCB.toIntOrNull() ?: 0) +
+                            (s.count_Get_from_NCBA.toIntOrNull() ?: 0) +
+                            (s.count_Get_from_Mshwari.toIntOrNull() ?: 0) +
+                            (s.count_Get_from_IM.toIntOrNull() ?: 0) +
+                            (s.count_Get_from_Reversal.toIntOrNull() ?: 0)
+                    val allFuliza = (s.count_Fuliza_Opt_In.toIntOrNull() ?: 0) +
+                            (s.count_Fuliza_Limit.toIntOrNull() ?: 0) +
+                            (s.count_Fuliza_Opt_Out.toIntOrNull() ?: 0) +
+                            (s.count_Fuliza_Loan_Taken.toIntOrNull() ?: 0) +
+                            (s.count_Fuliza_Mini_Statement.toIntOrNull() ?: 0)
+
+                    tvQuickReceived.text = allRec.toString()
+                    tvQuickSent.text = allSent.toString()
+                    tvQuickUnknown.text = s.count_Unknown
+                    tvQuickFuliza.text = allFuliza.toString()
+                    tvTotalInteractions.text = "${s.count_All} Interactions"
+
+                    // General metrics
+                    tvGenAll.text = s.count_All
+                    tvGenBalance.text = s.count_Get_Bal_MPESA
+                    tvGenFuliza.text = s.count_Fuliza_Mini_Statement
+                    tvGenReceived.text = s.count_Get_from_MPESA
+                    tvGenSent.text = s.count_Sent_to_MPESA
+                    tvGenWithdraw.text = s.count_Withdraw
+                    tvGenWrongPin.text = s.count_Error_Pin
+                    tvGenUnknown.text = s.count_Unknown
+
+                    // Sent breakdown
+                    tvSentAll.text = allSent.toString()
+                    tvSentMpesa.text = s.count_Sent_to_MPESA
+                    tvSentMshwari.text = s.count_Sent_to_Mshwari
+                    tvSentLnm.text = s.count_Sent_to_LNM
+                    tvSentMini.text = s.count_Sent_Mini
+                    tvSentCancel.text = s.count_Sent_Cancel
+
+                    // Received breakdown
+                    tvRecAll.text = allRec.toString()
+                    tvRecMpesa.text = s.count_Get_from_MPESA
+                    tvRecMshwari.text = s.count_Get_from_Mshwari
+                    tvRecNcba.text = s.count_Get_from_NCBA
+                    tvRecIm.text = s.count_Get_from_IM
+                    tvRecReversal.text = s.count_Get_from_Reversal
+                    tvRecKcb.text = s.count_Get_from_KCB
+
+                    // Balance breakdown
+                    val allBal = (s.count_Get_Bal_KCB.toIntOrNull() ?: 0) +
+                            (s.count_Get_Bal_Mshwari.toIntOrNull() ?: 0) +
+                            (s.count_Get_Bal_MPESA.toIntOrNull() ?: 0)
+                    tvBalAll.text = allBal.toString()
+                    tvBalMpesa.text = s.count_Get_Bal_MPESA
+                    tvBalMshwari.text = s.count_Get_Bal_Mshwari
+                    tvBalKcb.text = s.count_Get_Bal_KCB
+
+                    // Fuliza breakdown
+                    val allFulizaCalc = (s.count_Fuliza_Opt_In.toIntOrNull() ?: 0) +
+                            (s.count_Fuliza_Limit.toIntOrNull() ?: 0) +
+                            (s.count_Fuliza_Opt_Out.toIntOrNull() ?: 0) +
+                            (s.count_Fuliza_Loan_Taken.toIntOrNull() ?: 0) +
+                            (s.count_Fuliza_Mini_Statement.toIntOrNull() ?: 0)
+                    tvFulizaAll.text = allFulizaCalc.toString()
+                    tvFulizaOptIn.text = s.count_Fuliza_Opt_In
+                    tvFulizaOptOut.text = s.count_Fuliza_Opt_Out
+                    tvFulizaLimit.text = s.count_Fuliza_Limit
+                    tvFulizaLoan.text = s.count_Fuliza_Loan_Taken
+                    tvFulizaMini.text = s.count_Fuliza_Mini_Statement
+
+                    // Errors breakdown
+                    val allError = (s.count_Error_Pin.toIntOrNull() ?: 0) +
+                            (s.count_Error_Less.toIntOrNull() ?: 0) +
+                            (s.count_Error_Receiver.toIntOrNull() ?: 0) +
+                            (s.count_Error_Receiver_Org.toIntOrNull() ?: 0) +
+                            (s.count_Error_Failed.toIntOrNull() ?: 0)
+                    tvErrorAll.text = allError.toString()
+                    tvErrorPin.text = s.count_Error_Pin
+                    tvErrorLess.text = s.count_Error_Less
+                    tvErrorReceiver.text = s.count_Error_Receiver
+                    tvErrorOrg.text = s.count_Error_Receiver_Org
+                    tvErrorFailed.text = s.count_Error_Failed
+
+                    lootUuid = s.loot_Uuid
+                    setupClickListeners(s.loot_Uuid)
+                }
+            }
+
+            override fun onFailure(call: Call<Mod_Loot_Summary>, t: Throwable) {
+                progressBar.visibility = View.GONE
+                showOfflineState()
+                Log.e(kon.TAGGED, "Summary fetch failed: ${t.message}")
+            }
+        })
+    }
+
+    private fun setupClickListeners(uuid: String) {
+        // Click map: view_id -> category string
+        val clickMap = mapOf(
+            // General
+            "item_gen_all" to "lin_lay_gen_all",
+            "item_gen_balance" to "lin_lay_gen_bal",
+            "item_gen_fuliza" to "lin_lay_gen_fuliza",
+            "item_gen_received" to "lin_lay_gen_recv",
+            "item_gen_sent" to "lin_lay_gen_sent",
+            "item_gen_withdraw" to "lin_lay_gen_withdraw",
+            "item_gen_wrong_pin" to "lin_lay_gen_wrong_pin",
+            "item_gen_unknown" to "lin_lay_gen_unknown",
+
+            // Sent
+            "item_sent_all" to "lin_lay_sent_all",
+            "item_sent_mpesa" to "lin_lay_sent_mpesa",
+            "item_sent_mshwari" to "lin_lay_sent_mshwari",
+            "item_sent_lnm" to "lin_lay_sent_lnm",
+            "item_sent_mini" to "lin_lay_sent_mini",
+            "item_sent_cancel" to "lin_lay_sent_cancel",
+
+            // Received
+            "item_rec_all" to "lin_lay_rec_all",
+            "item_rec_mpesa" to "lin_lay_rec_mpesa",
+            "item_rec_mshwari" to "lin_lay_rec_mshwari",
+            "item_rec_ncba" to "lin_lay_rec_ncba",
+            "item_rec_im" to "lin_lay_rec_im",
+            "item_rec_reversal" to "lin_lay_rec_reversal",
+            "item_rec_kcb" to "lin_lay_rec_kcb",
+
+            // Balance
+            "item_bal_all" to "lin_lay_bal_all",
+            "item_bal_mpesa" to "lin_lay_bal_mpesa",
+            "item_bal_mshwari" to "lin_lay_bal_mshwari",
+            "item_bal_kcb" to "lin_lay_bal_kcb",
+
+            // Fuliza
+            "item_fuliza_all" to "lin_lay_fuliza_all",
+            "item_fuliza_opt_in" to "lin_lay_fuliza_opt_in",
+            "item_fuliza_opt_out" to "lin_lay_fuliza_opt_out",
+            "item_fuliza_limit" to "lin_lay_fuliza_limit",
+            "item_fuliza_loan" to "lin_lay_fuliza_loan",
+            "item_fuliza_mini" to "lin_lay_fuliza_mini",
+
+            // Errors
+            "item_error_all" to "lin_lay_error_all",
+            "item_error_pin" to "lin_lay_error_pin",
+            "item_error_less" to "lin_lay_error_less",
+            "item_error_receiver" to "lin_lay_error_receiver",
+            "item_error_org" to "lin_lay_error_org",
+            "item_error_failed" to "lin_lay_error_failed"
+        )
+
+        clickMap.forEach { (viewId, category) ->
+            val view = requireView().findViewById<View>(resources.getIdentifier(viewId, "id", requireContext().packageName))
+            if (view != null) {
+                view.setOnClickListener { getSmsListingFor(category) }
+            }
+        }
+
+        // Delete button
+        btnDeleteSummary.setOnClickListener { getSmsListingFor("Delete Loot") }
     }
 
     private fun getSmsListingFor(category: String) {
         if (category.isNotEmpty()) {
             val bundle = Bundle()
             bundle.putString("filter_category", category)
-            
+
             requireActivity().findNavController(R.id.nav_host_fragment_activity_bottom)
                 .navigate(R.id.navi_transactions, bundle)
         } else {
@@ -322,166 +528,9 @@ class Frag_Summary : Fragment() {
         }
     }
 
-    private fun getSummaries(loot_name: String) {
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(kon.LINK_PROCESS)
-//            .addConverterFactory(GsonConverterFactory.create(gson))
-//            .client(ServiceGenerators.getUnsafeOkHttpClient(requireContext()))
-//            .build()
-//
-//        jsonProcesses = retrofit.create(JsonProcesses::class.java)
-
-        val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
-
-        val parameters = HashMap<String, String>()
-        parameters["varUser"] = pref.getPrefsAuth("auth", requireContext())
-        parameters["varDev"] = pref.getPrefsAuth("print", requireActivity())
-        parameters["varLootUuid"] = loot_name
-
-        val call = jsonProcesses.getSummaryCalc(parameters)
-        
-        progress_bar.visibility = View.VISIBLE
-        scroll_view.visibility = View.GONE
-        layout_interactions.visibility = View.GONE
-        
-        call.enqueue(object : Callback<Mod_Loot_Summary> {
-            override fun onResponse(call: Call<Mod_Loot_Summary>, response: Response<Mod_Loot_Summary>) {
-                if (response.isSuccessful && response.body() != null) {
-                    progress_bar.visibility = View.GONE
-                    scroll_view.visibility = View.VISIBLE
-                    layout_interactions.visibility = View.VISIBLE
-                    
-                    val mod_loot_summary = response.body()!!
-
-                    var all_rec = 0
-                    var all_sent = 0
-                    var all_bal = 0
-                    var all_fuliza = 0
-                    var all_error = 0
-
-                    tv_gen_all.text = mod_loot_summary.loot_summarizer.count_All
-                    tv_gen_bal.text = mod_loot_summary.loot_summarizer.count_Get_Bal_MPESA
-                    tv_gen_fuliza.text = mod_loot_summary.loot_summarizer.count_Fuliza_Mini_Statement
-                    tv_gen_recv.text = mod_loot_summary.loot_summarizer.count_Get_from_MPESA
-                    tv_gen_sent.text = mod_loot_summary.loot_summarizer.count_Sent_to_MPESA
-                    tv_gen_withdraw.text = mod_loot_summary.loot_summarizer.count_Withdraw
-                    tv_gen_wrong_pin.text = mod_loot_summary.loot_summarizer.count_Error_Pin
-                    tv_gen_unknown.text = mod_loot_summary.loot_summarizer.count_Unknown
-
-                    all_sent = mod_loot_summary.loot_summarizer.count_Sent_to_MPESA.toInt() + mod_loot_summary.loot_summarizer.count_Sent_to_Mshwari.toInt() +
-                            mod_loot_summary.loot_summarizer.count_Sent_to_LNM.toInt() + mod_loot_summary.loot_summarizer.count_Sent_Mini.toInt() +
-                            mod_loot_summary.loot_summarizer.count_Sent_Cancel.toInt()
-                    tv_sent_all.text = all_sent.toString()
-                    tv_sent_mpesa.text = mod_loot_summary.loot_summarizer.count_Sent_to_MPESA
-                    tv_sent_mshwari.text = mod_loot_summary.loot_summarizer.count_Sent_to_Mshwari
-                    tv_sent_lnm.text = mod_loot_summary.loot_summarizer.count_Sent_to_LNM
-                    tv_sent_mini.text = mod_loot_summary.loot_summarizer.count_Sent_Mini
-                    tv_sent_cancel.text = mod_loot_summary.loot_summarizer.count_Sent_Cancel
-
-                    all_rec = mod_loot_summary.loot_summarizer.count_Get_from_MPESA.toInt() + mod_loot_summary.loot_summarizer.count_Get_from_KCB.toInt() +
-                            mod_loot_summary.loot_summarizer.count_Get_from_NCBA.toInt() + mod_loot_summary.loot_summarizer.count_Get_from_Mshwari.toInt() +
-                            mod_loot_summary.loot_summarizer.count_Get_from_IM.toInt() + mod_loot_summary.loot_summarizer.count_Get_from_Reversal.toInt()
-                    tv_rec_all.text = all_rec.toString()
-                    tv_rec_bank.text = mod_loot_summary.loot_summarizer.count_Get_from_MPESA // Mpesa
-                    tv_rec_mshwari.text = mod_loot_summary.loot_summarizer.count_Get_from_Mshwari
-                    tv_rec_ncba.text = mod_loot_summary.loot_summarizer.count_Get_from_NCBA
-
-                    tv_rec_im.text = mod_loot_summary.loot_summarizer.count_Get_from_IM
-                    tv_rec_kcb.text = mod_loot_summary.loot_summarizer.count_Get_from_KCB
-                    tv_rec_reversal.text = mod_loot_summary.loot_summarizer.count_Get_from_Reversal
-
-                    all_bal = mod_loot_summary.loot_summarizer.count_Get_Bal_KCB.toInt() + mod_loot_summary.loot_summarizer.count_Get_Bal_Mshwari.toInt() +
-                            mod_loot_summary.loot_summarizer.count_Get_Bal_MPESA.toInt()
-                    tv_bal_all.text = all_bal.toString()
-                    tv_bal_mpesa.text = mod_loot_summary.loot_summarizer.count_Get_Bal_MPESA
-                    tv_bal_mshwari.text = mod_loot_summary.loot_summarizer.count_Get_Bal_Mshwari
-                    tv_bal_kcb.text = mod_loot_summary.loot_summarizer.count_Get_Bal_KCB
-
-                    all_fuliza = mod_loot_summary.loot_summarizer.count_Fuliza_Opt_In.toInt() +
-                            mod_loot_summary.loot_summarizer.count_Fuliza_Limit.toInt() + mod_loot_summary.loot_summarizer.count_Fuliza_Opt_Out.toInt() +
-                            mod_loot_summary.loot_summarizer.count_Fuliza_Loan_Taken.toInt() + mod_loot_summary.loot_summarizer.count_Fuliza_Mini_Statement.toInt()
-                    tv_fuliza_all.text = all_fuliza.toString()
-                    tv_fuliza_opt_in.text = mod_loot_summary.loot_summarizer.count_Fuliza_Opt_In
-                    tv_fuliza_opt_out.text = mod_loot_summary.loot_summarizer.count_Fuliza_Opt_Out
-                    tv_fuliza_limit.text = mod_loot_summary.loot_summarizer.count_Fuliza_Limit
-                    tv_fuliza_loan.text = mod_loot_summary.loot_summarizer.count_Fuliza_Loan_Taken
-                    tv_fuliza_mini.text = mod_loot_summary.loot_summarizer.count_Fuliza_Mini_Statement
-
-                    all_error = mod_loot_summary.loot_summarizer.count_Error_Pin.toInt() + mod_loot_summary.loot_summarizer.count_Error_Less.toInt() +
-                            mod_loot_summary.loot_summarizer.count_Error_Receiver.toInt() +
-                            mod_loot_summary.loot_summarizer.count_Error_Receiver_Org.toInt() + mod_loot_summary.loot_summarizer.count_Error_Failed.toInt()
-                    tv_error_all.text = all_error.toString()
-                    tv_error_pin.text = mod_loot_summary.loot_summarizer.count_Error_Pin
-                    tv_error_less.text = mod_loot_summary.loot_summarizer.count_Error_Less
-                    tv_error_merchant.text = "0"
-                    tv_error_receiver.text = mod_loot_summary.loot_summarizer.count_Error_Receiver
-                    tv_error_org.text = mod_loot_summary.loot_summarizer.count_Error_Receiver_Org
-                    tv_error_failed.text = mod_loot_summary.loot_summarizer.count_Error_Failed
-
-                    try {
-                        val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
-                        val dateOutputFormat = java.text.SimpleDateFormat("EEEE, MMM dd", java.util.Locale.getDefault())
-                        val timeOutputFormat = java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault())
-                        val parsedDate = inputFormat.parse(mod_loot_summary.loot_summarizer.loot_Created)
-                        if (parsedDate != null) {
-                            tv_gen_date.text = dateOutputFormat.format(parsedDate)
-                            tv_gen_time.text = timeOutputFormat.format(parsedDate)
-                        } else {
-                            val lootCreated = mod_loot_summary.loot_summarizer.loot_Created.split(" ")
-                            tv_gen_date.text = lootCreated[0]
-                            tv_gen_time.text = lootCreated.getOrNull(1) ?: ""
-                        }
-                    } catch (e: Exception) {
-                        val lootCreated = mod_loot_summary.loot_summarizer.loot_Created.split(" ")
-                        tv_gen_date.text = lootCreated[0]
-                        tv_gen_time.text = lootCreated.getOrNull(1) ?: ""
-                    }
-
-                    getClickedAction(mod_loot_summary.loot_summarizer.loot_Uuid)
-                }
-            }
-
-            override fun onFailure(call: Call<Mod_Loot_Summary>, t: Throwable) {
-                progress_bar.visibility = View.GONE
-                Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again")
-                Log.e(kon.TAGGED, t.message ?: "Unknown error")
-            }
-        })
-    }
-
-    private fun setLootToDelete(loot_uuid: String) {
-        val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
-
-        val parameters = HashMap<String, String>()
-        parameters["varUser"] = pref.getPrefsAuth("auth", requireContext())
-        parameters["varDev"] = pref.getPrefsAuth("print", requireActivity())
-        parameters["varLootUuid"] = loot_uuid
-
-//        val call = jsonProcesses.getLootDelete(parameters)
-//        call.enqueue(object : Callback<Mod_Loot_Delete> {
-//            override fun onResponse(call: Call<Mod_Loot_Delete>, response: Response<Mod_Loot_Delete>) {
-//                if (response.isSuccessful && response.body() != null) {
-//                    val mod_summary = response.body()!!
-//                    when (mod_summary.summary_Status) {
-//                        "1" -> {
-//                            // Handle status 1
-//                        }
-//                        "2" -> {
-//                            // Handle status 2
-//                        }
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<Mod_Loot_Delete>, t: Throwable) {
-//                Log.e(kon.TAGGED, "**********************: onFailure Unknown error occurred, please try again")
-//                Log.e(kon.TAGGED, t.message ?: "Unknown error")
-//            }
-//        })
-    }
-
     private fun backtoHistory() {
-        requireActivity().findNavController(R.id.nav_host_fragment_activity_bottom).navigateUp()
+        val navController = requireActivity().findNavController(R.id.nav_host_fragment_activity_bottom)
+        navController.popBackStack(R.id.navi_history, true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

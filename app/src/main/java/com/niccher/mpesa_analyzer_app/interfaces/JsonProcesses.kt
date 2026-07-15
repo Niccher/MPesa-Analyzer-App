@@ -12,7 +12,7 @@ import retrofit2.http.POST
 interface JsonProcesses {
     @FormUrlEncoded
     @POST("get/my_uploads")
-    suspend fun getSummary(@FieldMap fields: Map<String, String>): SummaryResponse
+    fun getSummary(@FieldMap fields: Map<String, String>): Call<SummaryResponse>
 
     @FormUrlEncoded
     @POST("get/my_summary_calculations")
@@ -37,5 +37,4 @@ interface JsonProcesses {
 //    @FormUrlEncoded
 //    @POST("set/delete_loot_by_uuid")
 //    fun getLootDelete(@FieldMap fields: Map<String, String>): Call<ModLootDelete>
-
 }

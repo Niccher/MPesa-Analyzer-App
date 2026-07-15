@@ -108,9 +108,7 @@ class Frag_History : Fragment() {
         }
 
         // Load data ONCE — uses cache when offline
-        viewLifecycleOwner.lifecycleScope.launch {
-            getSummaries()
-        }
+        getSummaries()
 
         return fragHistory
     }
@@ -144,36 +142,43 @@ class Frag_History : Fragment() {
         recyclerView.visibility = View.GONE
     }
 
-    private suspend fun getSummaries() {
-        try {
-            connWait.visibility = View.VISIBLE
+    private fun getSummaries() {
+        connWait.visibility = View.VISIBLE
 
-            val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
-            val parameters = mapOf(
-                "varUser" to pref.getPrefsAuth("auth", requireContext()),
-                "varDev" to pref.getPrefsAuth("print", requireActivity())
-            )
+        val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
+        val parameters = mapOf(
+            "varUser" to pref.getPrefsAuth("auth", requireContext()),
+            "varDev" to pref.getPrefsAuth("print", requireActivity())
+        )
 
-            val response = jsonProcesses.getSummary(parameters)
-            summariesList = response.summarizer?.toMutableList() ?: mutableListOf()
+        jsonProcesses.getSummary(parameters).enqueue(object : Callback<SummaryResponse> {
+            override fun onResponse(call: Call<SummaryResponse>, response: Response<SummaryResponse>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    summariesList = body.summarizer?.toMutableList() ?: mutableListOf()
 
-            if (summariesList.isNotEmpty()) {
-                summariesAdapter = Adapter_Frag_History(summariesList as ArrayList<Mod_Summaries>, requireActivity())
-                recyclerView.adapter = summariesAdapter
-                summariesAdapter.notifyDataSetChanged()
+                    if (summariesList.isNotEmpty()) {
+                        summariesAdapter = Adapter_Frag_History(summariesList as ArrayList<Mod_Summaries>, requireActivity())
+                        recyclerView.adapter = summariesAdapter
+                        summariesAdapter.notifyDataSetChanged()
 
-                connWait.visibility = View.GONE
-                connState.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
-            } else {
-                isOffline("No data available")
+                        connWait.visibility = View.GONE
+                        connState.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                    } else {
+                        isOffline("No data available")
+                    }
+                } else {
+                    isOffline("No data available")
+                }
             }
 
-        } catch (e: Exception) {
-            connWait.visibility = View.GONE
-            isOffline("Offline • Showing cached data")
-            Log.e(kon.TAGGED, "History: ${e.message}", e)
-        }
+            override fun onFailure(call: Call<SummaryResponse>, t: Throwable) {
+                connWait.visibility = View.GONE
+                isOffline("Offline • Showing cached data")
+                Log.e(kon.TAGGED, "History: ${t.message}", t)
+            }
+        })
     }
 
     private fun showExportDialog() {

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    tools:viewBindingIgnore="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_category"
+                android:tint="@color/signupsignintextcolor" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:text="@string/str_general_interactions_39"
+                android:textColor="@color/signupsignintextcolor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_expand_general"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_drop_down"
+                android:tint="@color/secondarytext" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/linecolor" />
+
+        <LinearLayout
+            android:id="@+id/ll_general_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="visible">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:orientation="horizontal">
+
+                <!-- item_gen_all -->
+                <LinearLayout
+                    android:id="@+id/item_gen_all"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_metric_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/iv_metric_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@mipmap/summ_money_all"
+                        android:contentDescription="@string/str_all_32" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/str_0_27"
+                        android:textColor="@color/bg_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/str_all_32"
+                        android:textColor="@color/primarytext"
+                        android:textSize="11sp"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <!-- item_gen_balance -->
+                <LinearLayout
+                    android:id="@+id/item_gen_balance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_metric_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/iv_metric_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@mipmap/summ_money_balance"
+                        android:contentDescription="@string/str_balance_42" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/str_0_27"
+                        android:textColor="@color/bg_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/str_balance_42"
+                        android:textColor="@color/primarytext"
+                        android:textSize="11sp"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <!-- item_gen_fuliza -->
+                <LinearLayout
+                    android:id="@+id/item_gen_fuliza"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_metric_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/iv_metric_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@mipmap/summ_money_fuliza"
+                        android:contentDescription="@string/str_fuliza_31" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/str_0_27"
+                        android:textColor="@color/bg_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/str_fuliza_31"
+                        android:textColor="@color/primarytext"
+                        android:textSize="11sp"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <!-- item_gen_received -->
+                <LinearLayout
+                    android:id="@+id/item_gen_received"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_metric_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/iv_metric_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@mipmap/summ_money_received"
+                        android:contentDescription="@string/str_received_46" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/str_0_27"
+                        android:textColor="@color/bg_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/str_received_46"
+                        android:textColor="@color/primarytext"
+                        android:textSize="11sp"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <!-- item_gen_sent -->
+                <LinearLayout
+                    android:id="@+id/item_gen_sent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_metric_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/iv_metric_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@mipmap/summ_money_sent"
+                        android:contentDescription="@string/str_sent_74" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/str_0_27"
+                        android:textColor="@color/bg_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/str_sent_74"
+                        android:textColor="@color/primarytext"
+                        android:textSize="11sp"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <!-- item_gen_withdraw -->
+                <LinearLayout
+                    android:id="@+id/item_gen_withdraw"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_metric_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/iv_metric_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@mipmap/summ_money_withdraw"
+                        android:contentDescription="@string/str_withdraw_40" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/str_0_27"
+                        android:textColor="@color/bg_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/str_withdraw_40"
+                        android:textColor="@color/primarytext"
+                        android:textSize="11sp"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <!-- item_gen_wrong_pin -->
+                <LinearLayout
+                    android:id="@+id/item_gen_wrong_pin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_metric_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/iv_metric_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@mipmap/summ_money_wrong_pin"
+                        android:contentDescription="@string/str_wrong_pin_45" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/str_0_27"
+                        android:textColor="@color/bg_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/str_wrong_pin_45"
+                        android:textColor="@color/primarytext"
+                        android:textSize="11sp"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+                <!-- item_gen_unknown -->
+                <LinearLayout
+                    android:id="@+id/item_gen_unknown"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_metric_card"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/iv_metric_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@mipmap/summ_money_unknown"
+                        android:contentDescription="@string/str_unknown_34" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/str_0_27"
+                        android:textColor="@color/bg_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_metric_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/str_unknown_34"
+                        android:textColor="@color/primarytext"
+                        android:textSize="11sp"
+                        android:textAlignment="center" />
+                </LinearLayout>
+            </GridLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

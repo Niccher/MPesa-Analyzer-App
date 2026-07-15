@@ -109,7 +109,7 @@
                     android:id="@+id/kpi_total_received"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/str_ksh_0_0_132"
+                    android:text="@string/str_zero_times"
                     android:textColor="#4CAF50"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
@@ -141,7 +141,7 @@
                     android:id="@+id/kpi_total_sent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/str_ksh_0_0_132"
+                    android:text="@string/str_zero_times"
                     android:textColor="#F44336"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />

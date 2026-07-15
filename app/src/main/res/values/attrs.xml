@@ -1,0 +1,4 @@
+<resources>
+    <attr name="metric_icon" format="reference" />
+    <attr name="metric_label" format="string" />
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_columnWeight="1"
+    android:layout_rowWeight="1"
+    android:layout_margin="8dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/bg_metric_card"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/iv_metric_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:contentDescription="@string/str_all_32"
+        app:srcCompat="?attr/metric_icon" />
+
+    <TextView
+        android:id="@+id/tv_metric_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/str_0_27"
+        android:textColor="@color/bg_green"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_metric_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/primarytext"
+        android:textSize="11sp"
+        android:textAlignment="center"
+        android:text="?attr/metric_label" />
+</LinearLayout>

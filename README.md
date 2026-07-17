@@ -1,145 +1,243 @@
 <div align="center">
 
-# 📱 Mpesa Analyzer App
+# Mpesa Analyzer App
 
-**Track and visualize your MPESA spending automatically.**
+**Automatically parse, encrypt, and sync your MPESA SMS to a secure cloud backend — powered by LLM-based financial classification.**
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9+-blue.svg?logo=kotlin)](https://kotlinlang.org)
-[![Android](https://img.shields.io/badge/Android-API_25+-green.svg?logo=android)](https://developer.android.com/)
+[![Android](https://img.shields.io/badge/Android-API_29+-green.svg?logo=android)](https://developer.android.com/)
 [![Backend](https://img.shields.io/badge/Backend-CodeIgniter_4-EF4223.svg?logo=codeigniter)](https://codeigniter.com/)
-[![Database](https://img.shields.io/badge/Database-MySQL-4479A1.svg?logo=mysql)](https://www.mysql.com/)
+[![Database](https://img.shields.io/badge/Database-MySQL_8.4-4479A1.svg?logo=mysql)](https://www.mysql.com/)
+[![LLM](https://img.shields.io/badge/LLM-Qwen2.5_1.5B-8A2BE2.svg)]()
 [![Docker](https://img.shields.io/badge/Docker-Supported-2496ED.svg?logo=docker)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-Mpesa Analyzer App is a robust, modern Android application built entirely with Kotlin. Designed with performance and clean architecture in mind, it seamlessly integrates with a containerized CodeIgniter 4 backend.
-
-[🌍 Explore the Backend Repository](#) · [🐛 Report a Bug](#) · [✨ Request a Feature](#)
 
 </div>
 
 ---
 
-## 📖 About the Project
+## The Three-Repos Ecosystem
 
-Mpesa Analyzer is designed to automatically parse your MPESA transaction SMS messages and provide visual insights into your spending habits. By utilizing modern Android development best practices, the application offers a smooth, responsive, and intuitive way to manage personal finances directly from your device without manual entry.
+This Android app is the **data capture layer** of a three-part stack. It works together with two other repositories:
 
-### 🔗 Architecture & Integration
-The mobile app relies on a decoupled architecture, consuming RESTful APIs served by a customized **CodeIgniter 4 (CI4)** backend. The backend infrastructure, including the **MySQL** database and **phpMyAdmin** interface, is fully containerized using **Docker** for easy local development, testing, and deployment.
+```
+                    ┌──────────────────────┐
+                    │  Android App          │ ◄── YOU ARE HERE
+                    │  (This repo)          │
+                    │                       │
+                    │  Reads MPESA SMS      │
+                    │  AES-128 encrypts     │
+                    │  Uploads to backend   │
+                    └─────────┬────────────┘
+                              │ POST /process/upload
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│  CI4 Web Backend            ┌──────────────────────────────┐│
+│  (Mpesa Analyzer WebApp)    │  Docker LLM Service          ││
+│                              │  (Mpesa Analyser Docker)    ││
+│  Decrypts payload           │                              ││
+│  Stores in MySQL            │  Polls DB for unprocessed    ││
+│  Serves web dashboard      │  Classifies senders via LLM  ││
+│  Triggers LLM processing   │  Extracts transactions       ││
+│  [PHP / CodeIgniter 4]     │  Writes back to DB           ││
+│                             │  [Python / FastAPI / Qwen2.5]││
+└─────────────────────────────┴──────────────────────────────┘
+```
 
-**Key Highlights:**
-* **MVVM Architecture:** Ensures separation of concerns, making the UI logic highly testable and maintainable.
-* **Coroutines & Flow:** Handles asynchronous data streams seamlessly without blocking the main thread.
-* **Robust Backend:** A lightweight, blazing-fast CI4 API providing secure data access.
+**Dependency chain:**
+- **Android App** → sends data to **Web Backend**
+- **Web Backend** → stores SMS, triggers **Docker LLM Service**
+- **Docker LLM Service** → reads/writes the shared **MySQL database** used by the Web Backend
 
 ---
 
-## ✨ Features
+## How Hardcoded Scanning + LLM Classification Work Together
 
-* **Automated SMS Parsing:** Reads and categorizes MPESA transaction messages securely.
-* **Visual Analytics:** Interactive Pie Charts to visualize spending distribution.
-* **Offline Processing:** All data extraction happens locally on the device for maximum privacy.
-* **Background Syncing:** Automatically uploads categorized data to your personal CI4 backend.
-* **Dark Mode Support:** Fully responsive adaptive UI following Material Design 3 guidelines.
+This app uses a **hybrid approach** that combines the best of both worlds:
+
+### On-device: Hardcoded regex scanner (fast & private)
+The Android app's `MpesaParser` uses hand-written regex patterns to parse SMS fields (amount, sender, transaction type). This happens instantly on the device with zero network calls. The raw base64-encoded SMS bodies are then encrypted and uploaded to the backend.
+
+### Server-side: LLM-powered classification (smart & adaptive)
+Once SMS reach the MySQL database, the Docker LLM service processes them:
+
+| Task | What the LLM does that regex cannot |
+|------|--------------------------------------|
+| **Sender classification** | Identifies unknown senders, resolves "MPE802" as "KCB MPESA", categorises into 7 financial categories |
+| **Direction inference** | Understands "You have received KSH500 from" vs "KSH500 sent to" — even with unconventional wording |
+| **Amount extraction** | Handles "Ksh.500/=", "KES 500.00", "500 bob" — all parsed correctly |
+| **Counterparty resolution** | Extracts business names, personal names, Till/PayBill numbers from free-form text |
+| **Fuliza detection** | Identifies Fuliza limit changes, loan disbursements, and repayments within the same SMS |
+| **Format resilience** | Survives SMS template changes by Safaricom, Airtel, or banks without app updates |
+
+**Result:** The Android app stays lightweight and responsive. The heavy AI processing happens offline on your server, using a local LLM that costs nothing per query.
 
 ---
 
-## 🛠 Tech Stack
+## Features
 
-### 📱 Android Client (Frontend)
-| Technology | Description |
+### SMS Parsing & Upload Pipeline
+
+| Feature | Detail |
 |---|---|
-| **Kotlin** | Primary programming language |
-| **MVVM** | Architectural pattern |
-| **Retrofit + OkHttp** | Networking and API communication |
-| **Coroutines & Flow** | Asynchronous programming |
-| **Room / DataStore** | Local persistence and caching |
+| **On-device SMS reading** | Queries `Telephony.Sms.CONTENT_URI` using a timestamp watermark so only new messages are processed |
+| **Category detection** | Regex-based `MpesaParser` recognises 9 MPESA categories: Money Sent, PayBill, Buy Goods, Airtime, Withdrawal, Money Received, Fuliza, M-Shwari, Bank Transfer, Fees |
+| **AES-128-CBC encryption** | Raw JSON payload is encrypted on-device before transmission; decrypted server-side by ModCryption |
+| **Foreground service** | `UploadService` runs as a persistent foreground service with progress notifications (dataSync) |
+| **Scheduled nightly sync** | `MpesaSyncWorker` (WorkManager) triggers daily at 8 PM |
+| **Temp file cleanup** | Plaintext and encrypted temp files are deleted after a successful upload |
+| **Upload progress tracking** | Custom `ProgressRequestBody` reports real-time percentage to the notification |
 
-### ⚙️ Backend (API & Database)
-| Technology | Description |
+### Visual Analytics
+
+| Screen | Features |
 |---|---|
-| **CodeIgniter 4** | PHP Framework serving the RESTful API |
-| **MySQL** | Relational Database Management System |
-| **Docker & Compose** | Containerization and environment orchestration |
+| **Home Dashboard** | SMS permission status, last upload timestamp, sync count, "Fetch & Sync" button, local PieChart for 10-day spending insights |
+| **Graph (Financial Analytics)** | Stacked Bar Chart / Line Graph toggle, KPI cards showing total Received/Sent counts, historical data fetched from server |
+| **Upload History** | RecyclerView of past uploads with Android built-in drawable icons (download/upload/help), clickable to drill into summary, CSV/PDF export via FAB (iTextPDF) |
+| **Summary Info (Drill-down)** | Expandable card sections: General, Sent, Received, Balance, Fuliza, Errors — each metric is clickable and navigates to filtered transactions |
+| **Transactions** | Local SMS search with type filter (Sent/Received/Paybill/Withdraw), MaterialDatePicker date range, SearchView text search, navigable from Summary with pre-applied category |
+| **Settings** | Dark theme toggle, biometric lock toggle, backend URL configuration, logout, delete data, delete account |
+
+### Profile & Account
+
+| Feature | Detail |
+|---|---|
+| **Server-side profile** | Username, email, member-since date fetched from `JsonAuthUser.getUserInfo()` |
+| **Upload stats** | Sync count (from local prefs), total uploads and last sync time (from server summaries) |
+| **Device fingerprint registration** | 15 hardware/build fields (`Build.DEVICE`, `Build.MODEL`, `Build.FINGERPRINT`, etc.) sent to `/process/device` on first auth; returned `print_id` persisted for subsequent uploads |
+
+### Security & Privacy
+
+| Feature | Detail |
+|---|---|
+| **FLAG_SECURE** | Screenshots blocked on MainActivity and LockActivity |
+| **Biometric lock** | AndroidX BiometricPrompt with BIOMETRIC_STRONG + DEVICE_CREDENTIAL (API 30+) support |
+| **Token-based auth** | 12-character alphanumeric token scanned via QR or typed; verified server-side via SHA-256 |
+| **On-device privacy** | All SMS parsing happens locally — raw SMS never transmitted (only parsed + encrypted) |
+| **Data ownership** | Delete data and delete account endpoints available |
+
+### Caching & Offline
+
+| Mechanism | Detail |
+|---|---|
+| **OkHttp disk cache** | 10 MB dedicated cache at `context.cacheDir/http_cache` |
+| **Online mode** | `Cache-Control: public, max-age=7200` (2-hour cache for API responses) |
+| **Offline mode** | Up to 7-day stale cache served via `only-if-cached` + `max-stale=604800` interceptor |
+| **SharedPreferences** | Auth token, device ID, sync count, last upload timestamp persisted across reboots |
+| **Watermark sync** | `last_upload_time` prevents re-reading old SMS on subsequent uploads |
 
 ---
 
-## 📋 Prerequisites
+## Tech Stack
 
-Before you begin, ensure you have met the following requirements:
-* **Android Studio:** Giraffe (or newer)
-* **Java Development Kit (JDK):** Version 17+
-* **Docker Desktop:** Installed and running (for backend services)
-* **Git:** For version control
+### Android Client
+
+| Technology | Purpose |
+|---|---|
+| **Kotlin** | Primary language |
+| **MVVM** | Architecture pattern (ViewModel + LiveData) |
+| **Retrofit 2 + OkHttp 4** | REST API communication with interceptors (logging, caching, offline) |
+| **Coroutines + LifecycleScope** | Async for background work |
+| **ViewBinding** | Type-safe view access |
+| **MPAndroidChart** | Bar, line, and pie charts |
+| **AndroidX Biometric** | Fingerprint / face unlock |
+| **iTextPDF** | Export history to PDF |
+| **ZXing (barcodescanner)** | QR code token scanning |
+| **Gson + Moshi** | JSON serialization (dual adapter) |
+| **WorkManager** | Scheduled nightly sync worker |
+| **AES-128-CBC** | On-device encryption before upload |
+
+### Backend Ecosystem
+
+| Repository | Technology | Role |
+|-----------|------------|------|
+| **CI4 Web App** | PHP 8.3, CodeIgniter 4, Shield | REST API, dashboard, MySQL storage, user management |
+| **Docker LLM Service** | Python 3.12, FastAPI, llama.cpp, Qwen2.5 1.5B | Sender classification, transaction extraction, DB enrichment |
 
 ---
 
-## 🚀 Installation & Setup
+## Prerequisites
 
-### 1. Clone the Repository
+- **Android Studio**: Hedgehog (2023.1.1) or newer
+- **JDK**: 17+ (recommended)
+- **Docker Desktop** (for backend + LLM)
+- **Git**
+
+---
+
+## Setup
+
+### 1. Clone All Three Repositories
+
 ```bash
 git clone https://github.com/YourOrg/Mpesa_Analyzer_App.git
-cd Mpesa_Analyzer_App
+git clone https://github.com/YourOrg/Mpesa_Analyzer_WebApp.git
+git clone https://github.com/YourOrg/Mpesa_Analyser_Docker.git
 ```
 
-### 2. Set Up the CodeIgniter 4 Backend (Docker)
-The backend runs entirely in Docker containers. From the backend project directory:
+### 2. Start the Backend Stack
+
 ```bash
-# Build and start the containers in the background
-docker-compose up -d --build
+# Start MySQL + Web App
+cd "Mpesa Analyzer WebApp"
+docker compose up --build -d
 
-# Check if containers are running properly
-docker-compose ps
+# Start LLM Service
+cd "Mpesa Analyser Docker"
+cp .env.example .env
+# Download GGUF model into models/
+wget -P models/ https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf
+docker compose up --build -d
 ```
-* **API Endpoint:** The backend API will be available at `http://localhost:8080/api/` (adjust port as needed).
-* **Database Management:** Access phpMyAdmin at `http://localhost:8081` using the credentials defined in your `docker-compose.yml`.
 
-### 3. Configure the Android App
-Open the Android project in Android Studio. You need to point the app to your local backend.
-1. Open `local.properties` (or `gradle.properties` depending on your setup).
-2. Add your local IP address for the API Base URL:
-```properties
-# Use 10.0.2.2 for the Android Emulator to connect to localhost
-BASE_URL="http://10.0.2.2:8080/api/"
+### 3. Configure Android App
 
-# Use your machine's physical IP address if testing on a physical device
-# BASE_URL="http://192.168.1.xxx:8080/api/" 
-```
-3. Click **Sync Project with Gradle Files**.
+Open the Android project in Android Studio. The backend URL is configured inside the app at first launch (SetupActivity), or via **Settings**.
 
-### 4. Run the App
-* **Using the Emulator:** Select your preferred AVD in Android Studio and hit **Run** (`Shift + F10`).
-* **Using a Physical Device:** Connect your Android device via USB (ensure USB Debugging is enabled), select your device in the deployment target dropdown, and hit **Run**.
+- **For emulator**: `http://10.0.2.2:9002/`
+- **For physical device**: `http://<YOUR_LAN_IP>:9002/`
+
+### 4. Run
+
+Select a target device and press **Run** (`Shift+F10`).
 
 ---
 
-## ⚙️ Configuration
+## API Endpoints Consumed
 
-* **Build Variants:** The project utilizes Gradle build variants (`debug` and `release`). Ensure you select the `debug` variant for local development.
-* **Environment Variables:** Production URLs and sensitive API keys should be injected securely via CI/CD pipelines and not hardcoded into the repository.
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/process/verify_token` | POST | Verify login token |
+| `/process/device` | POST | Register device fingerprint |
+| `/process/upload` | POST | Upload encrypted SMS file |
+| `/process/get/my_uploads` | POST | List upload summaries |
+| `/process/get/my_summary_calculations` | POST | Detailed summary for one upload |
+| `/process/get/my_uploads_count` | POST | Total sync count |
+| `/process/get/my_uploads_graph` | POST | Graph data (last 3 uploads) |
+| `/process/get/user_info` | POST | User profile data |
+| `/process/delete_data` | POST | Delete user data |
+| `/process/delete_account` | POST | Delete account |
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions from the community! To contribute:
+## Contributing
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+2. Create a Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add AmazingFeature'`)
+4. Push (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
 ---
 
-## 📄 License
+## License
 
-Distributed under the **MIT License**. See `LICENSE` for more information.
+Distributed under the **MIT License**.
 
 ---
 
-## 💬 Support
+## Support
 
-If you have any questions, encounter issues, or need further assistance with deployment, please reach out:
-
-* **Email:** [info@chegecache.co.ke](mailto:info@chegecache.co.ke)
-* **Website:** [chegecache.co.ke](https://chegecache.co.ke)
+**Email**: [info@chegecache.co.ke](mailto:info@chegecache.co.ke)
+**Website**: [chegecache.co.ke](https://chegecache.co.ke)

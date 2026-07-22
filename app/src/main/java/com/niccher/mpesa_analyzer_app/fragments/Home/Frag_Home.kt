@@ -5,6 +5,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.provider.Telephony
 import android.util.Base64
@@ -12,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -19,15 +21,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
 import com.niccher.mpesa_analyzer_app.helpers.Encryptor
 import com.niccher.mpesa_analyzer_app.helpers.Prefs
+import com.niccher.mpesa_analyzer_app.interfaces.JsonFinancial
 import com.niccher.mpesa_analyzer_app.interfaces.JsonProcesses
 import com.niccher.mpesa_analyzer_app.interfaces.JsonUploadLoot
 import com.niccher.mpesa_analyzer_app.konstants.Konstants
+import com.niccher.mpesa_analyzer_app.models.FinancialOverview
 import com.niccher.mpesa_analyzer_app.models.Mod_My_Loot_Count
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -49,6 +54,8 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.niccher.mpesa_analyzer_app.helpers.MpesaParser
+import java.text.NumberFormat
+import java.util.Locale
 
 class Frag_Home : Fragment() {
 
@@ -58,6 +65,7 @@ class Frag_Home : Fragment() {
     private lateinit var sbsent: StringBuffer
 
     private lateinit var jsonProcesses: JsonProcesses
+    private lateinit var jsonFinancial: JsonFinancial
     private lateinit var gson: Gson
 
     private lateinit var pref_loot_counter: SharedPreferences
@@ -72,6 +80,14 @@ class Frag_Home : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var btn_view_insights: TextView
 
+    private lateinit var kpiReceivedAmount: TextView
+    private lateinit var kpiSentAmount: TextView
+    private lateinit var kpiTotalTxns: TextView
+    private lateinit var kpiTotalSenders: TextView
+    private lateinit var categoryContainer: LinearLayout
+
+    private lateinit var homeViewModel: Frag_Home_VM
+
     private val CODE_READ_SMS = 102
     private val CODE_READ_STORAGE = 104
     private val CODE_WRITE_STORAGE = 106
@@ -83,6 +99,7 @@ class Frag_Home : Fragment() {
         kon = Konstants
         prefs = Prefs()
         pref_loot_counter = requireActivity().getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
+        homeViewModel = ViewModelProvider(this).get(Frag_Home_VM::class.java)
     }
 
     override fun onCreateView(
@@ -99,6 +116,12 @@ class Frag_Home : Fragment() {
         progressBar = solv.findViewById(R.id.home_upload_state)
         btn_view_insights = solv.findViewById(R.id.btn_view_insights)
 
+        kpiReceivedAmount = solv.findViewById(R.id.kpi_received_amount)
+        kpiSentAmount = solv.findViewById(R.id.kpi_sent_amount)
+        kpiTotalTxns = solv.findViewById(R.id.kpi_total_txns)
+        kpiTotalSenders = solv.findViewById(R.id.kpi_total_senders)
+        categoryContainer = solv.findViewById(R.id.category_container)
+
         perm_request.visibility = View.GONE
         progressBar.visibility = View.GONE
 
@@ -107,6 +130,7 @@ class Frag_Home : Fragment() {
         pref_loot_counter = requireActivity().getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
 
         calc_Loot()
+        fetchFinancialOverview()
 
         perm_request.setOnClickListener {
             Log.e("Perm /*- ", "perm_request")
@@ -124,10 +148,8 @@ class Frag_Home : Fragment() {
             showInsightsDialog()
         }
 
-        // Ensure device fingerprint exists if user already has a token from an older build
         ensureDeviceFingerprint()
 
-        // Register receiver for upload complete
         val filter = android.content.IntentFilter(
             com.niccher.mpesa_analyzer_app.services.UploadService.ACTION_UPLOAD_COMPLETE
         )
@@ -158,13 +180,12 @@ class Frag_Home : Fragment() {
                 progressBar.visibility = View.GONE
                 last_time.text = prefs.getTimeStamp(requireActivity())
 
-                // Read the updated count from SharedPreferences
                 val syncedCount = prefs.getPrefsAuth("loot_count", requireActivity())
                 text_get_loot_count.text = "Synced $syncedCount times."
                 Log.i(kon.TAGGED, "Updated UI: Synced $syncedCount times")
 
-                // Refresh from server so count matches web
                 calc_Loot()
+                fetchFinancialOverview()
 
                 Toast.makeText(
                     requireContext(),
@@ -212,7 +233,6 @@ class Frag_Home : Fragment() {
     }
 
     private fun startFetchAndSync() {
-        // SMS permission
         if (ContextCompat.checkSelfPermission(
                 requireActivity(),
                 Manifest.permission.READ_SMS
@@ -250,7 +270,7 @@ class Frag_Home : Fragment() {
         Log.i(kon.TAGGED, "startFetchAndSync: printId='$printId'")
         if (printId.isBlank() || printId == "nullable") {
             Log.w(kon.TAGGED, "Device ID missing, attempting registration")
-            Toast.makeText(requireContext(), "Registering device fingerprint…", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Registering device fingerprint\u2026", Toast.LENGTH_SHORT).show()
             progressBar.visibility = View.VISIBLE
             com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint.register(requireContext()) { ok, msg ->
                 progressBar.visibility = View.GONE
@@ -287,7 +307,6 @@ class Frag_Home : Fragment() {
         try {
             requireActivity().unregisterReceiver(uploadReceiver)
         } catch (e: Exception) {
-            // Ignore if not registered
         }
     }
 
@@ -416,22 +435,165 @@ class Frag_Home : Fragment() {
         chart.invalidate()
     }
 
+    private fun fetchFinancialOverview() {
+        jsonFinancial = ServiceGenerators.createService(JsonFinancial::class.java, requireContext())
 
+        val parameters = mapOf(
+            "varUser" to prefs.getPrefsAuth("auth", requireContext()),
+            "varDev" to prefs.getPrefsAuth("print", requireActivity())
+        )
+
+        jsonFinancial.getFinancialOverview(parameters).enqueue(object : Callback<com.niccher.mpesa_analyzer_app.models.FinancialOverviewResponse> {
+            override fun onResponse(
+                call: Call<com.niccher.mpesa_analyzer_app.models.FinancialOverviewResponse>,
+                response: Response<com.niccher.mpesa_analyzer_app.models.FinancialOverviewResponse>
+            ) {
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    if (body.status == 1 && body.overview != null) {
+                        homeViewModel.setOverview(body.overview)
+                        populateDashboard(body.overview)
+                    }
+                }
+            }
+
+            override fun onFailure(
+                call: Call<com.niccher.mpesa_analyzer_app.models.FinancialOverviewResponse>,
+                t: Throwable
+            ) {
+                Log.e(kon.TAGGED, "fetchFinancialOverview Error: ${t.message}")
+            }
+        })
+    }
+
+    private fun populateDashboard(overview: FinancialOverview) {
+        val fmt = NumberFormat.getNumberInstance(Locale.US)
+        fmt.minimumFractionDigits = 0
+        fmt.maximumFractionDigits = 0
+
+        kpiReceivedAmount.text = "Ksh ${fmt.format(overview.total_amount_received.toLong())}"
+        kpiSentAmount.text = "Ksh ${fmt.format(overview.total_amount_sent.toLong())}"
+        kpiTotalTxns.text = fmt.format(overview.total_transactions.toLong())
+        kpiTotalSenders.text = fmt.format(overview.total_senders.toLong())
+
+        buildCategoryBars(overview)
+    }
+
+    private fun buildCategoryBars(overview: FinancialOverview) {
+        val breakdown = overview.category_breakdown ?: return
+        val total = overview.total_transactions
+        if (total == 0) return
+
+        val density = resources.displayMetrics.density
+
+        for (meta in Frag_Home_VM.CATEGORY_META) {
+            val count = breakdown[meta.key] ?: 0
+            if (count == 0) continue
+            val pct = (count.toFloat() / total) * 100f
+
+            val row = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(0, (6 * density).toInt(), 0, (6 * density).toInt())
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+
+            val labelRow = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+
+            val colorDot = View(requireContext()).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    (10 * density).toInt(),
+                    (10 * density).toInt()
+                ).also {
+                    it.setMargins(0, (2 * density).toInt(), (6 * density).toInt(), 0)
+                }
+                val bg = GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    setColor(resources.getColor(meta.colorRes, requireContext().theme))
+                }
+                background = bg
+            }
+
+            val nameTv = TextView(requireContext()).apply {
+                text = meta.label
+                textSize = 13f
+                setTextColor(resources.getColor(R.color.text_primary, requireContext().theme))
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            }
+
+            val countTv = TextView(requireContext()).apply {
+                text = "$count (${"%.0f".format(pct)}%)"
+                textSize = 12f
+                setTextColor(resources.getColor(R.color.text_secondary, requireContext().theme))
+            }
+
+            labelRow.addView(colorDot)
+            labelRow.addView(nameTv)
+            labelRow.addView(countTv)
+            row.addView(labelRow)
+
+            val barContainer = LinearLayout(requireContext()).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    (6 * density).toInt()
+                ).also {
+                    it.setMargins(0, (3 * density).toInt(), 0, 0)
+                }
+                background = GradientDrawable().apply {
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadii = floatArrayOf(
+                        (3 * density), (3 * density),
+                        (3 * density), (3 * density),
+                        (3 * density), (3 * density),
+                        (3 * density), (3 * density)
+                    )
+                    setColor(resources.getColor(R.color.linecolor, requireContext().theme))
+                }
+            }
+
+            val barFill = View(requireContext()).apply {
+                val widthFraction = (pct / 100f).coerceIn(0f, 1f)
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, widthFraction)
+                background = GradientDrawable().apply {
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadii = floatArrayOf(
+                        (3 * density), (3 * density),
+                        (3 * density), (3 * density),
+                        (3 * density), (3 * density),
+                        (3 * density), (3 * density)
+                    )
+                    setColor(resources.getColor(meta.colorRes, requireContext().theme))
+                }
+            }
+
+            barContainer.addView(barFill)
+            row.addView(barContainer)
+
+            val line = View(requireContext()).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    1
+                ).also {
+                    it.topMargin = (6 * density).toInt()
+                }
+                setBackgroundColor(resources.getColor(R.color.linecolor, requireContext().theme))
+            }
+            row.addView(line)
+
+            categoryContainer.addView(row)
+        }
+    }
 
     private fun calc_Loot() {
         pref_loot_counter = requireActivity().getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
-
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(kon.LINK_PROCESS)
-//            .addConverterFactory(GsonConverterFactory.create(gson))
-//            .client(ServiceGenerators.getUnsafeOkHttpClient(requireContext()))
-//            .build()
-//
-//        jsonProcesses = retrofit.create(JsonProcesses::class.java)
-
-//        val jsonProcesses by lazy {
-//            ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
-//        }
 
         val jsonProcesses = ServiceGenerators.createService(JsonProcesses::class.java, requireContext())
 

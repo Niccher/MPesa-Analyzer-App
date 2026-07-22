@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_label"
-            android:backgroundTint="@color/signupsignintextcolor"
+            android:backgroundTint="@color/brand_primary"
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"
             android:text="@string/str_dec_04_18_30_00_21"
@@ -34,14 +34,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Total interactions badge -->
+        <!-- Total finance interactions -->
         <TextView
             android:id="@+id/part_txt_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_interactions__5_22"
-            android:textColor="@color/secondarytext"
-            android:textSize="12sp"
+            android:textColor="@color/brand_primary"
+            android:textSize="13sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/part_txt_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/part_txt_date" />
@@ -56,13 +57,13 @@
 
         <!-- Columns for Sent / Received / Unknown -->
         <LinearLayout
+            android:id="@+id/metrics_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:baselineAligned="false"
             android:orientation="horizontal"
             android:weightSum="3"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider">
 
             <!-- Received Column -->
@@ -78,15 +79,17 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@android:drawable/stat_sys_download"
+                    android:tint="@color/semantic_success"
                     android:contentDescription="@string/str_received_23" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/str_received_23"
-                    android:textColor="@color/primarytext"
-                    android:textSize="12sp" />
+                    android:text="@string/str_money_in_132"
+                    android:textColor="@color/semantic_success"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/part_txt_incoming"
@@ -94,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="@string/str_0_00_24"
-                    android:textColor="@color/bg_green"
+                    android:textColor="@color/semantic_success"
                     android:textSize="15sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -112,15 +115,17 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@android:drawable/stat_sys_upload"
+                    android:tint="@color/semantic_danger"
                     android:contentDescription="@string/str_sent_25" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/str_sent_25"
-                    android:textColor="@color/primarytext"
-                    android:textSize="12sp" />
+                    android:text="@string/str_money_out_133"
+                    android:textColor="@color/semantic_danger"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/part_txt_sent"
@@ -128,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="@string/str_0_00_24"
-                    android:textColor="@color/bg_red"
+                    android:textColor="@color/semantic_danger"
                     android:textSize="15sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -146,15 +151,17 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@android:drawable/ic_menu_help"
+                    android:tint="@color/text_muted"
                     android:contentDescription="@string/str_unknown_26" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/str_unknown_26"
-                    android:textColor="@color/primarytext"
-                    android:textSize="12sp" />
+                    android:text="@string/str_fin_unknown_134"
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/part_txt_unknown"
@@ -162,12 +169,34 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="@string/str_0_00_24"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_muted"
                     android:textSize="15sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>
+
+        <!-- Divider before categories -->
+        <View
+            android:id="@+id/cat_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/linecolor"
+            app:layout_constraintTop_toBottomOf="@id/metrics_row" />
+
+        <!-- Finance category badges row -->
+        <LinearLayout
+            android:id="@+id/category_badges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cat_divider">
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

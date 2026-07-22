@@ -244,9 +244,9 @@ class Frag_History : Fragment() {
             // Add Data
             for (summary in summariesList) {
                 table.addCell(summary.summary_Created)
-                table.addCell(summary.summary_Sent)
-                table.addCell(summary.summary_Received)
-                table.addCell(summary.summary_Count)
+                table.addCell(summary.summary_Sent.toString())
+                table.addCell(summary.summary_Received.toString())
+                table.addCell(summary.summary_Count.toString())
             }
 
             document.add(table)

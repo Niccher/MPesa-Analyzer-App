@@ -57,7 +57,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="thirdtext">#FFF</color>
     <color name="white">#FFF</color>
+    <color name="white_40">#66FFFFFF</color>
     <color name="black">#000</color>
     <color name="silver">#C0C0C0</color>
 
+    <!-- Financial Category Colors -->
+    <color name="cat_mobile_money">#4CAF50</color>
+    <color name="cat_bank">#2196F3</color>
+    <color name="cat_fintech">#FF9800</color>
+    <color name="cat_sacco">#9C27B0</color>
+    <color name="cat_insurance">#E91E63</color>
+    <color name="cat_payments_govt">#00BCD4</color>
+    <color name="cat_other_finance">#607D8B</color>
+    <color name="cat_non_finance">#9E9E9E</color>
+    <color name="cat_unclassified">#78909C</color>
 </resources>

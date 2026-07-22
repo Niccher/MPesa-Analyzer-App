@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mpesa Analyzer</string>
+    <string name="app_name">Smart Finance</string>
 
     <string name="summary_interactions_general">Summary Interactions</string>
     <string name="summary_interactions_incoming">Received Interactions</string>
@@ -87,7 +87,7 @@
     <string name="tag_unknown">Unknown</string>
     <string name="str_no_internet_connection">No Internet Connection</string>
     <string name="str_loot_delete">Delete This Data</string>
-    <string name="txt_intro_text">Your Sms Finance Intelligence</string>
+    <string name="txt_intro_text">Your Multi-Source Financial Intelligence</string>
     <string name="txt_blank" />
 
     <string name="title_activity_bottom">BottomActiv</string>
@@ -100,21 +100,20 @@
     <string name="graphs_line_graph">Line Graph</string>
     <string name="no_data_available">No data available</string>
 
-    <string name="app_description">M-Pesa Analyzer automatically reads and categorizes your M-Pesa SMS transactions into Sent, Received, and Unknown categories. Get insights into your spending patterns and track your financial transactions effortlessly.</string>
-
+    <string name="app_description">Smart Finance automatically reads and categorizes your financial SMS transactions across multiple sources — M-PESA, banks, fintech apps, and more. Get insights into your spending patterns and track all financial transactions effortlessly.</string>
 
     <string name="str_authenticate_to_cont_1">Authenticate to continue</string>
-    <string name="str_mympesaanalyser_2">Mpesa Analyzer</string>
+    <string name="str_mympesaanalyser_2">Smart Finance</string>
     <string name="str_unlock_with_biometri_3">Unlock with Biometrics</string>
     <string name="str_loading_data_4">Loading data...</string>
     <string name="str_export_5">Export</string>
     <string name="str_version_1_0_0_6">Version 1.0.0</string>
-    <string name="str_read_sms__parse_m_7">• Read SMS: Parse M-Pesa messages\n• Internet: Fetch updates\n• Storage: Backup data</string>
+    <string name="str_read_sms__parse_m_7">• Read SMS: Parse transaction messages\n• Internet: Fetch updates\n• Storage: Backup data</string>
     <string name="str_permissions_8">Permissions</string>
-    <string name="str_developed_with____fo_9">Developed with ❤️ for M-Pesa users. Your data stays secure on your device.</string>
-    <string name="str_m_pesa_sms_parsing_10">• M-Pesa SMS Parsing\n• Transaction Categorization\n• Data Visualization\n• Offline Processing</string>
+    <string name="str_developed_with____fo_9">Developed with ❤️ for financial tracking. Your data stays secure on your device.</string>
+    <string name="str_m_pesa_sms_parsing_10">• SMS Parsing\n• Transaction Categorization\n• Data Visualization\n• Offline Processing</string>
     <string name="str_developer_11">Developer</string>
-    <string name="str_m_pesa_sms_parser_an_12">M-Pesa SMS Parser and Analyzer</string>
+    <string name="str_m_pesa_sms_parser_an_12">SMS Parser and Financial Analyzer</string>
     <string name="str_close_13">Close</string>
     <string name="str_app_features_14">App Features</string>
     <string name="str_appearance_15">Appearance</string>
@@ -218,9 +217,9 @@
     <string name="str_type_safe_http_clien_113">Type-safe HTTP client for API communication</string>
     <string name="str_open_source_librarie_114">Open Source Libraries</string>
     <string name="str_version_1_0_0_115">Version 1.0.0</string>
-    <string name="str_the_application_secu_116">The application securely reads M-PESA transactions entirely on-device. By utilizing rigorous regex matching strategies against your SMS inbox format, it extracts exact monetary values, timestamps, and interaction classifications (Sent, Received, Paybill, Withdrawals). The parsing strictly respects your privacy—information remains sandboxed on your device behind robust Biometric Lock safeguards without arbitrary third-party cloud data uploads.</string>
-    <string name="str_mympesaanalyser_acts_117">Mpesa Analyzer acts as your personal financial assistant. It automatically categorizes and visualizes your M-PESA SMS transactions, transforming raw text messages into rich, interactive graphs, deep search functionality, and simple financial summaries so you can track cash-flow trends clearly.</string>
-    <string name="str_mympesaanalyser_118">Mpesa Analyzer</string>
+    <string name="str_the_application_secu_116">The application securely reads financial transactions entirely on-device. By utilizing rigorous regex matching strategies against your SMS inbox format, it extracts exact monetary values, timestamps, and interaction classifications (Sent, Received, Paybill, Withdrawals). The parsing strictly respects your privacy—information remains sandboxed on your device behind robust Biometric Lock safeguards without arbitrary third-party cloud data uploads.</string>
+    <string name="str_mympesaanalyser_acts_117">Smart Finance acts as your personal financial assistant. It automatically categorizes and visualizes your financial SMS transactions, transforming raw text messages into rich, interactive graphs, deep search functionality, and simple financial summaries so you can track cash-flow trends clearly.</string>
+    <string name="str_mympesaanalyser_118">Smart Finance</string>
     <string name="str_what_it_does_119">What it does</string>
     <string name="str_how_it_does_it_120">How it does it</string>
     <string name="str_application_details_121">Application Details</string>
@@ -249,4 +248,32 @@
     <string name="str_implements_advanced_143">Implements advanced, non-bypassable hardware cryptography to ensure the app stays locked via fingerprint or face ID to protect user isolation.</string>
     <string name="str_powering_the_smooth_144">Powering the smooth, interactive data visualizations and stacked bar architectures inside the graphs fragment.</string>
     <string name="str_credits__amp__acknow_145">Credits &amp; Acknowledgements</string>
+
+    <!-- New KPI & Category strings -->
+    <string name="kpi_total_received">Amount Received</string>
+    <string name="kpi_total_sent">Amount Sent</string>
+    <string name="kpi_total_txns">Total Transactions</string>
+    <string name="kpi_total_senders">Total Senders</string>
+    <string name="cat_title">Spending by Category</string>
+    <string name="cat_mobile_money">Mobile Money</string>
+    <string name="cat_bank">Bank</string>
+    <string name="cat_fintech">Fintech</string>
+    <string name="cat_sacco">SACCO</string>
+    <string name="cat_insurance">Insurance</string>
+    <string name="cat_payments_govt">Payments/Govt</string>
+    <string name="cat_other_finance">Other Finance</string>
+    <string name="cat_non_finance">Non-Finance</string>
+    <string name="cat_unclassified">Unclassified</string>
+
+    <!-- History finance labels -->
+    <string name="str_money_in_132">Money In</string>
+    <string name="str_money_out_133">Money Out</string>
+    <string name="str_fin_unknown_134">Unknown Fin</string>
+
+    <!-- Graph KPIs -->
+    <string name="str_total_analyzed_135">Total Analyzed</string>
+    <string name="str_categories_detected_136">Categories</string>
+    <string name="str_finance_senders_137">Fin Senders</string>
+    <string name="str_period_138">Period</string>
+    <string name="str_pie_139">Pie</string>
 </resources>

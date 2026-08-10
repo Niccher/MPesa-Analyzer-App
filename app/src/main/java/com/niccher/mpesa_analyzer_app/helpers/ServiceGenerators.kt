@@ -1,7 +1,9 @@
 package com.niccher.mpesa_analyzer.helpers
 
 import android.content.Context
+import android.os.Build
 import com.niccher.mpesa_analyzer_app.BuildConfig
+import com.niccher.mpesa_analyzer_app.helpers.SyncSession
 import com.niccher.mpesa_analyzer_app.konstants.Konstants
 import okhttp3.Cache
 import okhttp3.CacheControl
@@ -16,6 +18,27 @@ import java.util.concurrent.TimeUnit
 object ServiceGenerators {
     private val kon = Konstants
     private const val CACHE_SIZE = 10L * 1024 * 1024  // 10 MB cache
+
+    private class AppHeadersInterceptor : Interceptor {
+        private val userAgent = "MpesaAnalyzer/${BuildConfig.VERSION_NAME} " +
+            "(Android ${Build.VERSION.SDK_INT}; ${Build.MODEL}; build ${BuildConfig.VERSION_CODE})"
+
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val request = chain.request().newBuilder()
+                .header("User-Agent", userAgent)
+                .header("X-App-Version", BuildConfig.VERSION_NAME)
+                .header("X-App-Build", BuildConfig.VERSION_CODE.toString())
+                .header("X-Device-Time", System.currentTimeMillis().toString())
+                .apply {
+                    SyncSession.sessionId?.let {
+                        header("X-Sync-Session", it)
+                        header("X-Retry-Attempt", SyncSession.attemptNumber.toString())
+                    }
+                }
+                .build()
+            return chain.proceed(request)
+        }
+    }
 
     fun <S> createService(serviceClass: Class<S>, context: Context): S {
         var baseUrl = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getBackendUrl(context)
@@ -66,6 +89,7 @@ object ServiceGenerators {
         return OkHttpClient.Builder()
             .cache(cache)
             .addInterceptor(offlineInterceptor)  // Offline first
+            .addInterceptor(AppHeadersInterceptor())
             .addNetworkInterceptor(onlineInterceptor)  // For responses
             .addInterceptor(logging)
             .connectTimeout(90, TimeUnit.SECONDS)  // Reduced for better UX

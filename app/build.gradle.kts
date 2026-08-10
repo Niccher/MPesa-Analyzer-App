@@ -16,6 +16,11 @@ android {
         versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // M-Pesa SMS encryption keys (AES-128-CBC)
+        // Must match MPESA_CRYPT_KEY / MPESA_CRYPT_IV in server .env
+        buildConfigField("String", "MPESA_CRYPT_KEY", "\"a:r2yt>N3_\\\\Py,f=\"")
+        buildConfigField("String", "MPESA_CRYPT_IV", "\"[M[@_w[F4a>yQsJW\"")
     }
 
     buildTypes {

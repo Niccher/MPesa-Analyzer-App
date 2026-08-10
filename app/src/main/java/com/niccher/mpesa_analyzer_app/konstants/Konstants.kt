@@ -1,5 +1,7 @@
 package com.niccher.mpesa_analyzer_app.konstants
 
+import com.niccher.mpesa_analyzer_app.BuildConfig
+
 object Konstants {
 
     const val TAGGED = "My_MPesa_Analyzer"
@@ -18,8 +20,9 @@ object Konstants {
     const val STRING_ALGO = "AES"
     const val STRING_CHARACTER_ENCODING = "UTF-8"
 
-    const val STRING_KEY = "a:r2yt>N3_\\Py,f="
-    const val STRING_KEY_SPEC = "[M[@_w[F4a>yQsJW"
+    // Read from BuildConfig so keys can be changed via build.gradle.kts
+    val STRING_KEY: String get() = BuildConfig.MPESA_CRYPT_KEY
+    val STRING_KEY_SPEC: String get() = BuildConfig.MPESA_CRYPT_IV
 
     const val STRING_PLAIN_FILE = "enc_plain_"
     const val STRING_ENC_AES_FILES = "enc_aes_"
@@ -27,5 +30,6 @@ object Konstants {
     const val STRING_ENC_GZIP_PLAIN_FILES = "enc_gzip_plain_"
 
     const val SHARED_LAST_TIME = "last_upload_time"
+    const val SHARED_LAST_SMS_ID = "last_upload_sms_id"
 
 }

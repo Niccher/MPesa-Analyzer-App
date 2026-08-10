@@ -14,6 +14,7 @@ interface JsonUploadLoot {
     fun upload(
         @Part("varToken") toke_number: RequestBody,
         @Part("varDevId") print_id: RequestBody,
+        @Part("varBatch") is_continuation: RequestBody,
         @Part file: MultipartBody.Part
     ): Call<ResponseBody>
 }

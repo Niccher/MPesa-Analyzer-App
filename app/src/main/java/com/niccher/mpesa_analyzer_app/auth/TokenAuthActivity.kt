@@ -9,13 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
+import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.MainActivity
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint
-import com.niccher.mpesa_analyzer_app.interfaces.JsonAuthUser
-import com.niccher.mpesa_analyzer_app.konstants.Konstants
-import com.niccher.mpesa_analyzer_app.models.Mod_User_Auth
+import com.niccher.mpesa_analyzer_app.api.AuthApiService
+import com.niccher.mpesa_analyzer_app.constants.Constants
+import com.niccher.mpesa_analyzer_app.models.UserAuthModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -74,14 +74,14 @@ class TokenAuthActivity : AppCompatActivity() {
         val map = HashMap<String, String>()
         map["token"] = token
 
-        val service = ServiceGenerators.createService(JsonAuthUser::class.java, this)
-        service.verifyToken(map).enqueue(object : Callback<Mod_User_Auth> {
-            override fun onResponse(call: Call<Mod_User_Auth>, response: Response<Mod_User_Auth>) {
+        val service = ServiceGenerator.createService(AuthApiService::class.java, this)
+        service.verifyToken(map).enqueue(object : Callback<UserAuthModel> {
+            override fun onResponse(call: Call<UserAuthModel>, response: Response<UserAuthModel>) {
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
                     if (body.status == "1") {
                         // Save session first
-                        getSharedPreferences(Konstants.SHARED_AUTH_LOGIN, MODE_PRIVATE).edit().apply {
+                        getSharedPreferences(Constants.SHARED_AUTH_LOGIN, MODE_PRIVATE).edit().apply {
                             putString("status", body.status)
                             putString("message", body.message)
                             putString("time", body.time)
@@ -93,7 +93,7 @@ class TokenAuthActivity : AppCompatActivity() {
                             apply()
                         }
 
-                        Log.i(Konstants.TAGGED, "Token verified — registering device fingerprint")
+                        Log.i(Constants.TAGGED, "Token verified — registering device fingerprint")
                         Toast.makeText(
                             this@TokenAuthActivity,
                             "Token OK — registering device…",
@@ -104,7 +104,7 @@ class TokenAuthActivity : AppCompatActivity() {
                         DeviceFingerprint.register(this@TokenAuthActivity) { ok, message ->
                             btnSubmit.isEnabled = true
                             btnScanQr.isEnabled = true
-                            Log.i(Konstants.TAGGED, "TokenAuth device register ok=$ok msg=$message")
+                            Log.i(Constants.TAGGED, "TokenAuth device register ok=$ok msg=$message")
                             if (ok) {
                                 Toast.makeText(
                                     this@TokenAuthActivity,
@@ -139,7 +139,7 @@ class TokenAuthActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<Mod_User_Auth>, t: Throwable) {
+            override fun onFailure(call: Call<UserAuthModel>, t: Throwable) {
                 btnSubmit.isEnabled = true
                 btnScanQr.isEnabled = true
                 Toast.makeText(

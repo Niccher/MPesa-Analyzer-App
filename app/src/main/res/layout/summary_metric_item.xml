@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:textColor="@color/primarytext"
+        android:textColor="@color/color_text_primary_legacy"
         android:textSize="11sp"
         android:textAlignment="center"
         android:text="?attr/metric_label" />

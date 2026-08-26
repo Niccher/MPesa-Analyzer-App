@@ -1,79 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="#B1B8ED">
+    android:background="@color/mainlinerlayoutcolor">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- ===== RECYCLER VIEW ===== -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recy_history"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingVertical="@dimen/_8sdp"
+        android:paddingBottom="88dp"
+        tools:listitem="@layout/part_posted" />
+
+    <!-- ===== LOADING STATE ===== -->
+    <LinearLayout
+        android:id="@+id/conn_wait_internet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:visibility="gone">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/brand_primary" />
 
         <TextView
-            android:id="@+id/conn_no_internet"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/str_no_internet_connection"
-            android:textSize="@dimen/_24sdp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/conn_wait_internet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="#E1E4F9"
-            android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginTop="16dp"
+            android:text="@string/str_loading_data_4"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+    </LinearLayout>
 
-            <ProgressBar
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:indeterminateTint="@color/colorPrimaryDark" />
+    <!-- ===== ERROR / EMPTY STATE ===== -->
+    <TextView
+        android:id="@+id/conn_no_internet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="32dp"
+        android:drawableTop="@drawable/ic_cloud_off"
+        android:drawablePadding="16dp"
+        android:drawableTint="@color/text_secondary"
+        android:text="@string/str_no_internet_connection"
+        android:textColor="@color/text_secondary"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/str_loading_data_4"
-                android:textColor="#333333"
-                android:textStyle="bold"
-                android:textSize="16sp" />
-        </LinearLayout>
+    <!-- ===== FLOATING ACTION BUTTON ===== -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_export"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="@string/str_export_5"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/brand_primary" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recy_history"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/part_posted"
-            />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab_export"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/str_export_5"
-            android:textColor="@color/white"
-            app:iconTint="@color/white"
-            android:backgroundTint="@color/colorPrimaryDark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

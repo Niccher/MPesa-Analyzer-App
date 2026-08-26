@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F7FF"
-    tools:context=".fragments.Graph.Frag_Graph">
+    tools:context=".fragments.Graph.GraphFragment">
 
     <!-- Header Section -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_120sdp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/color_primary_dark"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -141,7 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/str_zero_times"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/color_primary_dark"
                         android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
                 </LinearLayout>

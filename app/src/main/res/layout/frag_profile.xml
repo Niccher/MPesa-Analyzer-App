@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/str_user_83"
-                    android:textColor="@color/signupsignintextcolor"
+                    android:textColor="@color/color_auth_text_link"
                     android:textSize="22sp"
                     android:textStyle="bold"/>
 
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="@string/str_user_email_com_85"
-                    android:textColor="@color/secondarytext"
+                    android:textColor="@color/color_text_secondary_legacy"
                     android:textSize="14sp"/>
 
                 <TextView
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/str_member_since_84"
-                    android:textColor="@color/secondarytext"
+                    android:textColor="@color/color_text_secondary_legacy"
                     android:textSize="12sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/str_account_info_86"
-            android:textColor="@color/signupsignintextcolor"
+            android:textColor="@color/color_auth_text_link"
             android:textSize="14sp"
             android:textStyle="bold"
             android:layout_marginBottom="12dp"
@@ -245,7 +245,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="16dp"
                     android:text="@string/str_member_since_84"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/color_text_primary_legacy"
                     android:textSize="14sp"/>
             </LinearLayout>
 

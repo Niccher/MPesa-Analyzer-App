@@ -43,14 +43,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_arrow_drop_down"
-                android:tint="@color/secondarytext" />
+                android:tint="@color/color_text_secondary_legacy" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="20dp"
-            android:background="@color/linecolor" />
+            android:background="@color/color_ui_divider" />
 
         <LinearLayout
             android:id="@+id/ll_received_content"
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_all_received_57"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -149,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_from_mpesa_33"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_from_mshwari_62"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -237,7 +237,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_from_ncba_71"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -281,7 +281,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_from_i_amp_m_70"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -325,7 +325,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_reversal_63"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -369,7 +369,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_from_kcb_44"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>

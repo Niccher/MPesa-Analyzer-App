@@ -82,7 +82,7 @@ Once SMS reach the MySQL database, the Docker LLM service processes them:
 |---|---|
 | **On-device SMS reading** | Queries `Telephony.Sms.CONTENT_URI` using a timestamp watermark so only new messages are processed |
 | **Category detection** | Regex-based `MpesaParser` recognises 9 MPESA categories: Money Sent, PayBill, Buy Goods, Airtime, Withdrawal, Money Received, Fuliza, M-Shwari, Bank Transfer, Fees |
-| **AES-128-CBC encryption** | Raw JSON payload is encrypted on-device before transmission; decrypted server-side by ModCryption |
+| **AES-128-CBC encryption** | Secure dynamic IV protocol — Raw JSON payload is encrypted using a session-unique random IV (`SecureRandom`) and prefixed to the stream; decrypted server-side by `CryptoHelper` |
 | **Foreground service** | `UploadService` runs as a persistent foreground service with progress notifications (dataSync) |
 | **Scheduled nightly sync** | `MpesaSyncWorker` (WorkManager) triggers daily at 8 PM |
 | **Temp file cleanup** | Plaintext and encrypted temp files are deleted after a successful upload |

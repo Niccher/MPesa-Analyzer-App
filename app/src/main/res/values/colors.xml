@@ -39,23 +39,19 @@
     <color name="text_secondary_dark">#94A3B8</color>
 
     <!-- Legacy text aliases -->
-    <color name="primarytext">#636E72</color>
-    <color name="secondarytext">#94A3B8</color>
-    <color name="signupsignintextcolor">#5D5FEF</color>
+    <color name="color_text_primary_legacy">#636E72</color>
+    <color name="color_text_secondary_legacy">#94A3B8</color>
+    <color name="color_auth_text_link">#5D5FEF</color>
 
     <!-- UI colors -->
-    <color name="linecolor">#E2E8F0</color>
+    <color name="color_ui_divider">#E2E8F0</color>
     <color name="linecolor_dark">#334155</color>
     <color name="mainlinerlayoutcolor">#F0F2FF</color>
 
     <!-- Legacy -->
-    <color name="colorPrimary">#F0F2FF</color>
-    <color name="colorPrimaryDark">#5D5FEF</color>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="thirdtext">#FFF</color>
+    <color name="color_primary">#F0F2FF</color>
+    <color name="color_primary_dark">#5D5FEF</color>
+    <color name="color_text_white">#FFF</color>
     <color name="white">#FFF</color>
     <color name="white_40">#66FFFFFF</color>
     <color name="black">#000</color>

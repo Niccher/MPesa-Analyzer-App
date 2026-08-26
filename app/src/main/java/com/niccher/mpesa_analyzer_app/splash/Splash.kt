@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.niccher.mpesa_analyzer_app.MainActivity
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.auth.TokenAuthActivity
-import com.niccher.mpesa_analyzer_app.konstants.Konstants
+import com.niccher.mpesa_analyzer_app.constants.Constants
 
 class Splash : AppCompatActivity() {
 
@@ -71,7 +71,7 @@ class Splash : AppCompatActivity() {
     }
 
     fun checkValidity(): String {
-        val sharedPreferences = getSharedPreferences(Konstants.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(Constants.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE)
         return sharedPreferences.getString("status", "3") ?: "3"
     }
 }

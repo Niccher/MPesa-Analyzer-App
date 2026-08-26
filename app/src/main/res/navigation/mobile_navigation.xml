@@ -7,49 +7,55 @@
 
     <fragment
         android:id="@+id/navi_home"
-        android:name="com.niccher.mpesa_analyzer_app.fragments.Home.Frag_Home"
+        android:name="com.niccher.mpesa_analyzer_app.fragments.Home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/frag_home" />
 
     <fragment
         android:id="@+id/navi_graph"
-        android:name="com.niccher.mpesa_analyzer_app.fragments.Graph.Frag_Graph"
+        android:name="com.niccher.mpesa_analyzer_app.fragments.Graph.GraphFragment"
         android:label="@string/title_graph"
         tools:layout="@layout/frag_graph" />
 
     <fragment
         android:id="@+id/navi_transactions"
-        android:name="com.niccher.mpesa_analyzer_app.fragments.History.Frag_Transactions"
+        android:name="com.niccher.mpesa_analyzer_app.fragments.History.TransactionsFragment"
         android:label="Search"
         tools:layout="@layout/frag_transactions" />
 
     <fragment
         android:id="@+id/navi_history"
-        android:name="com.niccher.mpesa_analyzer_app.fragments.History.Frag_History"
+        android:name="com.niccher.mpesa_analyzer_app.fragments.History.HistoryFragment"
         android:label="@string/title_history"
         tools:layout="@layout/frag_history" />
 
     <fragment
+        android:id="@+id/navi_summary"
+        android:name="com.niccher.mpesa_analyzer_app.fragments.History.SummaryFragment"
+        android:label="Summary Info"
+        tools:layout="@layout/frag_summary" />
+
+    <fragment
         android:id="@+id/navi_app_info"
-        android:name="com.niccher.mpesa_analyzer_app.fragments.Info.Frag_App_Info"
+        android:name="com.niccher.mpesa_analyzer_app.fragments.Info.AppInfoFragment"
         android:label="App Info"
         tools:layout="@layout/frag_app_info" />
 
     <fragment
         android:id="@+id/navi_app_credits"
-        android:name="com.niccher.mpesa_analyzer_app.fragments.Info.Frag_App_Credits"
+        android:name="com.niccher.mpesa_analyzer_app.fragments.Info.AppCreditsFragment"
         android:label="App Credits"
         tools:layout="@layout/frag_app_credits" />
 
     <fragment
         android:id="@+id/navi_settings"
-        android:name="com.niccher.mpesa_analyzer_app.fragments.Settings.Frag_Settings"
+        android:name="com.niccher.mpesa_analyzer_app.fragments.Settings.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/frag_settings" />
 
     <fragment
         android:id="@+id/navi_profile"
-        android:name="com.niccher.mpesa_analyzer_app.fragments.Profile.Frag_Profile"
+        android:name="com.niccher.mpesa_analyzer_app.fragments.Profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/frag_profile" />
 

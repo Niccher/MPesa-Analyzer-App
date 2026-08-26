@@ -16,7 +16,7 @@ import android.util.Base64
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
+import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.helpers.AppPrefs
 import com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint
@@ -24,8 +24,8 @@ import com.niccher.mpesa_analyzer_app.helpers.Encryptor
 import com.niccher.mpesa_analyzer_app.helpers.Prefs
 import com.niccher.mpesa_analyzer_app.helpers.ProgressRequestBody
 import com.niccher.mpesa_analyzer_app.helpers.SyncSession
-import com.niccher.mpesa_analyzer_app.interfaces.JsonUploadLoot
-import com.niccher.mpesa_analyzer_app.konstants.Konstants
+import com.niccher.mpesa_analyzer_app.api.UploadLootApiService
+import com.niccher.mpesa_analyzer_app.constants.Constants
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -41,7 +41,7 @@ import java.io.InputStream
 
 class UploadService : Service() {
 
-    private val kon = Konstants
+    private val kon = Constants
     private val prefs = Prefs()
     private val NOTIFICATION_ID = 10101
     private val CHANNEL_PROGRESS = "SMS_UPLOAD_PROGRESS"
@@ -326,7 +326,6 @@ class UploadService : Service() {
     private fun cryptor(inputFile: File, inputStream: InputStream) {
         Encryptor.encodeToFile(
             kon.STRING_KEY,
-            kon.STRING_KEY_SPEC,
             inputStream,
             FileOutputStream(inputFile)
         )
@@ -398,7 +397,7 @@ class UploadService : Service() {
         notificationManager.notify(NOTIFICATION_ID, builder.build())
 
         Log.i(kon.TAGGED, "Creating Retrofit service for upload")
-        val service = ServiceGenerators.createService(JsonUploadLoot::class.java, context)
+        val service = ServiceGenerator.createService(UploadLootApiService::class.java, context)
 
         val requestFile = ProgressRequestBody(files, "*/*".toMediaTypeOrNull()) { progress ->
             builder.setProgress(100, progress, false)
@@ -463,6 +462,9 @@ class UploadService : Service() {
     private fun finishWithResult(success: Boolean, message: String, smsCount: Int = 0) {
         Log.i(kon.TAGGED, "Upload finish success=$success msg=$message count=$smsCount")
         SyncSession.end()
+        if (success) {
+            AppPrefs.setLastSyncSuccessTime(this, System.currentTimeMillis())
+        }
 
         val channel = CHANNEL_RESULT
         val title = if (success) "Upload Complete" else "Upload Failed"

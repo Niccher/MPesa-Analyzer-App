@@ -61,4 +61,34 @@ object AppPrefs {
 
     fun setDateFormat(context: Context, format: String) =
         prefs(context).edit().putString(KEY_DATE_FORMAT, format).apply()
+
+    // Sync settings
+    const val KEY_SYNC_MODE = "pref_sync_mode"
+    const val KEY_SYNC_INTERVAL = "pref_sync_interval"
+    const val KEY_SYNC_COUNT_THRESHOLD = "pref_sync_count_threshold"
+    const val KEY_LAST_SYNC_SUCCESS_TIME = "pref_last_sync_success_time"
+
+    fun getSyncMode(context: Context): String =
+        prefs(context).getString(KEY_SYNC_MODE, "immediate") ?: "immediate"
+
+    fun setSyncMode(context: Context, mode: String) =
+        prefs(context).edit().putString(KEY_SYNC_MODE, mode).apply()
+
+    fun getSyncInterval(context: Context): Int =
+        prefs(context).getInt(KEY_SYNC_INTERVAL, 30)
+
+    fun setSyncInterval(context: Context, interval: Int) =
+        prefs(context).edit().putInt(KEY_SYNC_INTERVAL, interval).apply()
+
+    fun getSyncCountThreshold(context: Context): Int =
+        prefs(context).getInt(KEY_SYNC_COUNT_THRESHOLD, 10)
+
+    fun setSyncCountThreshold(context: Context, threshold: Int) =
+        prefs(context).edit().putInt(KEY_SYNC_COUNT_THRESHOLD, threshold).apply()
+
+    fun getLastSyncSuccessTime(context: Context): Long =
+        prefs(context).getLong(KEY_LAST_SYNC_SUCCESS_TIME, 0L)
+
+    fun setLastSyncSuccessTime(context: Context, time: Long) =
+        prefs(context).edit().putLong(KEY_LAST_SYNC_SUCCESS_TIME, time).apply()
 }

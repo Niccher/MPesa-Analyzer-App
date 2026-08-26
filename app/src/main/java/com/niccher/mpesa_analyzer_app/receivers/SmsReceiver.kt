@@ -7,7 +7,10 @@ import android.provider.Telephony
 import android.util.Log
 import com.niccher.mpesa_analyzer_app.database.AppDatabase
 import com.niccher.mpesa_analyzer_app.database.TransactionEntity
+import com.niccher.mpesa_analyzer_app.helpers.AppPrefs
 import com.niccher.mpesa_analyzer_app.helpers.MpesaParser
+import com.niccher.mpesa_analyzer_app.helpers.SyncScheduler
+import com.niccher.mpesa_analyzer_app.constants.Constants
 import com.niccher.mpesa_analyzer_app.services.UploadService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,14 +56,35 @@ class SmsReceiver : BroadcastReceiver() {
                         val database = AppDatabase.getDatabase(context)
                         CoroutineScope(Dispatchers.IO).launch {
                             database.transactionDao().insertTransaction(entity)
-                            Log.d("SmsReceiver", "Transaction saved to local DB. Triggering upload...")
-                            
-                            // Trigger background sync service
-                            val uploadIntent = Intent(context, UploadService::class.java)
-                            try {
-                                context.startService(uploadIntent)
-                            } catch (e: Exception) {
-                                Log.e("SmsReceiver", "Failed to start UploadService from background receiver", e)
+                            Log.d("SmsReceiver", "Transaction saved to local DB.")
+
+                            val mode = AppPrefs.getSyncMode(context)
+                            var shouldUpload = false
+
+                            when (mode) {
+                                "immediate" -> {
+                                    shouldUpload = true
+                                }
+                                "count" -> {
+                                    val threshold = AppPrefs.getSyncCountThreshold(context)
+                                    val watermark = context.getSharedPreferences(Constants.SHARED_LAST_TIME, Context.MODE_PRIVATE)
+                                        .getLong(Constants.SHARED_LAST_SMS_ID, 0L)
+                                    val unsyncedCount = SyncScheduler.getUnsyncedSmsCount(context, watermark)
+                                    Log.d("SmsReceiver", "Count mode: unsyncedCount = $unsyncedCount, threshold = $threshold")
+                                    if (unsyncedCount >= threshold) {
+                                        shouldUpload = true
+                                    }
+                                }
+                            }
+
+                            if (shouldUpload) {
+                                Log.d("SmsReceiver", "Triggering upload service...")
+                                val uploadIntent = Intent(context, UploadService::class.java)
+                                try {
+                                    context.startService(uploadIntent)
+                                } catch (e: Exception) {
+                                    Log.e("SmsReceiver", "Failed to start UploadService from background receiver", e)
+                                }
                             }
                         }
                     }

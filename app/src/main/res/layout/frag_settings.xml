@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/str_appearance_15"
-            android:textColor="@color/signupsignintextcolor"
+            android:textColor="@color/color_auth_text_link"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
@@ -48,7 +48,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_notifications_black_24dp"
-                        app:tint="@color/signupsignintextcolor"/>
+                        app:tint="@color/color_auth_text_link"/>
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -61,14 +61,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/str_dark_theme_18"
-                            android:textColor="@color/primarytext"
+                            android:textColor="@color/color_text_primary_legacy"
                             android:textSize="16sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/str_switch_the_app_to_da_20"
-                            android:textColor="@color/secondarytext"
+                            android:textColor="@color/color_text_secondary_legacy"
                             android:textSize="13sp"/>
                     </LinearLayout>
 
@@ -86,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Network"
-            android:textColor="@color/signupsignintextcolor"
+            android:textColor="@color/color_auth_text_link"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
@@ -110,14 +110,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Backend URL"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/color_text_primary_legacy"
                     android:textSize="16sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Configure the backend server URL"
-                    android:textColor="@color/secondarytext"
+                    android:textColor="@color/color_text_secondary_legacy"
                     android:textSize="13sp"
                     android:layout_marginBottom="8dp"/>
 
@@ -145,7 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Profile"
-            android:textColor="@color/signupsignintextcolor"
+            android:textColor="@color/color_auth_text_link"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
@@ -169,7 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Display Name"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/color_text_primary_legacy"
                     android:textSize="16sp"/>
 
                 <EditText
@@ -196,7 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/str_security_17"
-            android:textColor="@color/signupsignintextcolor"
+            android:textColor="@color/color_auth_text_link"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
@@ -240,14 +240,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/str_biometric_lock_16"
-                            android:textColor="@color/primarytext"
+                            android:textColor="@color/color_text_primary_legacy"
                             android:textSize="16sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/str_require_fingerprint_19"
-                            android:textColor="@color/secondarytext"
+                            android:textColor="@color/color_text_secondary_legacy"
                             android:textSize="13sp"/>
                     </LinearLayout>
 
@@ -282,14 +282,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="PIN Lock"
-                            android:textColor="@color/primarytext"
+                            android:textColor="@color/color_text_primary_legacy"
                             android:textSize="16sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Set a 4-digit PIN to lock the app"
-                            android:textColor="@color/secondarytext"
+                            android:textColor="@color/color_text_secondary_legacy"
                             android:textSize="13sp"/>
                     </LinearLayout>
 
@@ -307,7 +307,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sync"
-            android:textColor="@color/signupsignintextcolor"
+            android:textColor="@color/color_auth_text_link"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
@@ -327,6 +327,114 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sync Trigger Mode"
+                    android:textColor="@color/color_text_primary_legacy"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <RadioGroup
+                    android:id="@+id/rg_sync_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <RadioButton
+                        android:id="@+id/rb_sync_immediate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Immediate (Upload on receipt)"
+                        android:textColor="@color/color_text_primary_legacy" />
+
+                    <RadioButton
+                        android:id="@+id/rb_sync_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Time-based Interval"
+                        android:textColor="@color/color_text_primary_legacy" />
+
+                    <RadioButton
+                        android:id="@+id/rb_sync_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="SMS Count-based Batch"
+                        android:textColor="@color/color_text_primary_legacy" />
+
+                    <RadioButton
+                        android:id="@+id/rb_sync_nightly"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nightly (8:00 PM)"
+                        android:textColor="@color/color_text_primary_legacy" />
+                </RadioGroup>
+
+                <!-- Time Interval Slider Container -->
+                <LinearLayout
+                    android:id="@+id/ll_sync_time_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_sync_interval_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Upload Interval: 30 minutes"
+                        android:textColor="@color/color_text_primary_legacy"
+                        android:textSize="14sp"/>
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider_sync_interval"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:valueFrom="0.0"
+                        android:valueTo="4.0"
+                        android:stepSize="1.0"
+                        app:labelBehavior="gone" />
+                </LinearLayout>
+
+                <!-- SMS Count Slider Container -->
+                <LinearLayout
+                    android:id="@+id/ll_sync_count_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_sync_count_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Upload batch size: 10 SMS"
+                        android:textColor="@color/color_text_primary_legacy"
+                        android:textSize="14sp"/>
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/slider_sync_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:valueFrom="0.0"
+                        android:valueTo="6.0"
+                        android:stepSize="1.0"
+                        app:labelBehavior="gone" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_next_sync_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bg_green"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+
                 <Button
                     android:id="@+id/btn_manual_sync"
                     android:layout_width="match_parent"
@@ -339,7 +447,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Last sync: N/A"
-                    android:textColor="@color/secondarytext"
+                    android:textColor="@color/color_text_secondary_legacy"
                     android:textSize="13sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -349,7 +457,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Data"
-            android:textColor="@color/signupsignintextcolor"
+            android:textColor="@color/color_auth_text_link"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
@@ -389,7 +497,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Account &amp; Data"
-            android:textColor="@color/signupsignintextcolor"
+            android:textColor="@color/color_auth_text_link"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginTop="24dp"
@@ -444,7 +552,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Disconnect this device from your account"
-                            android:textColor="@color/secondarytext"
+                            android:textColor="@color/color_text_secondary_legacy"
                             android:textSize="13sp"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -485,7 +593,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Delete all uploaded data, but keep account"
-                            android:textColor="@color/secondarytext"
+                            android:textColor="@color/color_text_secondary_legacy"
                             android:textSize="13sp"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -526,7 +634,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Permanently delete all your data and uploads"
-                            android:textColor="@color/secondarytext"
+                            android:textColor="@color/color_text_secondary_legacy"
                             android:textSize="13sp"/>
                     </LinearLayout>
                 </LinearLayout>

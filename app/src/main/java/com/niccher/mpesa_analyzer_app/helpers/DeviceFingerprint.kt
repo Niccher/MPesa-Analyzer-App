@@ -9,10 +9,10 @@ import android.os.StatFs
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
-import com.niccher.mpesa_analyzer_app.interfaces.JsonFonePrint
-import com.niccher.mpesa_analyzer_app.konstants.Konstants
-import com.niccher.mpesa_analyzer_app.models.Mod_Fone_Id
+import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
+import com.niccher.mpesa_analyzer_app.api.FonePrintApiService
+import com.niccher.mpesa_analyzer_app.constants.Constants
+import com.niccher.mpesa_analyzer_app.models.FoneIdModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +32,7 @@ import java.util.TimeZone
  */
 object DeviceFingerprint {
 
-    private const val TAG = Konstants.TAGGED
+    private const val TAG = Constants.TAGGED
 
     fun buildFields(context: Context): Map<String, String> {
         val androidId = getAndroidId(context)
@@ -81,7 +81,7 @@ object DeviceFingerprint {
     }
 
     fun getStoredPrintId(context: Context): String {
-        val prefs = context.getSharedPreferences(Konstants.SHARED_DEVICE_ID, Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(Constants.SHARED_DEVICE_ID, Context.MODE_PRIVATE)
         return prefs.getString("print_id", null) ?: "nullable"
     }
 
@@ -91,7 +91,7 @@ object DeviceFingerprint {
     }
 
     fun savePrintId(context: Context, printId: String) {
-        context.getSharedPreferences(Konstants.SHARED_DEVICE_ID, Context.MODE_PRIVATE)
+        context.getSharedPreferences(Constants.SHARED_DEVICE_ID, Context.MODE_PRIVATE)
             .edit()
             .putString("print_id", printId)
             .apply()
@@ -114,9 +114,9 @@ fun register(context: Context, onComplete: ((Boolean, String) -> Unit)? = null) 
     val fields = buildFields(appContext)
     Log.i(TAG, "Registering device fingerprint: model=${fields["device_Model"]} brand=${fields["device_Brand"]} fingerprint=${fields["device_Fingerprint"]}")
 
-    val service = ServiceGenerators.createService(JsonFonePrint::class.java, appContext)
-    service.createPrint(fields).enqueue(object : Callback<Mod_Fone_Id> {
-        override fun onResponse(call: Call<Mod_Fone_Id>, response: Response<Mod_Fone_Id>) {
+    val service = ServiceGenerator.createService(FonePrintApiService::class.java, appContext)
+    service.createPrint(fields).enqueue(object : Callback<FoneIdModel> {
+        override fun onResponse(call: Call<FoneIdModel>, response: Response<FoneIdModel>) {
             Log.d(TAG, "Device register response: code=${response.code()} successful=${response.isSuccessful}")
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
@@ -138,7 +138,7 @@ fun register(context: Context, onComplete: ((Boolean, String) -> Unit)? = null) 
             }
         }
 
-        override fun onFailure(call: Call<Mod_Fone_Id>, t: Throwable) {
+        override fun onFailure(call: Call<FoneIdModel>, t: Throwable) {
             Log.e(TAG, "Device register network error: ${t.message}", t)
             onComplete?.invoke(false, "Device register network error: ${t.message}")
         }

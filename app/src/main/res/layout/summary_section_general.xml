@@ -26,7 +26,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_category"
-                android:tint="@color/signupsignintextcolor" />
+                android:tint="@color/color_auth_text_link" />
 
             <TextView
                 android:layout_width="0dp"
@@ -34,7 +34,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_weight="1"
                 android:text="@string/str_general_interactions_39"
-                android:textColor="@color/signupsignintextcolor"
+                android:textColor="@color/color_auth_text_link"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -43,14 +43,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_arrow_drop_down"
-                android:tint="@color/secondarytext" />
+                android:tint="@color/color_text_secondary_legacy" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="20dp"
-            android:background="@color/linecolor" />
+            android:background="@color/color_ui_divider" />
 
         <LinearLayout
             android:id="@+id/ll_general_content"
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_all_32"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -149,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_balance_42"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_fuliza_31"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -237,7 +237,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_received_46"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -281,7 +281,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_sent_74"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -325,7 +325,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_withdraw_40"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -369,7 +369,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_wrong_pin_45"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -413,7 +413,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_unknown_34"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>

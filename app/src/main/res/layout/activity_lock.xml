@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/str_mympesaanalyser_2"
-                android:textColor="@color/signupsignintextcolor"
+                android:textColor="@color/color_auth_text_link"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/str_authenticate_to_cont_1"
-                android:textColor="@color/secondarytext"
+                android:textColor="@color/color_text_secondary_legacy"
                 android:textSize="14sp" />
 
             <View
@@ -63,7 +63,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/linecolor" />
+                android:background="@color/color_ui_divider" />
 
             <!-- PIN Input -->
             <LinearLayout

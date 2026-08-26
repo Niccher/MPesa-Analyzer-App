@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.niccher.mpesa_analyzer_app.helpers.AppPrefs
 import com.niccher.mpesa_analyzer_app.services.UploadService
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -17,12 +18,15 @@ import java.util.Calendar
 class MpesaSyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        // Midnight Cutoff Logic (00:00 to 19:59)
-        // If it's before 8:00 PM (20:00), we return failure to stop retrying until the next scheduled 8PM trigger.
-        val calendar = Calendar.getInstance()
-        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-        if (currentHour < 20) {
-            return@withContext Result.failure()
+        val mode = AppPrefs.getSyncMode(applicationContext)
+        if (mode == "nightly") {
+            // Midnight Cutoff Logic (00:00 to 19:59)
+            // If it's before 8:00 PM (20:00), we return failure to stop retrying until the next scheduled 8PM trigger.
+            val calendar = Calendar.getInstance()
+            val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+            if (currentHour < 20) {
+                return@withContext Result.failure()
+            }
         }
 
         // Register the receiver before starting the service so no completion broadcast is missed.

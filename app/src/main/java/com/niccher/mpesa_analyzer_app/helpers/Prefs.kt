@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.util.Log
-import com.niccher.mpesa_analyzer_app.konstants.Konstants
+import com.niccher.mpesa_analyzer_app.constants.Constants
 import java.text.SimpleDateFormat
 
 class Prefs {
 
-    private val kon = Konstants
+    private val kon = Constants
 
     private var prefSms: SharedPreferences? = null
     private var sharedEditor: SharedPreferences.Editor? = null
@@ -17,12 +17,12 @@ class Prefs {
     fun getFileType(fileName: String, timeAt: String, cntt: Context) {
 
         if (fileName.startsWith("sms_All_")) {
-            prefSms = cntt.getSharedPreferences(kon.SHARED_LAST_TIME, MODE_PRIVATE) // Use Konstants object
+            prefSms = cntt.getSharedPreferences(kon.SHARED_LAST_TIME, MODE_PRIVATE) // Use Constants object
             sharedEditor = prefSms?.edit()
             sharedEditor?.putString("last_upload_name", fileName)
             sharedEditor?.putString("last_upload_time", timeAt)
             sharedEditor?.apply()
-            Log.i(kon.TAGGED, "get_FileType: as SMS") // Use Konstants object
+            Log.i(kon.TAGGED, "get_FileType: as SMS") // Use Constants object
         }
     }
 

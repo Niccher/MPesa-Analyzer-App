@@ -59,10 +59,10 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // Hide bottom navigation bar when in Settings or Profile or Info or Credits
+        // Hide bottom navigation bar when in Settings or Profile or Info or Credits or Summary
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navi_settings, R.id.navi_profile, R.id.navi_app_info, R.id.navi_app_credits -> {
+                R.id.navi_settings, R.id.navi_profile, R.id.navi_app_info, R.id.navi_app_credits, R.id.navi_summary -> {
                     navView.visibility = View.GONE
                 }
                 else -> {

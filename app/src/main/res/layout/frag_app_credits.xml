@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/str_credits__amp__acknow_145"
-            android:textColor="@color/signupsignintextcolor"
+            android:textColor="@color/color_auth_text_link"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_developer_139"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/color_text_primary_legacy"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -48,14 +48,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_niccher__nlead_archi_140"
-                    android:textColor="@color/secondarytext"
+                    android:textColor="@color/color_text_secondary_legacy"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>
                     
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/linecolor"
+                    android:background="@color/color_ui_divider"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"/>
 
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_open_source_librarie_135"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/color_text_primary_legacy"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_mpandroidchart_136"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/color_text_primary_legacy"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginTop="16dp"/>
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_powering_the_smooth_144"
-                    android:textColor="@color/secondarytext"
+                    android:textColor="@color/color_text_secondary_legacy"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>
 
@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_retrofit__amp__gso_137"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/color_text_primary_legacy"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginTop="16dp"/>
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_utilized_for_robust_138"
-                    android:textColor="@color/secondarytext"
+                    android:textColor="@color/color_text_secondary_legacy"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>
 
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_androidx_biometric_134"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/color_text_primary_legacy"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginTop="16dp"/>
@@ -111,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_implements_advanced_143"
-                    android:textColor="@color/secondarytext"
+                    android:textColor="@color/color_text_secondary_legacy"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>
                     
@@ -119,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_material_component_142"
-                    android:textColor="@color/primarytext"
+                    android:textColor="@color/color_text_primary_legacy"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginTop="16dp"/>
@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_supplies_the_foundat_141"
-                    android:textColor="@color/secondarytext"
+                    android:textColor="@color/color_text_secondary_legacy"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"/>
 

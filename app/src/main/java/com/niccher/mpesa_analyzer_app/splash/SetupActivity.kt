@@ -8,12 +8,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerators
+import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.MainActivity
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.auth.TokenAuthActivity
 import com.niccher.mpesa_analyzer_app.helpers.AppPrefs
-import com.niccher.mpesa_analyzer_app.konstants.Konstants
+import com.niccher.mpesa_analyzer_app.constants.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,7 +55,7 @@ class SetupActivity : AppCompatActivity() {
 
                 fun testUrl(testUrl: String): Boolean {
                     return try {
-                        val client = ServiceGenerators.getUnsafeOkHttpClient(this@SetupActivity)
+                        val client = ServiceGenerator.getUnsafeOkHttpClient(this@SetupActivity)
                         val request = Request.Builder().url(testUrl).head().build()
                         val response = client.newCall(request).execute()
                         response.isSuccessful || response.code in 200..499
@@ -108,7 +108,7 @@ class SetupActivity : AppCompatActivity() {
                 }
                 AppPrefs.setBackendUrl(this, url)
                 
-                val sharedPreferences = getSharedPreferences(Konstants.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE)
+                val sharedPreferences = getSharedPreferences(Constants.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE)
                 val status = sharedPreferences.getString("status", "3") ?: "3"
                 
                 val intent = if (status == "1") {

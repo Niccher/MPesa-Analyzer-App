@@ -43,14 +43,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_arrow_drop_down"
-                android:tint="@color/secondarytext" />
+                android:tint="@color/color_text_secondary_legacy" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="20dp"
-            android:background="@color/linecolor" />
+            android:background="@color/color_ui_divider" />
 
         <LinearLayout
             android:id="@+id/ll_balance_content"
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_all_balance_61"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -149,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_mpesa_bal_50"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_mshwari_bal_69"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -237,7 +237,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/str_kcb_bal_30"
-                        android:textColor="@color/primarytext"
+                        android:textColor="@color/color_text_primary_legacy"
                         android:textSize="11sp"
                         android:textAlignment="center" />
                 </LinearLayout>

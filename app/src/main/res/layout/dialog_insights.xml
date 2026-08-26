@@ -19,7 +19,7 @@
             android:text="@string/str_local_spending_insig_122"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/color_primary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

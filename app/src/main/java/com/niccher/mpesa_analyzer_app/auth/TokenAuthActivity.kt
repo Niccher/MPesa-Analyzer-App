@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
+import com.niccher.mpesa_analyzer_app.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.MainActivity
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint

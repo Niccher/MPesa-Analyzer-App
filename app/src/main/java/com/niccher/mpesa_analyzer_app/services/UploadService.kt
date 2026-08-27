@@ -16,7 +16,7 @@ import android.util.Base64
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
+import com.niccher.mpesa_analyzer_app.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.helpers.AppPrefs
 import com.niccher.mpesa_analyzer_app.helpers.DeviceFingerprint

@@ -57,8 +57,8 @@ class TransactionsAdapter(private var transList: ArrayList<TransactionModel>) :
         val badgeColorRes = when (trans.type.lowercase()) {
             "received" -> R.color.bg_green
             "sent" -> R.color.bg_red
-            "paybill" -> R.color.purple_700
-            "withdraw" -> R.color.teal_700
+            "paybill" -> R.color.cat_sacco
+            "withdraw" -> R.color.semantic_info
             else -> R.color.color_primary_dark
         }
         holder.txtType.backgroundTintList = android.content.res.ColorStateList.valueOf(

@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.niccher.mpesa_analyzer_app.R
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
+import com.niccher.mpesa_analyzer_app.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.helpers.Encryptor
 import com.niccher.mpesa_analyzer_app.helpers.Prefs
 import com.niccher.mpesa_analyzer_app.api.FinancialApiService

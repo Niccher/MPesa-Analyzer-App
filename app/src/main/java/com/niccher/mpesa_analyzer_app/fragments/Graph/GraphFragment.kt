@@ -25,7 +25,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
+import com.niccher.mpesa_analyzer_app.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.databinding.FragGraphBinding
 import com.niccher.mpesa_analyzer_app.fragments.Graph.GraphViewModel.CategoryEntry

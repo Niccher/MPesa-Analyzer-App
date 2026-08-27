@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
+import com.niccher.mpesa_analyzer_app.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.helpers.Prefs
 import com.niccher.mpesa_analyzer_app.models.SummaryResponse

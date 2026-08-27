@@ -9,7 +9,7 @@ import android.os.StatFs
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
+import com.niccher.mpesa_analyzer_app.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.api.FonePrintApiService
 import com.niccher.mpesa_analyzer_app.constants.Constants
 import com.niccher.mpesa_analyzer_app.models.FoneIdModel

@@ -1,4 +1,4 @@
-package com.niccher.mpesa_analyzer.helpers
+package com.niccher.mpesa_analyzer_app.helpers
 
 import android.content.Context
 import android.os.Build

@@ -20,7 +20,7 @@ import androidx.navigation.findNavController
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import com.niccher.mpesa_analyzer.helpers.ServiceGenerator
+import com.niccher.mpesa_analyzer_app.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.adapter.HistoryAdapter
 import com.niccher.mpesa_analyzer_app.helpers.Prefs

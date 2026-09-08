@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Brand colors (Web App aligned) -->
-    <color name="brand_primary">#5D5FEF</color>
-    <color name="brand_primary_dark">#4A4CD9</color>
-    <color name="brand_secondary">#B1B8ED</color>
+    <!-- Brand colors (Ace Admin aligned) -->
+    <color name="brand_primary">#438EB9</color>
+    <color name="brand_primary_dark">#222A2D</color>
+    <color name="brand_secondary">#2B7DBC</color>
 
-    <!-- Semantic colors (Web App aligned) -->
-    <color name="semantic_success">#2ED573</color>
-    <color name="semantic_danger">#FF4757</color>
-    <color name="semantic_warning">#FFA502</color>
-    <color name="semantic_info">#1E90FF</color>
+    <!-- Semantic colors (Ace Admin aligned) -->
+    <color name="semantic_success">#87B87F</color>
+    <color name="semantic_danger">#D15B47</color>
+    <color name="semantic_warning">#FFB752</color>
+    <color name="semantic_info">#438EB9</color>
 
     <!-- Legacy aliases -->
-    <color name="bg_green">#2ED573</color>
-    <color name="bg_green_light">#7BED9F</color>
-    <color name="bg_red">#FF4757</color>
-    <color name="bg_blue">#1E90FF</color>
+    <color name="bg_green">#87B87F</color>
+    <color name="bg_green_light">#A6D89F</color>
+    <color name="bg_red">#D15B47</color>
+    <color name="bg_blue">#438EB9</color>
 
     <!-- Backgrounds - Light -->
-    <color name="bg_light">#F0F2FF</color>
+    <color name="bg_light">#F2F5F8</color>
     <color name="bg_card_light">#FFFFFF</color>
-    <color name="bg_primary_faint">#EEF0FF</color>
+    <color name="bg_primary_faint">#E8F2F8</color>
 
     <!-- Backgrounds - Dark (used via values-night) -->
     <color name="bg_dark">#0F172A</color>
@@ -41,16 +41,16 @@
     <!-- Legacy text aliases -->
     <color name="color_text_primary_legacy">#636E72</color>
     <color name="color_text_secondary_legacy">#94A3B8</color>
-    <color name="color_auth_text_link">#5D5FEF</color>
+    <color name="color_auth_text_link">#438EB9</color>
 
     <!-- UI colors -->
     <color name="color_ui_divider">#E2E8F0</color>
     <color name="linecolor_dark">#334155</color>
-    <color name="mainlinerlayoutcolor">#F0F2FF</color>
+    <color name="mainlinerlayoutcolor">#F2F5F8</color>
 
     <!-- Legacy -->
-    <color name="color_primary">#F0F2FF</color>
-    <color name="color_primary_dark">#5D5FEF</color>
+    <color name="color_primary">#F2F5F8</color>
+    <color name="color_primary_dark">#438EB9</color>
     <color name="color_text_white">#FFF</color>
     <color name="white">#FFF</color>
     <color name="white_40">#66FFFFFF</color>
@@ -58,9 +58,9 @@
     <color name="silver">#C0C0C0</color>
 
     <!-- Financial Category Colors -->
-    <color name="cat_mobile_money">#4CAF50</color>
-    <color name="cat_bank">#2196F3</color>
-    <color name="cat_fintech">#FF9800</color>
+    <color name="cat_mobile_money">#87B87F</color>
+    <color name="cat_bank">#438EB9</color>
+    <color name="cat_fintech">#FFB752</color>
     <color name="cat_sacco">#9C27B0</color>
     <color name="cat_insurance">#E91E63</color>
     <color name="cat_payments_govt">#00BCD4</color>

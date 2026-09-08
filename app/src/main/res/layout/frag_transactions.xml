@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B1B8ED">
+    android:background="@color/mainlinerlayoutcolor">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_transactions"
@@ -96,7 +96,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        android:background="#E1E4F9"
+        android:background="?attr/colorSurface"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

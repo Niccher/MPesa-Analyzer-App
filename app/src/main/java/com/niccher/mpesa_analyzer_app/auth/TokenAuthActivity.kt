@@ -32,8 +32,7 @@ class TokenAuthActivity : AppCompatActivity() {
 
     private val barcodeLauncher = registerForActivityResult(ScanContract()) { result ->
         if (result.contents != null) {
-            edtToken.setText(result.contents)
-            verifyToken(result.contents.trim())
+            processScannedQr(result.contents.trim())
         } else {
             Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
         }
@@ -48,9 +47,9 @@ class TokenAuthActivity : AppCompatActivity() {
         btnScanQr = findViewById(R.id.btn_scan_qr)
 
         btnSubmit.setOnClickListener {
-            val token = edtToken.text.toString().trim()
-            if (token.isNotEmpty()) {
-                verifyToken(token)
+            val input = edtToken.text.toString().trim()
+            if (input.isNotEmpty()) {
+                processScannedQr(input)
             } else {
                 Toast.makeText(this, "Please enter a token", Toast.LENGTH_SHORT).show()
             }
@@ -64,6 +63,52 @@ class TokenAuthActivity : AppCompatActivity() {
             }
             barcodeLauncher.launch(options)
         }
+    }
+
+    private fun processScannedQr(scanned: String) {
+        var token = scanned
+        var url: String? = null
+
+        try {
+            if (scanned.startsWith("{") && scanned.endsWith("}")) {
+                val jsonObj = org.json.JSONObject(scanned)
+                if (jsonObj.has("url")) {
+                    url = jsonObj.getString("url")
+                } else if (jsonObj.has("server_url")) {
+                    url = jsonObj.getString("server_url")
+                }
+                if (jsonObj.has("token")) {
+                    token = jsonObj.getString("token")
+                }
+            } else if (scanned.startsWith("http://") || scanned.startsWith("https://")) {
+                val uri = android.net.Uri.parse(scanned)
+                val paramToken = uri.getQueryParameter("token")
+                if (!paramToken.isNullOrEmpty()) {
+                    token = paramToken
+                    val portStr = if (uri.port != -1) ":${uri.port}" else ""
+                    url = "${uri.scheme}://${uri.host}$portStr/"
+                } else {
+                    url = scanned
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(Constants.TAGGED, "Error parsing QR code: ${e.message}")
+        }
+
+        if (!url.isNullOrEmpty()) {
+            var formattedUrl = url.trim()
+            if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
+                formattedUrl = "https://$formattedUrl"
+            }
+            if (!formattedUrl.endsWith("/")) {
+                formattedUrl += "/"
+            }
+            com.niccher.mpesa_analyzer_app.helpers.AppPrefs.setBackendUrl(this, formattedUrl)
+            Toast.makeText(this, "Server URL configured: $formattedUrl", Toast.LENGTH_SHORT).show()
+        }
+
+        edtToken.setText(token)
+        verifyToken(token)
     }
 
     private fun verifyToken(token: String) {

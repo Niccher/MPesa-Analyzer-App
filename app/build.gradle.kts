@@ -8,6 +8,7 @@ plugins {
 android {
     namespace = "com.niccher.mpesa_analyzer_app"
     compileSdk = 35
+    buildToolsVersion = "35.0.0"
 
     defaultConfig {
         applicationId = "com.niccher.mpesa_analyzer_app"
@@ -34,11 +35,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -62,7 +63,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.compiler)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -71,6 +71,17 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.work.runtime.ktx)
+
+configurations.all {
+    resolutionStrategy {
+        force("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+        force("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+        force("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+        force("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+        force("androidx.navigation:navigation-fragment-ktx:2.8.9")
+        force("androidx.navigation:navigation-ui-ktx:2.8.9")
+    }
+}
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

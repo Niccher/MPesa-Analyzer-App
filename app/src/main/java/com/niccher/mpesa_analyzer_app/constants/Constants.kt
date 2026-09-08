@@ -17,6 +17,7 @@ object Constants {
     const val STRING_READ_WRITE_BLOCK = 1024
 
     const val STRING_ALGO_ENCRYPTOR = "AES/CBC/PKCS5Padding"
+    const val STRING_ALGO_GCM = "AES/GCM/NoPadding"
     const val STRING_ALGO = "AES"
     const val STRING_CHARACTER_ENCODING = "UTF-8"
 

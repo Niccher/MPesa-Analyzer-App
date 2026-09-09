@@ -14,6 +14,14 @@ object SyncScheduler {
     const val WORK_INTERVAL = "IntervalMpesaSync"
     private const val TAG = "SyncScheduler"
 
+    fun cancelAll(context: Context) {
+        val workManager = WorkManager.getInstance(context)
+        workManager.cancelUniqueWork(WORK_NIGHTLY)
+        workManager.cancelUniqueWork(WORK_INTERVAL)
+        workManager.cancelAllWork()
+        Log.d(TAG, "Cancelled all sync background workers")
+    }
+
     fun updateSyncSchedule(context: Context) {
         val workManager = WorkManager.getInstance(context)
         val mode = AppPrefs.getSyncMode(context)

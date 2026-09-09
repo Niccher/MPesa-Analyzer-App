@@ -17,6 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.niccher.mpesa_analyzer_app.databinding.ActivityMainBinding
 import com.niccher.mpesa_analyzer_app.helpers.AppPrefs
@@ -85,6 +86,23 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.e("Menu", "Could not set optional icons visible", e)
             }
+        }
+
+        // Apply theme-adaptive colors to each menu item icon
+        for (i in 0 until menu.size()) {
+            val item = menu.getItem(i)
+            val icon = item.icon ?: continue
+            val colorRes = when (item.itemId) {
+                R.id.menu_profile -> R.color.menu_icon_profile
+                R.id.menu_settings -> R.color.menu_icon_settings
+                R.id.navi_app_info -> R.color.menu_icon_info
+                R.id.navi_app_credits -> R.color.menu_icon_credits
+                else -> R.color.menu_icon_color
+            }
+            val color = ContextCompat.getColor(this, colorRes)
+            val wrapped = DrawableCompat.wrap(icon.mutate())
+            DrawableCompat.setTint(wrapped, color)
+            item.icon = wrapped
         }
         return true
     }

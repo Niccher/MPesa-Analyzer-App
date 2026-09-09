@@ -87,18 +87,46 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        // Backend URL
-        val etBackendUrl = view.findViewById<EditText>(R.id.et_settings_backend_url)
-        val btnSaveUrl = view.findViewById<Button>(R.id.btn_settings_save_url)
-        val currentUrl = AppPrefs.getBackendUrl(requireContext())
-        if (currentUrl.isNotEmpty()) etBackendUrl.setText(currentUrl)
+        // Backend URL / Server connection
+        val tvCurrentUrl = view.findViewById<TextView>(R.id.tv_settings_current_url)
+        val btnRescanQr = view.findViewById<Button>(R.id.btn_settings_rescan_qr)
+        val btnEditUrl = view.findViewById<Button>(R.id.btn_settings_edit_url)
 
-        btnSaveUrl.setOnClickListener {
-            val url = etBackendUrl.text.toString().trim()
-            if (url.isNotEmpty()) {
-                AppPrefs.setBackendUrl(requireContext(), url)
-                Toast.makeText(requireContext(), "URL saved. Restart app.", Toast.LENGTH_LONG).show()
-            }
+        val currentUrl = AppPrefs.getBackendUrl(requireContext())
+        tvCurrentUrl.text = if (currentUrl.isNotEmpty()) currentUrl else "Not configured"
+
+        btnRescanQr.setOnClickListener {
+            val intent = Intent(requireContext(), TokenAuthActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnEditUrl.setOnClickListener {
+            val input = EditText(requireContext())
+            input.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_URI
+            input.setText(AppPrefs.getBackendUrl(requireContext()))
+            input.hint = "https://your-server-domain.com"
+            input.setPadding(32, 32, 32, 32)
+
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Edit Server URL")
+                .setMessage("Enter the base URL for the M-Pesa Analyzer backend.")
+                .setView(input)
+                .setPositiveButton("Save") { _, _ ->
+                    var url = input.text.toString().trim()
+                    if (url.isNotEmpty()) {
+                        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                            url = "https://$url"
+                        }
+                        if (!url.endsWith("/")) {
+                            url += "/"
+                        }
+                        AppPrefs.setBackendUrl(requireContext(), url)
+                        tvCurrentUrl.text = url
+                        Toast.makeText(requireContext(), "Server URL updated", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
 
         // Profile
@@ -171,18 +199,13 @@ class SettingsFragment : Fragment() {
             exportData("json")
         }
 
-
         // Logout, Delete Data, Delete Account
         view.findViewById<LinearLayout>(R.id.ll_logout).setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Logout")
-                .setMessage("Disconnect this device?")
+                .setMessage("Disconnect this device and clear cached data?")
                 .setPositiveButton("Logout") { _, _ ->
-                    sharedPrefs.edit().clear().apply()
-                    val intent = Intent(requireContext(), TokenAuthActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                    activity?.finish()
+                    AppPrefs.performLogout(requireContext(), activity)
                 }
                 .setNegativeButton("Cancel", null).show()
         }
@@ -405,12 +428,8 @@ class SettingsFragment : Fragment() {
         authService.deleteAccount(token).enqueue(object : Callback<DeleteAccountModel> {
             override fun onResponse(call: Call<DeleteAccountModel>, response: Response<DeleteAccountModel>) {
                 if (response.isSuccessful) {
-                    sharedPrefs.edit().clear().apply()
                     Toast.makeText(requireContext(), "Account deleted", Toast.LENGTH_LONG).show()
-                    val intent = Intent(requireContext(), TokenAuthActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                    activity?.finish()
+                    AppPrefs.performLogout(requireContext(), activity)
                 }
             }
             override fun onFailure(call: Call<DeleteAccountModel>, t: Throwable) {

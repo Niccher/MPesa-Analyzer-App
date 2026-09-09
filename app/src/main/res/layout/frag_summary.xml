@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainlinerlayoutcolor">
@@ -21,14 +22,14 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- ===== 1. HEADER CARD: Date / Time / Total ===== -->
-            <androidx.cardview.widget.CardView
+            <!-- ===== 1. HEADER HERO CARD ===== -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardBackgroundColor="@color/brand_primary"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,10 +52,10 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
                                 android:src="@drawable/ic_calendar"
-                                android:tint="@color/white" />
+                                app:tint="@color/white" />
 
                             <TextView
                                 android:id="@+id/cat_point_loot_date"
@@ -63,14 +64,14 @@
                                 android:layout_marginTop="6dp"
                                 android:text="—"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
+                                android:textSize="15sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:alpha="0.8"
-                                android:text="Date"
+                                android:text="Sync Date"
                                 android:textColor="@color/white"
                                 android:textSize="11sp" />
                         </LinearLayout>
@@ -89,10 +90,10 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
                                 android:src="@drawable/ic_clock"
-                                android:tint="@color/white" />
+                                app:tint="@color/white" />
 
                             <TextView
                                 android:id="@+id/cat_point_loot_time"
@@ -101,14 +102,14 @@
                                 android:layout_marginTop="6dp"
                                 android:text="—"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
+                                android:textSize="15sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:alpha="0.8"
-                                android:text="Time"
+                                android:text="Timestamp"
                                 android:textColor="@color/white"
                                 android:textSize="11sp" />
                         </LinearLayout>
@@ -132,8 +133,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:alpha="0.8"
-                            android:text="Total SMS Parsed"
+                            android:alpha="0.85"
+                            android:text="Total SMS Messages Parsed"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -141,31 +142,32 @@
                             android:id="@+id/tv_total_interactions"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="2dp"
                             android:text="0"
                             android:textColor="@color/white"
-                            android:textSize="32sp"
+                            android:textSize="28sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- ===== 2. FINANCIAL HIGHLIGHTS BANNER (LLM) ===== -->
-            <androidx.cardview.widget.CardView
+            <!-- ===== 2. FINANCIAL HIGHLIGHTS BANNER ===== -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/bg_primary_faint"
+                app:cardBackgroundColor="@color/bg_card_light"
                 app:cardCornerRadius="14dp"
-                app:cardElevation="2dp">
+                app:cardElevation="0dp"
+                app:strokeColor="@color/color_ui_divider"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="18dp">
+                    android:padding="16dp">
 
-                    <!-- Label row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -176,15 +178,15 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_bar_chart"
-                            android:tint="@color/brand_primary" />
+                            app:tint="@color/brand_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:text="LLM Financial Highlights"
+                            android:text="Financial Highlights"
                             android:textColor="@color/brand_primary"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -194,14 +196,12 @@
                         android:layout_marginVertical="12dp"
                         android:background="@color/color_ui_divider" />
 
-                    <!-- Volume + Senders side by side -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
-                        <!-- Volume column -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -211,10 +211,10 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:letterSpacing="0.06"
                                 android:text="TOTAL VOLUME"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="10sp"
-                                android:letterSpacing="0.08" />
+                                android:textSize="10sp" />
 
                             <TextView
                                 android:id="@+id/tv_summary_volume"
@@ -223,17 +223,16 @@
                                 android:layout_marginTop="4dp"
                                 android:text="Ksh 0"
                                 android:textColor="@color/brand_primary"
-                                android:textSize="22sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/color_ui_divider"
-                            android:layout_marginHorizontal="12dp" />
+                            android:layout_marginHorizontal="12dp"
+                            android:background="@color/color_ui_divider" />
 
-                        <!-- Senders column -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -243,10 +242,10 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="UNIQUE COUNTERPARTIES"
+                                android:letterSpacing="0.06"
+                                android:text="COUNTERPARTIES"
                                 android:textColor="@color/text_secondary"
-                                android:textSize="10sp"
-                                android:letterSpacing="0.08" />
+                                android:textSize="10sp" />
 
                             <TextView
                                 android:id="@+id/tv_summary_senders"
@@ -255,178 +254,189 @@
                                 android:layout_marginTop="4dp"
                                 android:text="0"
                                 android:textColor="@color/text_primary"
-                                android:textSize="22sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- ===== 3. QUICK STATS STRIP ===== -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_metric_card"
-                android:orientation="horizontal"
-                android:weightSum="4">
-
-                <!-- Categories -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_category"
-                        android:tint="@color/semantic_info" />
-
-                    <TextView
-                        android:id="@+id/tv_quick_categories"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="0"
-                        android:textColor="@color/semantic_info"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Categories"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_ui_divider" />
-
-                <!-- Classified -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_sms_parse"
-                        android:tint="@color/semantic_success" />
-
-                    <TextView
-                        android:id="@+id/tv_quick_classified"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="0"
-                        android:textColor="@color/semantic_success"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Classified"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_ui_divider" />
-
-                <!-- Unclassified -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_unknown"
-                        android:tint="@color/text_muted" />
-
-                    <TextView
-                        android:id="@+id/tv_quick_unclassified"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="0"
-                        android:textColor="@color/text_muted"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Unclassified"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_ui_divider" />
-
-                <!-- Tx Types -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_chart"
-                        android:tint="@color/semantic_warning" />
-
-                    <TextView
-                        android:id="@+id/tv_quick_transaction_types"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="0"
-                        android:textColor="@color/semantic_warning"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tx Types"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- ===== 4. MONEY FLOW CARD (LLM Direction) ===== -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/bg_card_light"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="0dp"
+                app:strokeColor="@color/color_ui_divider"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <!-- Categories -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_category"
+                            app:tint="@color/semantic_info" />
+
+                        <TextView
+                            android:id="@+id/tv_quick_categories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="0"
+                            android:textColor="@color/semantic_info"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Categories"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_ui_divider" />
+
+                    <!-- Classified -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_sms_parse"
+                            app:tint="@color/semantic_success" />
+
+                        <TextView
+                            android:id="@+id/tv_quick_classified"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="0"
+                            android:textColor="@color/semantic_success"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Classified"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_ui_divider" />
+
+                    <!-- Unclassified -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_unknown"
+                            app:tint="@color/text_muted" />
+
+                        <TextView
+                            android:id="@+id/tv_quick_unclassified"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="0"
+                            android:textColor="@color/text_muted"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Unclassified"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_ui_divider" />
+
+                    <!-- Tx Types -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chart"
+                            app:tint="@color/semantic_warning" />
+
+                        <TextView
+                            android:id="@+id/tv_quick_transaction_types"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="0"
+                            android:textColor="@color/semantic_warning"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tx Types"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ===== 4. MONEY FLOW CARD ===== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/bg_card_light"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/color_ui_divider"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -434,7 +444,6 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Header -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -445,7 +454,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_balance"
-                            android:tint="@color/text_primary" />
+                            app:tint="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -461,10 +470,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:alpha="0.6"
-                            android:text="LLM classified"
+                            android:text="Directional"
                             android:textColor="@color/text_secondary"
-                            android:textSize="10sp" />
+                            android:textSize="11sp" />
                     </LinearLayout>
 
                     <View
@@ -491,10 +499,10 @@
                             android:padding="4dp">
 
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
                                 android:src="@drawable/ic_received"
-                                android:tint="@color/semantic_success" />
+                                app:tint="@color/semantic_success" />
 
                             <TextView
                                 android:id="@+id/tv_money_in"
@@ -503,7 +511,7 @@
                                 android:layout_marginTop="6dp"
                                 android:text="0"
                                 android:textColor="@color/semantic_success"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -516,7 +524,7 @@
 
                         <View
                             android:layout_width="1dp"
-                            android:layout_height="50dp"
+                            android:layout_height="44dp"
                             android:layout_gravity="center_vertical"
                             android:background="@color/color_ui_divider" />
 
@@ -530,10 +538,10 @@
                             android:padding="4dp">
 
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
                                 android:src="@drawable/ic_sent"
-                                android:tint="@color/semantic_danger" />
+                                app:tint="@color/semantic_danger" />
 
                             <TextView
                                 android:id="@+id/tv_money_out"
@@ -542,7 +550,7 @@
                                 android:layout_marginTop="6dp"
                                 android:text="0"
                                 android:textColor="@color/semantic_danger"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -555,7 +563,7 @@
 
                         <View
                             android:layout_width="1dp"
-                            android:layout_height="50dp"
+                            android:layout_height="44dp"
                             android:layout_gravity="center_vertical"
                             android:background="@color/color_ui_divider" />
 
@@ -569,10 +577,10 @@
                             android:padding="4dp">
 
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
                                 android:src="@drawable/ic_unknown"
-                                android:tint="@color/text_muted" />
+                                app:tint="@color/text_muted" />
 
                             <TextView
                                 android:id="@+id/tv_money_unknown"
@@ -581,7 +589,7 @@
                                 android:layout_marginTop="6dp"
                                 android:text="0"
                                 android:textColor="@color/text_muted"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -594,7 +602,7 @@
 
                         <View
                             android:layout_width="1dp"
-                            android:layout_height="50dp"
+                            android:layout_height="44dp"
                             android:layout_gravity="center_vertical"
                             android:background="@color/color_ui_divider" />
 
@@ -608,10 +616,10 @@
                             android:padding="4dp">
 
                             <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
                                 android:src="@drawable/ic_balance"
-                                android:tint="@color/semantic_warning" />
+                                app:tint="@color/semantic_warning" />
 
                             <TextView
                                 android:id="@+id/tv_balance_req"
@@ -620,7 +628,7 @@
                                 android:layout_marginTop="6dp"
                                 android:text="0"
                                 android:textColor="@color/semantic_warning"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -636,7 +644,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginVertical="16dp"
+                        android:layout_marginVertical="14dp"
                         android:background="@color/color_ui_divider" />
 
                     <!-- Flow Ratio Row -->
@@ -648,14 +656,14 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="6dp">
+                            android:layout_marginBottom="6dp"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/tv_inflow_label"
                                 android:layout_width="0dp"
-                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:text="Inflow: 0%"
                                 android:textColor="@color/semantic_success"
                                 android:textSize="11sp"
@@ -665,101 +673,39 @@
                                 android:id="@+id/tv_outflow_label"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:gravity="end"
                                 android:text="Outflow: 0%"
                                 android:textColor="@color/semantic_danger"
                                 android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:gravity="end" />
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <com.google.android.material.progressindicator.LinearProgressIndicator
                             android:id="@+id/pb_flow_ratio"
                             android:layout_width="match_parent"
                             android:layout_height="8dp"
-                            app:trackColor="@color/semantic_danger"
-                            app:indicatorColor="@color/semantic_success"
-                            app:trackThickness="8dp"
-                            app:trackCornerRadius="4dp"
                             android:max="100"
-                            android:progress="50" />
+                            android:progress="50"
+                            app:indicatorColor="@color/semantic_success"
+                            app:trackColor="@color/semantic_danger"
+                            app:trackCornerRadius="4dp"
+                            app:trackThickness="8dp" />
                     </LinearLayout>
                 </LinearLayout>
-             </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-             <!-- ===== TOP COUNTERPARTIES CARD (LLM) ===== -->
-             <androidx.cardview.widget.CardView
-                 android:id="@+id/card_counterparties"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginBottom="16dp"
-                 app:cardBackgroundColor="@color/white"
-                 app:cardCornerRadius="12dp"
-                 app:cardElevation="2dp"
-                 android:visibility="gone">
-
-                 <LinearLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:orientation="vertical"
-                     android:padding="16dp">
-
-                     <!-- Header -->
-                     <LinearLayout
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:gravity="center_vertical"
-                         android:orientation="horizontal">
-
-                         <ImageView
-                             android:layout_width="18dp"
-                             android:layout_height="18dp"
-                             android:src="@drawable/ic_person"
-                             android:tint="@color/text_primary" />
-
-                         <TextView
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_marginStart="8dp"
-                             android:text="Top Counterparties"
-                             android:textColor="@color/text_primary"
-                             android:textSize="14sp"
-                             android:textStyle="bold" />
-
-                         <TextView
-                             android:layout_width="0dp"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="1"
-                             android:gravity="end"
-                             android:alpha="0.6"
-                             android:text="By volume"
-                             android:textColor="@color/text_secondary"
-                             android:textSize="10sp" />
-                     </LinearLayout>
-
-                     <View
-                         android:layout_width="match_parent"
-                         android:layout_height="1dp"
-                         android:layout_marginVertical="12dp"
-                         android:background="@color/color_ui_divider" />
-
-                     <!-- Dynamic counterparties rows inflated here -->
-                     <LinearLayout
-                         android:id="@+id/ll_counterparties_list"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:orientation="vertical" />
-
-                 </LinearLayout>
-             </androidx.cardview.widget.CardView>
-
-            <!-- ===== 5. TRANSACTION TYPES CARD (LLM) ===== -->
-            <androidx.cardview.widget.CardView
+            <!-- ===== 5. TOP COUNTERPARTIES CARD ===== -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_counterparties"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardBackgroundColor="@color/bg_card_light"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/color_ui_divider"
+                app:strokeWidth="1dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -767,7 +713,69 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_person"
+                            app:tint="@color/text_primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Top Counterparties"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="By volume"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="12dp"
+                        android:background="@color/color_ui_divider" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_counterparties_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ===== 6. TRANSACTION TYPES CARD ===== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/bg_card_light"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/color_ui_divider"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -778,7 +786,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_chart"
-                            android:tint="@color/text_primary" />
+                            app:tint="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -794,10 +802,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:alpha="0.6"
-                            android:text="LLM classified"
+                            android:text="Classified"
                             android:textColor="@color/text_secondary"
-                            android:textSize="10sp" />
+                            android:textSize="11sp" />
                     </LinearLayout>
 
                     <View
@@ -806,7 +813,6 @@
                         android:layout_marginVertical="12dp"
                         android:background="@color/color_ui_divider" />
 
-                    <!-- Dynamic type rows inflated here -->
                     <LinearLayout
                         android:id="@+id/ll_type_breakdown"
                         android:layout_width="match_parent"
@@ -814,16 +820,18 @@
                         android:orientation="vertical" />
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- ===== 6. FINANCE CATEGORIES CARD (LLM) ===== -->
-            <androidx.cardview.widget.CardView
+            <!-- ===== 7. FINANCE CATEGORIES CARD ===== -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardBackgroundColor="@color/bg_card_light"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/color_ui_divider"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -831,7 +839,6 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Header -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -842,7 +849,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/ic_category"
-                            android:tint="@color/text_primary" />
+                            app:tint="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -858,10 +865,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:alpha="0.6"
-                            android:text="LLM classified"
+                            android:text="Classified"
                             android:textColor="@color/text_secondary"
-                            android:textSize="10sp" />
+                            android:textSize="11sp" />
                     </LinearLayout>
 
                     <View
@@ -870,7 +876,6 @@
                         android:layout_marginVertical="12dp"
                         android:background="@color/color_ui_divider" />
 
-                    <!-- Dynamic category badges inflated here -->
                     <LinearLayout
                         android:id="@+id/ll_category_breakdown"
                         android:layout_width="match_parent"
@@ -878,9 +883,9 @@
                         android:orientation="vertical" />
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- ===== 7. DELETE BUTTON ===== -->
+            <!-- ===== 8. DELETE BUTTON ===== -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_delete_summary"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -888,12 +893,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="24dp"
-                android:icon="@drawable/ic_delete"
-                android:iconTint="@color/bg_red"
-                android:strokeColor="@color/bg_red"
-                android:strokeWidth="2"
                 android:text="@string/str_loot_delete"
-                android:textColor="@color/bg_red" />
+                android:textColor="@color/semantic_danger"
+                app:icon="@drawable/ic_delete"
+                app:iconTint="@color/semantic_danger"
+                app:strokeColor="@color/semantic_danger"
+                app:strokeWidth="1dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -911,14 +916,15 @@
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            app:indicatorColor="@color/brand_primary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/str_loading_data_64"
-            android:textColor="@color/color_text_secondary_legacy"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -933,10 +939,10 @@
         android:visibility="gone">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:src="@drawable/ic_cloud_off"
-            android:tint="@color/color_text_secondary_legacy" />
+            app:tint="@color/text_muted" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -944,16 +950,17 @@
             android:layout_marginTop="16dp"
             android:text="@string/str_no_internet_connection"
             android:textAlignment="center"
-            android:textColor="@color/color_text_secondary_legacy"
-            android:textSize="16sp" />
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
+            android:padding="8dp"
             android:text="Tap to retry"
-            android:textColor="@color/color_auth_text_link"
+            android:textColor="@color/brand_primary"
             android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>

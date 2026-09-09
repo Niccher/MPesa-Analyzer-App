@@ -14,7 +14,7 @@
             android:id="@+id/part_spinner_img"
             android:layout_width="@dimen/_48sdp"
             android:layout_height="@dimen/_24sdp"
-            android:src="@mipmap/summ_money_all"
+            android:src="@drawable/ic_balance"
             app:layout_constraintEnd_toStartOf="@id/part_spinner_txt"
             app:layout_constraintTop_toTopOf="parent" />
 

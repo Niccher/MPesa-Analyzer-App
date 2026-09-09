@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/backgroud">
+    android:background="@color/bg_light">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
             android:layout_marginTop="-60dp"
-            android:background="@drawable/rect_corners"
+            android:background="@drawable/bg_rounded_white"
             android:padding="@dimen/_20sdp"
             android:scaleType="centerCrop"
             android:src="@mipmap/app_logo"
@@ -102,7 +102,7 @@
                         android:id="@+id/icon_features"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:src="@mipmap/app_info"
+                        android:src="@drawable/ic_info"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -157,7 +157,7 @@
                         android:id="@+id/icon_permissions"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:src="@mipmap/app_privacy"
+                        android:src="@drawable/ic_security"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -212,7 +212,7 @@
                         android:id="@+id/icon_developer"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:src="@mipmap/app_credits"
+                        android:src="@drawable/ic_info"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -267,7 +267,7 @@
                         android:id="@+id/btn_app_info_back"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:src="@mipmap/user_back"
+                        android:src="@drawable/ic_arrow_back"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

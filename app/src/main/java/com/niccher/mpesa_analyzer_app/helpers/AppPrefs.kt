@@ -1,7 +1,12 @@
 package com.niccher.mpesa_analyzer_app.helpers
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import com.niccher.mpesa_analyzer_app.LockActivity
+import com.niccher.mpesa_analyzer_app.auth.TokenAuthActivity
+import com.niccher.mpesa_analyzer_app.constants.Constants
+import kotlinx.coroutines.launch
 
 object AppPrefs {
 
@@ -91,4 +96,36 @@ object AppPrefs {
 
     fun setLastSyncSuccessTime(context: Context, time: Long) =
         prefs(context).edit().putLong(KEY_LAST_SYNC_SUCCESS_TIME, time).apply()
+
+    fun performLogout(context: Context, activity: android.app.Activity?) {
+        // 1. Clear session and counts SharedPreferences
+        context.getSharedPreferences(Constants.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE).edit().clear().apply()
+        context.getSharedPreferences(Constants.SHARED_LOOT_COUNT, Context.MODE_PRIVATE).edit().clear().apply()
+        context.getSharedPreferences(Constants.SHARED_LAST_TIME, Context.MODE_PRIVATE).edit().clear().apply()
+
+        // 2. Cancel all background sync tasks
+        SyncScheduler.cancelAll(context)
+
+        // 3. Clear Room DB tables asynchronously
+        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+            try {
+                com.niccher.mpesa_analyzer_app.database.AppDatabase.getDatabase(context).clearAllTables()
+            } catch (e: Exception) {
+                android.util.Log.e("AppPrefs", "Error clearing Room DB on logout", e)
+            }
+        }
+
+        // 4. Reset lock state
+        LockActivity.isUnlocked = false
+
+        // 5. Navigate to TokenAuthActivity
+        val intent = Intent(context, TokenAuthActivity::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP or
+            Intent.FLAG_ACTIVITY_CLEAR_TASK or
+            Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+        context.startActivity(intent)
+        activity?.finish()
+    }
 }

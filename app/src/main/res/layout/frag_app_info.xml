@@ -16,19 +16,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/str_application_details_121"
-            android:textColor="@color/color_auth_text_link"
+            android:textColor="@color/brand_primary"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
             android:paddingStart="4dp"/>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardCornerRadius="14dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/color_ui_divider"
+            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@color/bg_card_light">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -40,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_mympesaanalyser_118"
-                    android:textColor="@color/color_text_primary_legacy"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -49,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_version_1_0_0_115"
-                    android:textColor="@color/color_text_secondary_legacy"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     android:layout_marginTop="4dp"/>
 
@@ -57,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_what_it_does_119"
-                    android:textColor="@color/color_text_primary_legacy"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginTop="24dp"/>
@@ -66,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_mympesaanalyser_acts_117"
-                    android:textColor="@color/color_text_secondary_legacy"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     android:layout_marginTop="6dp"/>
 
@@ -74,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_how_it_does_it_120"
-                    android:textColor="@color/color_text_primary_legacy"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginTop="24dp"/>
@@ -83,11 +85,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_the_application_secu_116"
-                    android:textColor="@color/color_text_secondary_legacy"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     android:layout_marginTop="6dp"/>
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </ScrollView>

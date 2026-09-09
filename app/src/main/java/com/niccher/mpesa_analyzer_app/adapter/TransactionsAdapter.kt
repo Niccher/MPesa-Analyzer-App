@@ -44,22 +44,24 @@ class TransactionsAdapter(private var transList: ArrayList<TransactionModel>) :
         holder.txtRef.text = "REF: ${trans.reference}"
 
         val amountStr = currencyFormat.format(trans.amount).replace("KES", "Ksh")
-        holder.txtAmount.text = amountStr
+        val isIncome = trans.type.equals("received", ignoreCase = true)
+        val prefix = if (isIncome) "+ " else "- "
+        holder.txtAmount.text = "$prefix$amountStr"
 
-        // Color coding based on type
-        val colorRes = when (trans.type.lowercase()) {
-            "received" -> R.color.bg_green
-            "sent", "paybill", "withdraw" -> R.color.bg_red
-            else -> R.color.color_primary_dark
+        // Semantic color coding
+        val colorRes = if (isIncome) {
+            R.color.semantic_success
+        } else {
+            R.color.semantic_danger
         }
         holder.txtAmount.setTextColor(ContextCompat.getColor(holder.itemView.context, colorRes))
 
         val badgeColorRes = when (trans.type.lowercase()) {
-            "received" -> R.color.bg_green
-            "sent" -> R.color.bg_red
+            "received" -> R.color.semantic_success
+            "sent" -> R.color.semantic_danger
             "paybill" -> R.color.cat_sacco
-            "withdraw" -> R.color.semantic_info
-            else -> R.color.color_primary_dark
+            "withdraw" -> R.color.semantic_warning
+            else -> R.color.brand_primary
         }
         holder.txtType.backgroundTintList = android.content.res.ColorStateList.valueOf(
             ContextCompat.getColor(holder.itemView.context, badgeColorRes)

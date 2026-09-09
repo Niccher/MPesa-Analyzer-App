@@ -86,7 +86,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_all"
+                        android:src="@drawable/ic_balance"
                         android:contentDescription="@string/str_all_balance_61" />
 
                     <TextView
@@ -130,7 +130,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_balance"
+                        android:src="@drawable/ic_balance"
                         android:contentDescription="@string/str_mpesa_bal_50" />
 
                     <TextView
@@ -174,7 +174,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_fuliza"
+                        android:src="@drawable/ic_fuliza"
                         android:contentDescription="@string/str_mshwari_bal_69" />
 
                     <TextView
@@ -218,7 +218,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_received"
+                        android:src="@drawable/ic_received"
                         android:contentDescription="@string/str_kcb_bal_30" />
 
                     <TextView

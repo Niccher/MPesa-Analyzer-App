@@ -26,6 +26,7 @@ import retrofit2.Response
  */
 class TokenAuthActivity : AppCompatActivity() {
 
+    private lateinit var edtServerUrl: TextInputEditText
     private lateinit var edtToken: TextInputEditText
     private lateinit var btnSubmit: Button
     private lateinit var btnScanQr: Button
@@ -42,11 +43,29 @@ class TokenAuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_token_auth)
 
+        edtServerUrl = findViewById(R.id.edt_server_url)
         edtToken = findViewById(R.id.edt_token)
         btnSubmit = findViewById(R.id.btn_submit_token)
         btnScanQr = findViewById(R.id.btn_scan_qr)
 
+        val savedUrl = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getBackendUrl(this)
+        if (savedUrl.isNotEmpty()) {
+            edtServerUrl.setText(savedUrl)
+        }
+
         btnSubmit.setOnClickListener {
+            val manualUrl = edtServerUrl.text.toString().trim()
+            if (manualUrl.isNotEmpty()) {
+                var formattedUrl = manualUrl
+                if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
+                    formattedUrl = "https://$formattedUrl"
+                }
+                if (!formattedUrl.endsWith("/")) {
+                    formattedUrl += "/"
+                }
+                com.niccher.mpesa_analyzer_app.helpers.AppPrefs.setBackendUrl(this, formattedUrl)
+            }
+
             val input = edtToken.text.toString().trim()
             if (input.isNotEmpty()) {
                 processScannedQr(input)
@@ -57,9 +76,12 @@ class TokenAuthActivity : AppCompatActivity() {
 
         btnScanQr.setOnClickListener {
             val options = ScanOptions().apply {
-                setPrompt("Scan QR Code to Link Device")
+                setPrompt("Scan QR Code from WebApp Dashboard")
                 setBeepEnabled(true)
-                setOrientationLocked(true)
+                // false = respect the activity's screenOrientation (portrait set in Manifest)
+                setOrientationLocked(false)
+                setBarcodeImageEnabled(false)
+                setDesiredBarcodeFormats(ScanOptions.QR_CODE)
             }
             barcodeLauncher.launch(options)
         }

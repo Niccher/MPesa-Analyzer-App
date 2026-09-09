@@ -49,13 +49,13 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="32dp"
-        android:drawableTop="@drawable/ic_cloud_off"
         android:drawablePadding="16dp"
-        android:drawableTint="@color/text_secondary"
         android:text="@string/str_no_internet_connection"
         android:textColor="@color/text_secondary"
         android:textSize="16sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:drawableTint="@color/text_muted"
+        app:drawableTopCompat="@drawable/ic_cloud_off" />
 
     <!-- ===== FLOATING ACTION BUTTON ===== -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -66,6 +66,8 @@
         android:layout_margin="16dp"
         android:text="@string/str_export_5"
         android:textColor="@color/white"
+        app:icon="@drawable/ic_expand_more"
+        app:iconTint="@color/white"
         app:backgroundTint="@color/brand_primary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

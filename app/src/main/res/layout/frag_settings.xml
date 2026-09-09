@@ -29,7 +29,7 @@
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardBackgroundColor="@color/bg_card_light">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,11 +81,11 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Section: Network -->
+        <!-- Section: Network / Server -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Network"
+            android:text="Server Connection"
             android:textColor="@color/color_auth_text_link"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -98,7 +98,7 @@
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardBackgroundColor="@color/bg_card_light">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -109,34 +109,54 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Backend URL"
+                    android:text="Connected Server"
                     android:textColor="@color/color_text_primary_legacy"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
                 <TextView
+                    android:id="@+id/tv_settings_current_url"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Configure the backend server URL"
-                    android:textColor="@color/color_text_secondary_legacy"
-                    android:textSize="13sp"
-                    android:layout_marginBottom="8dp"/>
+                    android:text="Not configured"
+                    android:textColor="@color/brand_primary"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp"/>
 
-                <EditText
-                    android:id="@+id/et_settings_backend_url"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="http://192.168.x.x:9002"
-                    android:inputType="textUri"
-                    android:background="@android:drawable/editbox_background"
-                    android:padding="12dp"
-                    android:layout_marginBottom="8dp" />
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_settings_save_url"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Save URL"
-                    android:layout_gravity="end" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_settings_rescan_qr"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="Switch Server"
+                        android:textSize="12sp"
+                        app:icon="@drawable/ic_qr_code_scanner"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/white"
+                        android:backgroundTint="@color/brand_primary"
+                        android:textColor="@color/white"
+                        app:cornerRadius="8dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_settings_edit_url"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Edit URL"
+                        android:textSize="12sp"
+                        android:textColor="@color/brand_primary"
+                        app:strokeColor="@color/brand_primary"
+                        app:cornerRadius="8dp"/>
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -157,7 +177,7 @@
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardBackgroundColor="@color/bg_card_light">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -208,7 +228,7 @@
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardBackgroundColor="@color/bg_card_light">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -319,7 +339,7 @@
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardBackgroundColor="@color/bg_card_light">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -469,7 +489,7 @@
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardBackgroundColor="@color/bg_card_light">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -509,7 +529,7 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/white">
+            app:cardBackgroundColor="@color/bg_card_light">
 
             <LinearLayout
                 android:layout_width="match_parent"

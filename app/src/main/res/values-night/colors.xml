@@ -2,11 +2,25 @@
 <resources>
 
     <color name="mainlinerlayoutcolor">#0F172A</color>
-    <color name="color_text_primary_legacy">#94A3B8</color>
-    <color name="color_text_secondary_legacy">#64748B</color>
-    <color name="color_auth_text_link">#818CF8</color>
+    <color name="bg_light">#0F172A</color>
+    <color name="bg_card_light">#1E293B</color>
+    <color name="color_text_primary_legacy">#F1F5F9</color>
+    <color name="color_text_secondary_legacy">#94A3B8</color>
+    <color name="text_primary">#F1F5F9</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_muted">#64748B</color>
+    <color name="color_auth_text_link">#438EB9</color>
     <color name="color_primary">#1E293B</color>
-    <color name="color_primary_dark">#818CF8</color>
+    <color name="color_primary_dark">#438EB9</color>
     <color name="color_ui_divider">#334155</color>
+    <color name="linecolor_dark">#334155</color>
+    <color name="bg_primary_faint">#1E293B</color>
+
+    <!-- Menu item icon colors (Dark Mode - high contrast, vibrant) -->
+    <color name="menu_icon_profile">#64B5F6</color>
+    <color name="menu_icon_settings">#B0BEC5</color>
+    <color name="menu_icon_info">#4DD0E1</color>
+    <color name="menu_icon_credits">#FFD54F</color>
+    <color name="menu_icon_color">#6BA4C8</color>
 
 </resources>

@@ -12,9 +12,12 @@ interface UploadLootApiService {
     @Multipart
     @POST("api/v1/upload")
     fun upload(
-        @Part("varToken") toke_number: RequestBody,
-        @Part("varDevId") print_id: RequestBody,
-        @Part("varBatch") is_continuation: RequestBody,
+        @Part("varUser") varUser: RequestBody,
+        @Part("varToken") varToken: RequestBody,
+        @Part("varDev") varDev: RequestBody,
+        @Part("varDevId") varDevId: RequestBody,
+        @Part("is_continuation") isContinuation: RequestBody,
+        @Part("varBatch") varBatch: RequestBody,
         @Part file: MultipartBody.Part
     ): Call<ResponseBody>
 }

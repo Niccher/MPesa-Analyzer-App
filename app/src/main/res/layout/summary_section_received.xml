@@ -86,7 +86,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_all"
+                        android:src="@drawable/ic_balance"
                         android:contentDescription="@string/str_all_received_57" />
 
                     <TextView
@@ -130,7 +130,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_balance"
+                        android:src="@drawable/ic_balance"
                         android:contentDescription="@string/str_from_mpesa_33" />
 
                     <TextView
@@ -174,7 +174,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_fuliza"
+                        android:src="@drawable/ic_fuliza"
                         android:contentDescription="@string/str_from_mshwari_62" />
 
                     <TextView
@@ -218,7 +218,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_received"
+                        android:src="@drawable/ic_received"
                         android:contentDescription="@string/str_from_ncba_71" />
 
                     <TextView
@@ -262,7 +262,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_sent"
+                        android:src="@drawable/ic_sent"
                         android:contentDescription="@string/str_from_i_amp_m_70" />
 
                     <TextView
@@ -306,7 +306,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_withdraw"
+                        android:src="@drawable/ic_balance"
                         android:contentDescription="@string/str_reversal_63" />
 
                     <TextView
@@ -350,7 +350,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_received"
+                        android:src="@drawable/ic_received"
                         android:contentDescription="@string/str_from_kcb_44" />
 
                     <TextView

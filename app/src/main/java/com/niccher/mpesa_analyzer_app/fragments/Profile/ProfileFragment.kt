@@ -48,6 +48,18 @@ class ProfileFragment : Fragment() {
         tvTotalUploads = view.findViewById(R.id.tv_total_uploads)
         tvLastSync = view.findViewById(R.id.tv_last_sync)
 
+        val llLogout = view.findViewById<View>(R.id.ll_profile_logout)
+        llLogout?.setOnClickListener {
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Log Out")
+                .setMessage("Are you sure you want to disconnect this device and clear cached data?")
+                .setPositiveButton("Log Out") { _, _ ->
+                    com.niccher.mpesa_analyzer_app.helpers.AppPrefs.performLogout(requireContext(), activity)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+
         loadUserProfile()
     }
 

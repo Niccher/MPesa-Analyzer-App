@@ -1,65 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroud"
-    android:fitsSystemWindows="true">
+    android:background="@color/brand_primary_dark"
+    android:fitsSystemWindows="true"
+    tools:context=".splash.Splash">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!-- Centered Brand Container -->
+    <LinearLayout
+        android:id="@+id/layout_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/txt_splash_version"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45">
 
+        <!-- Master Brand Shield Logo -->
+        <ImageView
+            android:id="@+id/img_splash_logo"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:contentDescription="M-Pesa Analyzer Logo"
+            android:src="@mipmap/app_logo" />
+
+        <!-- App Name -->
         <TextView
-            android:id="@+id/txt_label"
-            android:layout_width="match_parent"
+            android:id="@+id/txt_splash_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:letterSpacing="0.02"
             android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textSize="@dimen/_24sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-
+        <!-- Tagline -->
         <TextView
-            android:id="@+id/progress_bar_text"
+            android:id="@+id/txt_splash_tagline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:padding="@dimen/_2sdp"
-            android:text="@string/txt_blank"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_18sdp"
-            app:layout_constraintBottom_toTopOf="@id/progress_bar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_label" />
+            android:layout_marginTop="6dp"
+            android:text="Smart SMS Financial Insights"
+            android:textColor="@color/text_muted"
+            android:textSize="14sp" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_15dp"
-            android:max="100"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progress_bar_text" />
+        <!-- Indeterminate Loading Indicator -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/splash_progress"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="32dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/brand_primary"
+            app:indicatorSize="32dp"
+            app:trackColor="@color/bg_surface_dark"
+            app:trackThickness="3dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:text="@string/txt_intro_text"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_18sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Version and Security Badge -->
+    <TextView
+        android:id="@+id/txt_splash_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:text="v1.0.0 • Secure &amp; Offline-First"
+        android:textColor="@color/text_muted"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

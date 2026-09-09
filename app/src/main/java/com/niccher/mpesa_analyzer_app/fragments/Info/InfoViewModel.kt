@@ -22,13 +22,11 @@ class InfoViewModel : ViewModel() {
     }
 
     private fun loadItems() {
-        // Simulate loading data (e.g., from a network request or database)
         val itemList = listOf(
-            Info_Data("Profile", "Information about my account", R.mipmap.app_profile),
-            Info_Data("App Info", "Info like version, permissions.", R.mipmap.app_info),
-            Info_Data("App Credits", "The Libraries and other open source resources used in creating the app", R.mipmap.app_credits)
+            Info_Data("Profile", "Information about my account", R.drawable.ic_person),
+            Info_Data("App Info", "Info like version, permissions.", R.drawable.ic_info),
+            Info_Data("App Credits", "The Libraries and other open source resources used in creating the app", R.drawable.ic_info)
         )
         _items.value = itemList
-
     }
 }

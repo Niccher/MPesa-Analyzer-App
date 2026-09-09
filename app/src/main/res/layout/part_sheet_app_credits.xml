@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/backgroud">
+    android:background="@color/bg_light">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,10 +15,10 @@
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
             android:layout_marginTop="-60dp"
-            android:background="@drawable/rect_corners"
+            android:background="@drawable/bg_rounded_white"
             android:padding="@dimen/_20sdp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/app_credits"
+            android:src="@drawable/ic_info"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +102,7 @@
                         android:id="@+id/icon_chart"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:src="@mipmap/app_charts"
+                        android:src="@drawable/ic_bar_chart"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -168,7 +168,7 @@
                         android:id="@+id/icon_retrofit"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:src="@mipmap/app_network"
+                        android:src="@drawable/ic_cloud_off"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -234,7 +234,7 @@
                         android:id="@+id/icon_material"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:src="@mipmap/app_design"
+                        android:src="@drawable/ic_general"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -300,7 +300,7 @@
                         android:id="@+id/icon_other"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:src="@mipmap/app_libraries"
+                        android:src="@drawable/ic_info"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -356,7 +356,7 @@
                         android:id="@+id/btn_credits_back"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:src="@mipmap/user_back"
+                        android:src="@drawable/ic_arrow_back"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

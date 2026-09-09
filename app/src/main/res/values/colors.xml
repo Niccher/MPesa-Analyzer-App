@@ -11,6 +11,14 @@
     <color name="semantic_danger">#D15B47</color>
     <color name="semantic_warning">#FFB752</color>
     <color name="semantic_info">#438EB9</color>
+    <color name="semantic_purple">#967ADC</color>
+
+    <!-- Menu item icon colors (Light Mode) -->
+    <color name="menu_icon_profile">#2B7DBC</color>
+    <color name="menu_icon_settings">#546E7A</color>
+    <color name="menu_icon_info">#00838F</color>
+    <color name="menu_icon_credits">#E67E22</color>
+    <color name="menu_icon_color">#438EB9</color>
 
     <!-- Legacy aliases -->
     <color name="bg_green">#87B87F</color>
@@ -39,8 +47,8 @@
     <color name="text_secondary_dark">#94A3B8</color>
 
     <!-- Legacy text aliases -->
-    <color name="color_text_primary_legacy">#636E72</color>
-    <color name="color_text_secondary_legacy">#94A3B8</color>
+    <color name="color_text_primary_legacy">#2D3436</color>
+    <color name="color_text_secondary_legacy">#636E72</color>
     <color name="color_auth_text_link">#438EB9</color>
 
     <!-- UI colors -->
@@ -51,17 +59,17 @@
     <!-- Legacy -->
     <color name="color_primary">#F2F5F8</color>
     <color name="color_primary_dark">#438EB9</color>
-    <color name="color_text_white">#FFF</color>
-    <color name="white">#FFF</color>
+    <color name="color_text_white">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
     <color name="white_40">#66FFFFFF</color>
-    <color name="black">#000</color>
+    <color name="black">#000000</color>
     <color name="silver">#C0C0C0</color>
 
     <!-- Financial Category Colors -->
     <color name="cat_mobile_money">#87B87F</color>
     <color name="cat_bank">#438EB9</color>
     <color name="cat_fintech">#FFB752</color>
-    <color name="cat_sacco">#9C27B0</color>
+    <color name="cat_sacco">#967ADC</color>
     <color name="cat_insurance">#E91E63</color>
     <color name="cat_payments_govt">#00BCD4</color>
     <color name="cat_other_finance">#607D8B</color>

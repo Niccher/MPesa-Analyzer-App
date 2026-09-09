@@ -86,7 +86,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_all"
+                        android:src="@drawable/ic_balance"
                         android:contentDescription="@string/str_all_fuliza_66" />
 
                     <TextView
@@ -130,7 +130,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_fuliza"
+                        android:src="@drawable/ic_fuliza"
                         android:contentDescription="@string/str_opt_in_67" />
 
                     <TextView
@@ -174,7 +174,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_fuliza"
+                        android:src="@drawable/ic_fuliza"
                         android:contentDescription="@string/str_opt_out_29" />
 
                     <TextView
@@ -218,7 +218,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_fuliza"
+                        android:src="@drawable/ic_fuliza"
                         android:contentDescription="@string/str_limit_53" />
 
                     <TextView
@@ -262,7 +262,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_fuliza"
+                        android:src="@drawable/ic_fuliza"
                         android:contentDescription="@string/str_loan_taken_68" />
 
                     <TextView
@@ -306,7 +306,7 @@
                         android:id="@+id/iv_metric_icon"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@mipmap/summ_money_fuliza"
+                        android:src="@drawable/ic_fuliza"
                         android:contentDescription="@string/str_mini_statement_65" />
 
                     <TextView

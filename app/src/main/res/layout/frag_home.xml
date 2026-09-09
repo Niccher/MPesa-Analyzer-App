@@ -1,542 +1,409 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainlinerlayoutcolor"
+    android:background="@color/bg_light"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/_8sdp">
+        android:padding="16dp">
 
-        <!-- Card 1: Permission Status -->
+        <!-- 1. Permission Alert Banner (Only shown when permission required) -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/bg_card_light"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="2dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_12sdp">
-
-                <TextView
-                    android:id="@+id/card_text_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
-                    android:text="@string/str_sms_permission_statu_81"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
                 <ImageView
                     android:id="@+id/card_img_1"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginStart="@dimen/_4sdp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:src="@mipmap/home_sms_granted"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_text_1" />
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:contentDescription="Permission Icon"
+                    android:src="@drawable/ic_security"
+                    app:tint="@color/brand_primary" />
 
-                <TextView
-                    android:id="@+id/card_text_permission"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:text="@string/str_permission_76"
-                    android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/card_img_1"
-                    app:layout_constraintStart_toEndOf="@id/card_img_1"
-                    app:layout_constraintTop_toTopOf="@id/card_img_1" />
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <TextView
+                    <TextView
+                        android:id="@+id/card_text_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SMS Permission Required"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/card_text_permission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Grant access to read and analyze M-Pesa SMS"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/card_text_req_permission"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:background="@drawable/rect_btn"
-                    android:gravity="center_horizontal"
-                    android:padding="@dimen/_8sdp"
-                    android:text="@string/str_request_82"
-                    android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/card_img_1"
-                    app:layout_constraintStart_toEndOf="@id/card_text_permission"
-                    app:layout_constraintTop_toTopOf="@id/card_img_1" />
+                    android:text="Grant"
+                    android:textColor="@color/brand_primary"
+                    android:textStyle="bold" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Card 2: Upload / Fetch -->
+        <!-- 2. Hero Sync Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_12sdp">
-
-                <TextView
-                    android:id="@+id/card_text_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
-                    android:text="@string/str_upload_sms_80"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/card_img_2"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginStart="@dimen/_4sdp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:src="@mipmap/home_sms_upload"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_text_2" />
-
-                <TextView
-                    android:id="@+id/card_text_upload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:background="@drawable/rect_btn"
-                    android:gravity="center_horizontal"
-                    android:padding="@dimen/_8sdp"
-                    android:text="@string/home_btn_fetch_and_sync"
-                    android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/card_img_2"
-                    app:layout_constraintStart_toEndOf="@id/card_img_2"
-                    app:layout_constraintTop_toTopOf="@id/card_img_2" />
-
-                <TextView
-                    android:id="@+id/home_last_upload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_16sdp"
-                    android:text="@string/str_time_77"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="italic"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_text_upload" />
-
-                <ProgressBar
-                    android:id="@+id/home_upload_state"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:indeterminate="true"
-                    android:indeterminateTint="@color/black"
-                    android:max="100"
-                    app:layout_constraintTop_toBottomOf="@id/home_last_upload" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Card 3: KPI Grid (2x2) -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_kpi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/bg_card_light"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_12sdp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
-                    android:text="@string/str_financial_analytics_126"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
+                android:padding="18dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/card_img_2"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:contentDescription="Sync Icon"
+                        android:src="@drawable/ic_received"
+                        app:tint="@color/brand_primary" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/card_text_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SMS Sync Engine"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/home_last_upload"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Last Sync: Never"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/card_text_info_loot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_rounded_label"
+                        android:backgroundTint="@color/bg_primary_faint"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp"
+                        android:text="0 batches"
+                        android:textColor="@color/brand_primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/home_upload_state"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="14dp"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/brand_primary"
+                    android:visibility="gone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/card_text_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/brand_primary"
+                    android:text="@string/home_btn_fetch_and_sync"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_received"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/white" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 3. Financial KPI Grid (2x2) -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_kpi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/bg_card_light"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_financial_analytics_126"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <!-- Row 1: Received & Sent -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/kpi_received_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:layout_marginEnd="6dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_metric_card"
-                        android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="@dimen/_12sdp">
+                        android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/kpi_total_received"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/kpi_received_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/str_ksh_0_0_132"
+                            android:layout_marginTop="4dp"
+                            android:text="KES 0.00"
                             android:textColor="@color/semantic_success"
-                            android:textSize="@dimen/_16sdp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:text="@string/kpi_total_received"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/_11sdp" />
-
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/kpi_sent_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginStart="6dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_metric_card"
-                        android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="@dimen/_12sdp">
+                        android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/kpi_total_sent"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/kpi_sent_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/str_ksh_0_0_132"
+                            android:layout_marginTop="4dp"
+                            android:text="KES 0.00"
                             android:textColor="@color/semantic_danger"
-                            android:textSize="@dimen/_16sdp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:text="@string/kpi_total_sent"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/_11sdp" />
-
                     </LinearLayout>
-
                 </LinearLayout>
 
+                <!-- Row 2: Total Txns & Senders -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/kpi_txns_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:layout_marginEnd="6dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_metric_card"
-                        android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="@dimen/_12sdp">
+                        android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/kpi_total_txns"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/kpi_total_txns"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/str_0_27"
+                            android:layout_marginTop="4dp"
+                            android:text="0"
                             android:textColor="@color/brand_primary"
-                            android:textSize="@dimen/_16sdp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:text="@string/kpi_total_txns"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/_11sdp" />
-
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/kpi_senders_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginStart="6dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_metric_card"
-                        android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="@dimen/_12sdp">
+                        android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/kpi_total_senders"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/kpi_total_senders"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/str_0_27"
+                            android:layout_marginTop="4dp"
+                            android:text="0"
                             android:textColor="@color/semantic_warning"
-                            android:textSize="@dimen/_16sdp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:text="@string/kpi_total_senders"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/_11sdp" />
-
                     </LinearLayout>
-
                 </LinearLayout>
 
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
-        <!-- Card 4: Category Breakdown -->
+        <!-- 4. Category Breakdown Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_categories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/bg_card_light"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:id="@+id/category_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_12sdp">
+                android:padding="16dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
                     android:text="@string/cat_title"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
-        <!-- Card 5: Summary (loot count) + Insights -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_12sdp">
-
-                <TextView
-                    android:id="@+id/card_text_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
-                    android:text="@string/str_upload_summary_78"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/card_img_3"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginStart="@dimen/_4sdp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:src="@mipmap/home_sms_summary"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_text_3" />
-
-                <TextView
-                    android:id="@+id/card_text_info1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:text="@string/home_summary_sms_sync"
-                    android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/card_img_3"
-                    app:layout_constraintStart_toEndOf="@id/card_img_3"
-                    app:layout_constraintTop_toTopOf="@id/card_img_3" />
-
-                <TextView
-                    android:id="@+id/card_text_info_loot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_16sdp"
-                    android:text="@string/home_summary_sms_sync_count"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="italic"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_text_info1" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Card 6: Local Insights -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_12sdp">
-
-                <TextView
-                    android:id="@+id/card_text_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
-                    android:text="@string/str_local_insights_dashb_75"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/card_img_4"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_marginStart="@dimen/_4sdp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:src="@mipmap/home_sms_summary"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_text_4" />
-
-                <TextView
-                    android:id="@+id/btn_view_insights"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:background="@drawable/rect_btn"
-                    android:gravity="center_horizontal"
-                    android:padding="@dimen/_8sdp"
-                    android:text="@string/str_view_local_analytics_79"
-                    android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/card_img_4"
-                    app:layout_constraintStart_toEndOf="@id/card_img_4"
-                    app:layout_constraintTop_toTopOf="@id/card_img_4" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Card 7: Financial Health Score -->
+        <!-- 5. Financial Health Score -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_health"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginBottom="16dp"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
+            app:cardBackgroundColor="@color/bg_card_light"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_12sdp">
+                android:padding="16dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
                     android:text="Financial Health Score"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="12dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/health_score_value"
-                        android:layout_width="@dimen/_56sdp"
-                        android:layout_height="@dimen/_56sdp"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
                         android:background="@drawable/bg_metric_card"
                         android:gravity="center"
                         android:text="--"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_20sdp"
+                        android:textColor="@color/brand_primary"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginStart="14dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
@@ -544,229 +411,202 @@
                             android:id="@+id/health_score_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Loading…"
+                            android:text="Calculating…"
                             android:textColor="@color/text_primary"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/health_score_tip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_4sdp"
+                            android:layout_marginTop="4dp"
                             android:text=""
                             android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/_11sdp" />
-
+                            android:textSize="12sp" />
                     </LinearLayout>
-
                 </LinearLayout>
-
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
-        <!-- Card 8: Month-over-Month Trends -->
+        <!-- 6. Month-over-Month Trends -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_trends"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginBottom="16dp"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
+            app:cardBackgroundColor="@color/bg_card_light"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_12sdp">
+                android:padding="16dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
-                    android:text="Month-over-Month Spending"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
+                    android:text="Spending Trends"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_4sdp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_metric_card"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_12sdp">
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="This Month"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/trend_this_month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ksh --"
-                            android:textColor="@color/brand_primary"
-                            android:textSize="@dimen/_14sdp"
+                            android:layout_marginTop="2dp"
+                            android:text="KES 0"
+                            android:textColor="@color/text_primary"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:text="This Month"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/_11sdp" />
-
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_4sdp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_metric_card"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_12sdp">
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Last Month"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/trend_last_month"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ksh --"
+                            android:layout_marginTop="2dp"
+                            android:text="KES 0"
                             android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/_14sdp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:text="Last Month"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/_11sdp" />
-
+                            android:textSize="15sp" />
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/trend_change_pct"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_13sdp"
-                        android:textStyle="bold" />
+                        android:gravity="end"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/trend_direction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_6sdp"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="@dimen/_12sdp" />
+                        <TextView
+                            android:id="@+id/trend_direction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp" />
 
+                        <TextView
+                            android:id="@+id/trend_change_pct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="0%"
+                            android:textColor="@color/brand_primary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
-        <!-- Card 9: Smart Alerts -->
+        <!-- 7. Smart Alerts -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_alerts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginBottom="16dp"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
+            app:cardBackgroundColor="@color/bg_card_light"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
+                android:id="@+id/alerts_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_12sdp">
+                android:padding="16dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
                     android:text="Smart Alerts"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
-
-                <LinearLayout
-                    android:id="@+id/alerts_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:orientation="vertical" />
-
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
-        <!-- Card 10: Recurring Payments -->
+        <!-- 8. Recurring Subscriptions -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_recurring"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginBottom="16dp"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_2sdp">
+            app:cardBackgroundColor="@color/bg_card_light"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
+                android:id="@+id/recurring_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_12sdp">
+                android:padding="16dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_primary_dark"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingBottom="@dimen/_4sdp"
                     android:text="Recurring Payments"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
-
-                <LinearLayout
-                    android:id="@+id/recurring_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:orientation="vertical" />
-
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
+        <!-- 9. Deep Insights Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_view_insights"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/str_view_local_analytics_79"
+            android:textColor="@color/brand_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_chart"
+            app:iconGravity="textStart"
+            app:iconTint="@color/brand_primary"
+            app:strokeColor="@color/brand_primary" />
+
     </LinearLayout>
-
 </ScrollView>
-

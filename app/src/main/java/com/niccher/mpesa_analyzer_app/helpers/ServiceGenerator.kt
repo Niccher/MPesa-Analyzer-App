@@ -53,6 +53,18 @@ object ServiceGenerator {
         return retrofit.create(serviceClass)
     }
 
+    fun <S> createCustomService(serviceClass: Class<S>, customBaseUrl: String, context: Context): S {
+        var url = customBaseUrl.trim()
+        if (!url.endsWith("/")) url += "/"
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(getUnsafeOkHttpClient(context))
+            .build()
+        return retrofit.create(serviceClass)
+    }
+
     fun getUnsafeOkHttpClient(context: Context): OkHttpClient {
         val cacheDir = File(context.cacheDir, "http_cache")
         val cache = Cache(cacheDir, CACHE_SIZE)

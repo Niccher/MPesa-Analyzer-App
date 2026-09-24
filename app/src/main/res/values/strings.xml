@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Smart Finance</string>
+    <string name="widget_glance_description">Glance at your live M-Pesa balance, today\'s spend, and Safe-to-Spend allowance.</string>
 
     <string name="summary_interactions_general">Summary Interactions</string>
     <string name="summary_interactions_incoming">Received Interactions</string>

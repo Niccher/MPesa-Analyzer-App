@@ -1,0 +1,169 @@
+package com.niccher.mpesa_analyzer_app.chat
+
+import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.niccher.mpesa_analyzer_app.R
+import com.niccher.mpesa_analyzer_app.api.ChatApiService
+import com.niccher.mpesa_analyzer_app.api.ChatMessagePayload
+import com.niccher.mpesa_analyzer_app.api.ChatRequestPayload
+import com.niccher.mpesa_analyzer_app.api.ChatResponsePayload
+import com.niccher.mpesa_analyzer_app.helpers.AppPrefs
+import com.niccher.mpesa_analyzer_app.helpers.Prefs
+import com.niccher.mpesa_analyzer_app.helpers.ServiceGenerator
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.net.URI
+
+class ChatActivity : AppCompatActivity() {
+
+    private lateinit var rvChat: RecyclerView
+    private lateinit var etMessage: EditText
+    private lateinit var btnSend: View
+    private lateinit var layoutThinking: LinearLayout
+    private lateinit var adapter: ChatAdapter
+    private val prefs = Prefs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat)
+
+        val toolbar: Toolbar = findViewById(R.id.chat_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        rvChat = findViewById(R.id.rv_chat)
+        etMessage = findViewById(R.id.et_message)
+        btnSend = findViewById(R.id.btn_send)
+        layoutThinking = findViewById(R.id.layout_thinking)
+
+        val layoutManager = LinearLayoutManager(this).apply {
+            stackFromEnd = true
+        }
+        rvChat.layoutManager = layoutManager
+        adapter = ChatAdapter()
+        rvChat.adapter = adapter
+
+        // Add initial welcoming message from assistant
+        adapter.addMessage(
+            ChatMessageItem(
+                role = "assistant",
+                text = "Jambo! 👋 I am your M-Pesa Financial Assistant. You can ask me anything about your monthly spending, Fuliza fees, money sent, or if you can afford an upcoming purchase in English or Sheng!"
+            )
+        )
+
+        setupChips()
+
+        btnSend.setOnClickListener {
+            val text = etMessage.text.toString().trim()
+            if (text.isNotEmpty()) {
+                sendMessage(text)
+            }
+        }
+    }
+
+    private fun setupChips() {
+        findViewById<TextView>(R.id.chip_spending_month).setOnClickListener {
+            sendMessage("How much did I spend this month compared to last month?")
+        }
+        findViewById<TextView>(R.id.chip_top_payees).setOnClickListener {
+            sendMessage("Who are my top payees by total amount sent?")
+        }
+        findViewById<TextView>(R.id.chip_fuliza_fees).setOnClickListener {
+            sendMessage("How much have I spent on Fuliza and loan fees?")
+        }
+        findViewById<TextView>(R.id.chip_afford_purchase).setOnClickListener {
+            sendMessage("Can I afford a KES 15,000 purchase this weekend based on my bills?")
+        }
+        findViewById<TextView>(R.id.chip_sheng_tip).setOnClickListener {
+            sendMessage("Nipe tips fiti za ku-save chapaa hii mwezi.")
+        }
+    }
+
+    private fun getMlServiceBaseUrl(): String {
+        val raw = AppPrefs.getBackendUrl(this).trim().trimEnd('/')
+        return try {
+            val uri = URI(raw)
+            val scheme = uri.scheme ?: "http"
+            val host = uri.host ?: raw.replace("http://", "").replace("https://", "").split(":")[0]
+            "$scheme://$host:8001/"
+        } catch (_: Exception) {
+            "http://127.0.0.1:8001/"
+        }
+    }
+
+    private fun sendMessage(text: String) {
+        val userId = prefs.getPrefsAuth("auth", this).ifBlank { "guest" }
+
+        adapter.addMessage(ChatMessageItem(role = "user", text = text))
+        etMessage.text.clear()
+        rvChat.scrollToPosition(adapter.itemCount - 1)
+
+        layoutThinking.visibility = View.VISIBLE
+        btnSend.isEnabled = false
+
+        val historyPayload = adapter.getHistory().dropLast(1).takeLast(6).map {
+            ChatMessagePayload(role = it.role, content = it.text)
+        }
+
+        val request = ChatRequestPayload(
+            userId = userId,
+            message = text,
+            history = historyPayload
+        )
+
+        val mlBaseUrl = getMlServiceBaseUrl()
+        val api = ServiceGenerator.createCustomService(ChatApiService::class.java, mlBaseUrl, this)
+
+        api.sendChat(request).enqueue(object : Callback<ChatResponsePayload> {
+            override fun onResponse(call: Call<ChatResponsePayload>, response: Response<ChatResponsePayload>) {
+                layoutThinking.visibility = View.GONE
+                btnSend.isEnabled = true
+
+                if (response.isSuccessful && response.body() != null) {
+                    val reply = response.body()!!.reply
+                    adapter.addMessage(ChatMessageItem(role = "assistant", text = reply))
+                } else {
+                    val err = response.errorBody()?.string().orEmpty()
+                    adapter.addMessage(
+                        ChatMessageItem(
+                            role = "assistant",
+                            text = "Could not get advice from assistant (HTTP ${response.code()}). Make sure the ML service is online on :8001."
+                        )
+                    )
+                }
+                rvChat.scrollToPosition(adapter.itemCount - 1)
+            }
+
+            override fun onFailure(call: Call<ChatResponsePayload>, t: Throwable) {
+                layoutThinking.visibility = View.GONE
+                btnSend.isEnabled = true
+                adapter.addMessage(
+                    ChatMessageItem(
+                        role = "assistant",
+                        text = "Connection error: ${t.localizedMessage ?: "Unable to connect to ML assistant (:8001)."}"
+                    )
+                )
+                rvChat.scrollToPosition(adapter.itemCount - 1)
+            }
+        })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+}

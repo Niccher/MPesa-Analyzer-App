@@ -61,6 +61,10 @@ import com.niccher.mpesa_analyzer_app.models.FinancialAnalystModel.RecurringPaym
 import androidx.cardview.widget.CardView
 import java.text.NumberFormat
 import java.util.Locale
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
@@ -90,6 +94,24 @@ class HomeFragment : Fragment() {
     private lateinit var kpiTotalTxns: TextView
     private lateinit var kpiTotalSenders: TextView
     private lateinit var categoryContainer: LinearLayout
+
+    // Safe-to-Spend Views
+    private lateinit var cardSafeToSpend: CardView
+    private lateinit var tvSafeToSpendAmount: TextView
+    private lateinit var pbBudgetBurn: ProgressBar
+    private lateinit var tvSafeToSpendSubtitle: TextView
+    private lateinit var btnAdjustBudget: TextView
+
+    // Loans Tracker Views
+    private lateinit var cardLoans: CardView
+    private lateinit var tvLoanOutstanding: TextView
+    private lateinit var tvLoanFees: TextView
+    private lateinit var tvLoanBorrowedRepaid: TextView
+    private lateinit var tvLoanStatusBadge: TextView
+
+    // AI Assistant Views
+    private lateinit var cardAskAi: CardView
+    private lateinit var btnOpenChat: View
 
     // Financial Analyst cards
     private lateinit var cardHealth: CardView
@@ -156,6 +178,35 @@ class HomeFragment : Fragment() {
         trendDirection = solv.findViewById(R.id.trend_direction)
         alertsContainer = solv.findViewById(R.id.alerts_container)
         recurringContainer = solv.findViewById(R.id.recurring_container)
+
+        // Safe-to-Spend Views
+        cardSafeToSpend = solv.findViewById(R.id.card_safe_to_spend)
+        tvSafeToSpendAmount = solv.findViewById(R.id.tv_safe_to_spend_amount)
+        pbBudgetBurn = solv.findViewById(R.id.pb_budget_burn)
+        tvSafeToSpendSubtitle = solv.findViewById(R.id.tv_safe_to_spend_subtitle)
+        btnAdjustBudget = solv.findViewById(R.id.btn_adjust_budget)
+
+        // Loans Tracker Views
+        cardLoans = solv.findViewById(R.id.card_loans)
+        tvLoanOutstanding = solv.findViewById(R.id.tv_loan_outstanding)
+        tvLoanFees = solv.findViewById(R.id.tv_loan_fees)
+        tvLoanBorrowedRepaid = solv.findViewById(R.id.tv_loan_borrowed_repaid)
+        tvLoanStatusBadge = solv.findViewById(R.id.tv_loan_status_badge)
+
+        // AI Assistant Views
+        cardAskAi = solv.findViewById(R.id.card_ask_ai)
+        btnOpenChat = solv.findViewById(R.id.btn_open_chat)
+
+        btnOpenChat.setOnClickListener {
+            startActivity(android.content.Intent(requireContext(), com.niccher.mpesa_analyzer_app.chat.ChatActivity::class.java))
+        }
+
+        btnAdjustBudget.setOnClickListener {
+            showAdjustBudgetDialog()
+        }
+
+        loadSafeToSpend()
+        loadLoanTracker()
 
         perm_request.visibility = View.GONE
         progressBar.visibility = View.GONE
@@ -229,6 +280,8 @@ class HomeFragment : Fragment() {
                 fetchSpendingTrends()
                 fetchSmartAlerts()
                 fetchRecurringPayments()
+                loadSafeToSpend()
+                loadLoanTracker()
 
                 Toast.makeText(
                     requireContext(),
@@ -391,6 +444,92 @@ class HomeFragment : Fragment() {
             perm_status.setTextColor(resources.getColor(R.color.bg_red))
             perm_status.text = getText(R.string.string_dialog_permission_denied)
             perm_request.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showAdjustBudgetDialog() {
+        val currentBudget = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getMonthlyBudget(requireContext())
+        val input = android.widget.EditText(requireContext()).apply {
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+            setText(currentBudget.toInt().toString())
+        }
+        AlertDialog.Builder(requireContext())
+            .setTitle("Set Monthly Budget")
+            .setMessage("Enter your target monthly budget in KES:")
+            .setView(input)
+            .setPositiveButton("Save") { _, _ ->
+                val newBudget = input.text.toString().toFloatOrNull() ?: currentBudget
+                com.niccher.mpesa_analyzer_app.helpers.AppPrefs.setMonthlyBudget(requireContext(), newBudget)
+                loadSafeToSpend()
+                Toast.makeText(requireContext(), "Monthly budget set to KES ${"%,.0f".format(newBudget)}", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun loadSafeToSpend() {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.DAY_OF_MONTH, 1)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val startOfMonth = cal.timeInMillis
+
+        val db = com.niccher.mpesa_analyzer_app.database.AppDatabase.getDatabase(requireContext())
+        CoroutineScope(Dispatchers.IO).launch {
+            val transactions = db.transactionDao().getRecentTransactions(200)
+            var monthSpend = 0f
+            for (tx in transactions) {
+                if (tx.direction == "outgoing" && tx.timestamp >= startOfMonth) {
+                    monthSpend += tx.amount
+                }
+            }
+            val budget = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getMonthlyBudget(requireContext())
+            val safeToday = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getSafeToSpendToday(requireContext(), monthSpend)
+            val daysRemaining = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getDaysRemainingInMonth()
+            val burnPct = if (budget > 0f) ((monthSpend / budget) * 100f).toInt().coerceIn(0, 100) else 0
+
+            withContext(Dispatchers.Main) {
+                if (!isAdded) return@withContext
+                val fmt = NumberFormat.getNumberInstance(Locale.US)
+                tvSafeToSpendAmount.text = "KES ${fmt.format(safeToday.toLong())}"
+                pbBudgetBurn.progress = burnPct
+                if (burnPct > 90) {
+                    pbBudgetBurn.progressTintList = android.content.res.ColorStateList.valueOf(resources.getColor(R.color.semantic_danger, requireContext().theme))
+                    tvSafeToSpendAmount.setTextColor(resources.getColor(R.color.semantic_danger, requireContext().theme))
+                } else if (burnPct > 70) {
+                    pbBudgetBurn.progressTintList = android.content.res.ColorStateList.valueOf(resources.getColor(R.color.semantic_warning, requireContext().theme))
+                    tvSafeToSpendAmount.setTextColor(resources.getColor(R.color.semantic_warning, requireContext().theme))
+                } else {
+                    pbBudgetBurn.progressTintList = android.content.res.ColorStateList.valueOf(resources.getColor(R.color.semantic_success, requireContext().theme))
+                    tvSafeToSpendAmount.setTextColor(resources.getColor(R.color.semantic_success, requireContext().theme))
+                }
+                tvSafeToSpendSubtitle.text = "$daysRemaining days left • Spent: KES ${fmt.format(monthSpend.toLong())} of ${fmt.format(budget.toLong())} ($burnPct%)"
+            }
+        }
+    }
+
+    private fun loadLoanTracker() {
+        val db = com.niccher.mpesa_analyzer_app.database.AppDatabase.getDatabase(requireContext())
+        CoroutineScope(Dispatchers.IO).launch {
+            val transactions = db.transactionDao().getRecentTransactions(200)
+            val summary = com.niccher.mpesa_analyzer_app.helpers.LoanTrackerHelper.calculateLoanSummary(transactions)
+            withContext(Dispatchers.Main) {
+                if (!isAdded) return@withContext
+                val fmt = NumberFormat.getNumberInstance(Locale.US)
+                tvLoanOutstanding.text = "KES ${fmt.format(summary.currentOutstanding.toLong())}"
+                tvLoanFees.text = "KES ${fmt.format(summary.totalFeesPaid.toLong())}"
+                tvLoanBorrowedRepaid.text = "Borrowed: KES ${fmt.format(summary.totalBorrowed.toLong())} • Repaid: KES ${fmt.format(summary.totalRepaid.toLong())}"
+                if (summary.currentOutstanding > 0f) {
+                    tvLoanStatusBadge.text = "Overdraft Active"
+                    tvLoanStatusBadge.setTextColor(resources.getColor(R.color.semantic_danger, requireContext().theme))
+                } else {
+                    tvLoanStatusBadge.text = "Zero Overdraft"
+                    tvLoanStatusBadge.setTextColor(resources.getColor(R.color.semantic_success, requireContext().theme))
+                }
+            }
         }
     }
 

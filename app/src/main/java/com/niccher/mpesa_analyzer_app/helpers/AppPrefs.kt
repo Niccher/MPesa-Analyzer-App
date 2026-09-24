@@ -97,6 +97,29 @@ object AppPrefs {
     fun setLastSyncSuccessTime(context: Context, time: Long) =
         prefs(context).edit().putLong(KEY_LAST_SYNC_SUCCESS_TIME, time).apply()
 
+    // Safe-to-Spend & Budgeting
+    const val KEY_MONTHLY_BUDGET = "pref_monthly_budget"
+
+    fun getMonthlyBudget(context: Context): Float =
+        prefs(context).getFloat(KEY_MONTHLY_BUDGET, 30000f)
+
+    fun setMonthlyBudget(context: Context, budget: Float) =
+        prefs(context).edit().putFloat(KEY_MONTHLY_BUDGET, budget).apply()
+
+    fun getDaysRemainingInMonth(): Int {
+        val cal = java.util.Calendar.getInstance()
+        val daysInMonth = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH)
+        val currentDay = cal.get(java.util.Calendar.DAY_OF_MONTH)
+        return (daysInMonth - currentDay + 1).coerceAtLeast(1)
+    }
+
+    fun getSafeToSpendToday(context: Context, currentMonthSpend: Float): Float {
+        val budget = getMonthlyBudget(context)
+        val remainingBudget = budget - currentMonthSpend
+        val daysRemaining = getDaysRemainingInMonth()
+        return if (remainingBudget <= 0f) 0f else (remainingBudget / daysRemaining.toFloat())
+    }
+
     fun performLogout(context: Context, activity: android.app.Activity?) {
         // 1. Clear session and counts SharedPreferences
         context.getSharedPreferences(Constants.SHARED_AUTH_LOGIN, Context.MODE_PRIVATE).edit().clear().apply()

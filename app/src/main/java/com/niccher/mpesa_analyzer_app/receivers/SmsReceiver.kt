@@ -9,6 +9,7 @@ import com.niccher.mpesa_analyzer_app.database.AppDatabase
 import com.niccher.mpesa_analyzer_app.database.TransactionEntity
 import com.niccher.mpesa_analyzer_app.helpers.AppPrefs
 import com.niccher.mpesa_analyzer_app.helpers.MpesaParser
+import com.niccher.mpesa_analyzer_app.helpers.TransactionNotificationHelper
 import com.niccher.mpesa_analyzer_app.helpers.SyncScheduler
 import com.niccher.mpesa_analyzer_app.constants.Constants
 import com.niccher.mpesa_analyzer_app.services.UploadService
@@ -55,8 +56,22 @@ class SmsReceiver : BroadcastReceiver() {
 
                         val database = AppDatabase.getDatabase(context)
                         CoroutineScope(Dispatchers.IO).launch {
-                            database.transactionDao().insertTransaction(entity)
-                            Log.d("SmsReceiver", "Transaction saved to local DB.")
+                            val rowId = database.transactionDao().insertTransaction(entity)
+                            Log.d("SmsReceiver", "Transaction saved to local DB with rowId=$rowId.")
+
+                            // Trigger rich real-time heads-up notification
+                            try {
+                                val savedEntity = entity.copy(localId = rowId)
+                                TransactionNotificationHelper.showNotification(context, parsed, savedEntity)
+                            } catch (e: Exception) {
+                                Log.e("SmsReceiver", "Failed to show real-time notification", e)
+                            }
+
+                            // Trigger widget refresh if installed
+                            try {
+                                val widgetIntent = Intent("android.appwidget.action.APPWIDGET_UPDATE")
+                                context.sendBroadcast(widgetIntent)
+                            } catch (_: Exception) {}
 
                             val mode = AppPrefs.getSyncMode(context)
                             var shouldUpload = false

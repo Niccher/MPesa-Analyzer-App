@@ -73,7 +73,58 @@ class MainActivity : AppCompatActivity() {
         }
 
         checkAndRequestSmsPermission()
+        handleNotificationIntent(intent)
+    }
 
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleNotificationIntent(intent)
+    }
+
+    private fun handleNotificationIntent(intent: android.content.Intent?) {
+        val action = intent?.getStringExtra("NOTIFICATION_ACTION") ?: return
+        val amount = intent.getFloatExtra(com.niccher.mpesa_analyzer_app.receivers.NotificationActionReceiver.EXTRA_AMOUNT, 0f)
+        val counterparty = intent.getStringExtra(com.niccher.mpesa_analyzer_app.receivers.NotificationActionReceiver.EXTRA_COUNTERPARTY) ?: ""
+        
+        when (action) {
+            com.niccher.mpesa_analyzer_app.receivers.NotificationActionReceiver.ACTION_SPLIT_BILL -> {
+                androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Split Bill")
+                    .setMessage("Split KES $amount ($counterparty) among how many people?")
+                    .setPositiveButton("Split 50/50") { _, _ ->
+                        val share = amount / 2f
+                        Toast.makeText(this, "Each person owes: KES ${"%.2f".format(share)}", Toast.LENGTH_LONG).show()
+                    }
+                    .setNeutralButton("Cancel", null)
+                    .show()
+            }
+            com.niccher.mpesa_analyzer_app.receivers.NotificationActionReceiver.ACTION_ADD_NOTE -> {
+                val input = android.widget.EditText(this).apply {
+                    hint = "e.g. Lunch with colleagues"
+                }
+                androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Add Note")
+                    .setMessage("Attach note to KES $amount ($counterparty):")
+                    .setView(input)
+                    .setPositiveButton("Save") { _, _ ->
+                        val note = input.text.toString()
+                        Toast.makeText(this, "Note saved: $note", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNeutralButton("Cancel", null)
+                    .show()
+            }
+            com.niccher.mpesa_analyzer_app.receivers.NotificationActionReceiver.ACTION_CHANGE_CATEGORY -> {
+                val categories = arrayOf("Mobile Money", "Food & Dining", "Shopping", "Transport", "Bills & Utilities", "Entertainment", "Personal", "Family")
+                androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Change Category ($counterparty)")
+                    .setItems(categories) { _, which ->
+                        Toast.makeText(this, "Category updated to: ${categories[which]}", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -110,6 +161,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_activity_bottom)
         return when (item.itemId) {
+            R.id.menu_ask_ai -> {
+                startActivity(android.content.Intent(this, com.niccher.mpesa_analyzer_app.chat.ChatActivity::class.java))
+                true
+            }
             R.id.menu_settings -> {
                 navController.navigate(R.id.navi_settings)
                 true

@@ -69,6 +69,12 @@
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.MPesaAnalyzer" />
+
+        <activity
+            android:name=".chat.ChatActivity"
+            android:exported="false"
+            android:label="Ask My M-Pesa"
+            android:theme="@style/Theme.MPesaAnalyzer_NoAction" />
             
         <service
             android:name=".services.UploadService"
@@ -82,6 +88,31 @@
             <intent-filter android:priority="999">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receivers.NotificationActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.niccher.mpesa_analyzer_app.ACTION_CHANGE_CATEGORY" />
+                <action android:name="com.niccher.mpesa_analyzer_app.ACTION_ADD_NOTE" />
+                <action android:name="com.niccher.mpesa_analyzer_app.ACTION_SPLIT_BILL" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Homescreen Glance Widget -->
+        <receiver
+            android:name=".widget.MpesaGlanceWidget"
+            android:exported="true"
+            android:label="M-Pesa Live Glance">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.niccher.mpesa_analyzer_app.ACTION_SYNC_WIDGET" />
+                <action android:name="MPESA_UPLOAD_COMPLETE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/mpesa_widget_info" />
         </receiver>
     </application>
 

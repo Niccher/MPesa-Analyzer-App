@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_widget_card"
+    android:orientation="vertical"
+    android:padding="14dp">
+
+    <!-- Top Row: App Icon + Title + Sync Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="Balance Icon"
+            android:src="@drawable/ic_balance" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="M-Pesa Live Glance"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/widget_btn_sync"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="Sync Button"
+            android:padding="2dp"
+            android:src="@drawable/ic_received" />
+    </LinearLayout>
+
+    <!-- Balance Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="ESTIMATED BALANCE"
+        android:textColor="@color/text_secondary"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/widget_tv_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="KES --"
+        android:textColor="@color/brand_primary"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Spend & Safe-to-Spend Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/widget_tv_spend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Today: KES 0 • Safe: KES --"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/widget_tv_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_label"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            android:text="On Track"
+            android:textColor="@color/semantic_success"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

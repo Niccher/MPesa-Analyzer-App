@@ -30,6 +30,21 @@ interface TransactionDao {
     @Query("SELECT MAX(smsId) FROM transactions")
     suspend fun getMaxSmsId(): Long?
 
+    @Query("SELECT SUM(amount) FROM transactions WHERE direction = 'outgoing' AND timestamp >= :startTime")
+    fun getOutflowSince(startTime: Long): Flow<Float?>
+
+    @Query("SELECT SUM(amount) FROM transactions WHERE direction = 'outgoing' AND timestamp >= :startOfDay")
+    suspend fun getTodaySpend(startOfDay: Long): Float?
+
+    @Query("SELECT * FROM transactions WHERE category IN ('Fuliza', 'M-Shwari') OR body LIKE '%Fuliza%' OR body LIKE '%M-Shwari%' ORDER BY timestamp DESC")
+    fun getLoanTransactions(): Flow<List<TransactionEntity>>
+
+    @Query("SELECT * FROM transactions ORDER BY timestamp DESC LIMIT 1")
+    fun getLatestTransaction(): Flow<TransactionEntity?>
+
+    @Query("SELECT * FROM transactions ORDER BY timestamp DESC LIMIT :limit")
+    suspend fun getRecentTransactions(limit: Int): List<TransactionEntity>
+
     @Query("DELETE FROM transactions")
     suspend fun clearAll()
 }

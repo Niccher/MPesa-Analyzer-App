@@ -68,7 +68,6 @@ import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
-    private lateinit var activity: AppCompatActivity
     private lateinit var kon: Constants
     private lateinit var prefs: Prefs
     private lateinit var sbsent: StringBuffer

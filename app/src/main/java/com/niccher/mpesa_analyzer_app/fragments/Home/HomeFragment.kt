@@ -252,6 +252,10 @@ class HomeFragment : Fragment() {
 
     private val uploadReceiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: android.content.Intent?) {
+            val act = activity ?: return
+            val ctx = context ?: return
+            if (!isAdded) return
+
             if (intent?.action == com.niccher.mpesa_analyzer_app.services.UploadService.ACTION_UPLOAD_COMPLETE) {
                 val success = intent.getBooleanExtra(
                     com.niccher.mpesa_analyzer_app.services.UploadService.EXTRA_SUCCESS,
@@ -268,9 +272,9 @@ class HomeFragment : Fragment() {
                 Log.i(kon.TAGGED, "Broadcast received: success=$success count=$count msg=$message")
 
                 progressBar.visibility = View.GONE
-                last_time.text = prefs.getTimeStamp(requireActivity())
+                last_time.text = prefs.getTimeStamp(act)
 
-                val syncedCount = prefs.getPrefsAuth("loot_count", requireActivity())
+                val syncedCount = prefs.getPrefsAuth("loot_count", act)
                 text_get_loot_count.text = "Synced $syncedCount times."
                 Log.i(kon.TAGGED, "Updated UI: Synced $syncedCount times")
 
@@ -284,7 +288,7 @@ class HomeFragment : Fragment() {
                 loadLoanTracker()
 
                 Toast.makeText(
-                    requireContext(),
+                    ctx,
                     if (success) message.ifBlank { "Sync complete" } else "Sync failed: $message",
                     Toast.LENGTH_LONG
                 ).show()
@@ -436,12 +440,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun permTweak(permGranted: Boolean) {
+        val ctx = context ?: return
+        if (!isAdded) return
         if (permGranted) {
-            perm_status.setTextColor(resources.getColor(R.color.bg_green))
+            perm_status.setTextColor(ContextCompat.getColor(ctx, R.color.bg_green))
             perm_status.text = getText(R.string.string_dialog_permission_granted)
             perm_request.visibility = View.GONE
         } else {
-            perm_status.setTextColor(resources.getColor(R.color.bg_red))
+            perm_status.setTextColor(ContextCompat.getColor(ctx, R.color.bg_red))
             perm_status.text = getText(R.string.string_dialog_permission_denied)
             perm_request.visibility = View.VISIBLE
         }
@@ -468,6 +474,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadSafeToSpend() {
+        val ctx = context?.applicationContext ?: return
         val cal = Calendar.getInstance().apply {
             set(Calendar.DAY_OF_MONTH, 1)
             set(Calendar.HOUR_OF_DAY, 0)
@@ -477,7 +484,7 @@ class HomeFragment : Fragment() {
         }
         val startOfMonth = cal.timeInMillis
 
-        val db = com.niccher.mpesa_analyzer_app.database.AppDatabase.getDatabase(requireContext())
+        val db = com.niccher.mpesa_analyzer_app.database.AppDatabase.getDatabase(ctx)
         CoroutineScope(Dispatchers.IO).launch {
             val transactions = db.transactionDao().getRecentTransactions(200)
             var monthSpend = 0f
@@ -486,25 +493,29 @@ class HomeFragment : Fragment() {
                     monthSpend += tx.amount
                 }
             }
-            val budget = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getMonthlyBudget(requireContext())
-            val safeToday = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getSafeToSpendToday(requireContext(), monthSpend)
+            val budget = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getMonthlyBudget(ctx)
+            val safeToday = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getSafeToSpendToday(ctx, monthSpend)
             val daysRemaining = com.niccher.mpesa_analyzer_app.helpers.AppPrefs.getDaysRemainingInMonth()
             val burnPct = if (budget > 0f) ((monthSpend / budget) * 100f).toInt().coerceIn(0, 100) else 0
 
             withContext(Dispatchers.Main) {
+                val currentCtx = context ?: return@withContext
                 if (!isAdded) return@withContext
                 val fmt = NumberFormat.getNumberInstance(Locale.US)
                 tvSafeToSpendAmount.text = "KES ${fmt.format(safeToday.toLong())}"
                 pbBudgetBurn.progress = burnPct
                 if (burnPct > 90) {
-                    pbBudgetBurn.progressTintList = android.content.res.ColorStateList.valueOf(resources.getColor(R.color.semantic_danger, requireContext().theme))
-                    tvSafeToSpendAmount.setTextColor(resources.getColor(R.color.semantic_danger, requireContext().theme))
+                    val color = ContextCompat.getColor(currentCtx, R.color.semantic_danger)
+                    pbBudgetBurn.progressTintList = android.content.res.ColorStateList.valueOf(color)
+                    tvSafeToSpendAmount.setTextColor(color)
                 } else if (burnPct > 70) {
-                    pbBudgetBurn.progressTintList = android.content.res.ColorStateList.valueOf(resources.getColor(R.color.semantic_warning, requireContext().theme))
-                    tvSafeToSpendAmount.setTextColor(resources.getColor(R.color.semantic_warning, requireContext().theme))
+                    val color = ContextCompat.getColor(currentCtx, R.color.semantic_warning)
+                    pbBudgetBurn.progressTintList = android.content.res.ColorStateList.valueOf(color)
+                    tvSafeToSpendAmount.setTextColor(color)
                 } else {
-                    pbBudgetBurn.progressTintList = android.content.res.ColorStateList.valueOf(resources.getColor(R.color.semantic_success, requireContext().theme))
-                    tvSafeToSpendAmount.setTextColor(resources.getColor(R.color.semantic_success, requireContext().theme))
+                    val color = ContextCompat.getColor(currentCtx, R.color.semantic_success)
+                    pbBudgetBurn.progressTintList = android.content.res.ColorStateList.valueOf(color)
+                    tvSafeToSpendAmount.setTextColor(color)
                 }
                 tvSafeToSpendSubtitle.text = "$daysRemaining days left • Spent: KES ${fmt.format(monthSpend.toLong())} of ${fmt.format(budget.toLong())} ($burnPct%)"
             }
@@ -512,11 +523,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadLoanTracker() {
-        val db = com.niccher.mpesa_analyzer_app.database.AppDatabase.getDatabase(requireContext())
+        val ctx = context?.applicationContext ?: return
+        val db = com.niccher.mpesa_analyzer_app.database.AppDatabase.getDatabase(ctx)
         CoroutineScope(Dispatchers.IO).launch {
             val transactions = db.transactionDao().getRecentTransactions(200)
             val summary = com.niccher.mpesa_analyzer_app.helpers.LoanTrackerHelper.calculateLoanSummary(transactions)
             withContext(Dispatchers.Main) {
+                val currentCtx = context ?: return@withContext
                 if (!isAdded) return@withContext
                 val fmt = NumberFormat.getNumberInstance(Locale.US)
                 tvLoanOutstanding.text = "KES ${fmt.format(summary.currentOutstanding.toLong())}"
@@ -524,10 +537,10 @@ class HomeFragment : Fragment() {
                 tvLoanBorrowedRepaid.text = "Borrowed: KES ${fmt.format(summary.totalBorrowed.toLong())} • Repaid: KES ${fmt.format(summary.totalRepaid.toLong())}"
                 if (summary.currentOutstanding > 0f) {
                     tvLoanStatusBadge.text = "Overdraft Active"
-                    tvLoanStatusBadge.setTextColor(resources.getColor(R.color.semantic_danger, requireContext().theme))
+                    tvLoanStatusBadge.setTextColor(ContextCompat.getColor(currentCtx, R.color.semantic_danger))
                 } else {
                     tvLoanStatusBadge.text = "Zero Overdraft"
-                    tvLoanStatusBadge.setTextColor(resources.getColor(R.color.semantic_success, requireContext().theme))
+                    tvLoanStatusBadge.setTextColor(ContextCompat.getColor(currentCtx, R.color.semantic_success))
                 }
             }
         }
@@ -618,11 +631,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchFinancialOverview() {
-        jsonFinancial = ServiceGenerator.createService(FinancialApiService::class.java, requireContext())
+        val ctx = context ?: return
+        val act = activity ?: return
+        if (!isAdded) return
+
+        jsonFinancial = ServiceGenerator.createService(FinancialApiService::class.java, ctx)
 
         val parameters = mapOf(
-            "varUser" to prefs.getPrefsAuth("auth", requireContext()),
-            "varDev" to prefs.getPrefsAuth("print", requireActivity())
+            "varUser" to prefs.getPrefsAuth("auth", ctx),
+            "varDev" to prefs.getPrefsAuth("print", act)
         )
 
         jsonFinancial.getFinancialOverview(parameters).enqueue(object : Callback<com.niccher.mpesa_analyzer_app.models.FinancialOverviewResponse> {
@@ -630,11 +647,14 @@ class HomeFragment : Fragment() {
                 call: Call<com.niccher.mpesa_analyzer_app.models.FinancialOverviewResponse>,
                 response: Response<com.niccher.mpesa_analyzer_app.models.FinancialOverviewResponse>
             ) {
+                val currentCtx = context ?: return
+                if (!isAdded) return
+
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
                     if (body.status == 1 && body.overview != null) {
                         homeViewModel.setOverview(body.overview)
-                        populateDashboard(body.overview)
+                        populateDashboard(body.overview, currentCtx)
                     }
                 }
             }
@@ -648,7 +668,8 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun populateDashboard(overview: FinancialOverview) {
+    private fun populateDashboard(overview: FinancialOverview, ctx: Context) {
+        if (!isAdded || context == null) return
         val fmt = NumberFormat.getNumberInstance(Locale.US)
         fmt.minimumFractionDigits = 0
         fmt.maximumFractionDigits = 0
@@ -658,22 +679,23 @@ class HomeFragment : Fragment() {
         kpiTotalTxns.text = fmt.format(overview.total_transactions.toLong())
         kpiTotalSenders.text = fmt.format(overview.total_senders.toLong())
 
-        buildCategoryBars(overview)
+        buildCategoryBars(overview, ctx)
     }
 
-    private fun buildCategoryBars(overview: FinancialOverview) {
+    private fun buildCategoryBars(overview: FinancialOverview, ctx: Context) {
+        if (!isAdded || context == null) return
         val breakdown = overview.category_breakdown ?: return
         val total = overview.total_transactions
         if (total == 0) return
 
-        val density = resources.displayMetrics.density
+        val density = ctx.resources.displayMetrics.density
 
         for (meta in HomeViewModel.CATEGORY_META) {
             val count = breakdown[meta.key] ?: 0
             if (count == 0) continue
             val pct = (count.toFloat() / total) * 100f
 
-            val row = LinearLayout(requireContext()).apply {
+            val row = LinearLayout(ctx).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(0, (6 * density).toInt(), 0, (6 * density).toInt())
                 layoutParams = LinearLayout.LayoutParams(
@@ -682,7 +704,7 @@ class HomeFragment : Fragment() {
                 )
             }
 
-            val labelRow = LinearLayout(requireContext()).apply {
+            val labelRow = LinearLayout(ctx).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -690,7 +712,7 @@ class HomeFragment : Fragment() {
                 )
             }
 
-            val colorDot = View(requireContext()).apply {
+            val colorDot = View(ctx).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     (10 * density).toInt(),
                     (10 * density).toInt()
@@ -699,22 +721,22 @@ class HomeFragment : Fragment() {
                 }
                 val bg = GradientDrawable().apply {
                     shape = GradientDrawable.OVAL
-                    setColor(resources.getColor(meta.colorRes, requireContext().theme))
+                    setColor(ContextCompat.getColor(ctx, meta.colorRes))
                 }
                 background = bg
             }
 
-            val nameTv = TextView(requireContext()).apply {
+            val nameTv = TextView(ctx).apply {
                 text = meta.label
                 textSize = 13f
-                setTextColor(resources.getColor(R.color.text_primary, requireContext().theme))
+                setTextColor(ContextCompat.getColor(ctx, R.color.text_primary))
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             }
 
-            val countTv = TextView(requireContext()).apply {
+            val countTv = TextView(ctx).apply {
                 text = "$count (${"%.0f".format(pct)}%)"
                 textSize = 12f
-                setTextColor(resources.getColor(R.color.text_secondary, requireContext().theme))
+                setTextColor(ContextCompat.getColor(ctx, R.color.text_secondary))
             }
 
             labelRow.addView(colorDot)
@@ -722,7 +744,7 @@ class HomeFragment : Fragment() {
             labelRow.addView(countTv)
             row.addView(labelRow)
 
-            val barContainer = LinearLayout(requireContext()).apply {
+            val barContainer = LinearLayout(ctx).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     (6 * density).toInt()
@@ -737,11 +759,11 @@ class HomeFragment : Fragment() {
                         (3 * density), (3 * density),
                         (3 * density), (3 * density)
                     )
-                    setColor(resources.getColor(R.color.color_ui_divider, requireContext().theme))
+                    setColor(ContextCompat.getColor(ctx, R.color.color_ui_divider))
                 }
             }
 
-            val barFill = View(requireContext()).apply {
+            val barFill = View(ctx).apply {
                 val widthFraction = (pct / 100f).coerceIn(0f, 1f)
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, widthFraction)
                 background = GradientDrawable().apply {
@@ -752,21 +774,21 @@ class HomeFragment : Fragment() {
                         (3 * density), (3 * density),
                         (3 * density), (3 * density)
                     )
-                    setColor(resources.getColor(meta.colorRes, requireContext().theme))
+                    setColor(ContextCompat.getColor(ctx, meta.colorRes))
                 }
             }
 
             barContainer.addView(barFill)
             row.addView(barContainer)
 
-            val line = View(requireContext()).apply {
+            val line = View(ctx).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     1
                 ).also {
                     it.topMargin = (6 * density).toInt()
                 }
-                setBackgroundColor(resources.getColor(R.color.color_ui_divider, requireContext().theme))
+                setBackgroundColor(ContextCompat.getColor(ctx, R.color.color_ui_divider))
             }
             row.addView(line)
 
@@ -775,18 +797,23 @@ class HomeFragment : Fragment() {
     }
 
     private fun calc_Loot() {
-        pref_loot_counter = requireActivity().getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
+        val act = activity ?: return
+        val ctx = context ?: return
+        if (!isAdded) return
 
-        val jsonProcesses = ServiceGenerator.createService(ProcessesApiService::class.java, requireContext())
+        pref_loot_counter = act.getSharedPreferences(kon.SHARED_LOOT_COUNT, Context.MODE_PRIVATE)
+
+        val jsonProcesses = ServiceGenerator.createService(ProcessesApiService::class.java, ctx)
 
         val parameters = mapOf(
-            "varUser" to prefs.getPrefsAuth("auth", requireContext()),
-            "varDev" to prefs.getPrefsAuth("print", requireActivity())
+            "varUser" to prefs.getPrefsAuth("auth", ctx),
+            "varDev" to prefs.getPrefsAuth("print", act)
         )
 
         val call = jsonProcesses.getLootCount(parameters)
         call.enqueue(object : Callback<MyLootCountModel> {
             override fun onResponse(call: Call<MyLootCountModel>, response: Response<MyLootCountModel>) {
+                if (!isAdded || context == null) return
                 if (response.isSuccessful && response.body() != null) {
                     val myLoots = response.body()!!
 
@@ -816,13 +843,18 @@ class HomeFragment : Fragment() {
     // ─── Financial Analyst Endpoints ──────────────────────────────────────────
 
     private fun fetchFinancialHealth() {
+        val ctx = context ?: return
+        val act = activity ?: return
+        if (!isAdded) return
+
         val params = mapOf(
-            "varUser" to prefs.getPrefsAuth("auth", requireContext()),
-            "varDev" to prefs.getPrefsAuth("print", requireActivity())
+            "varUser" to prefs.getPrefsAuth("auth", ctx),
+            "varDev" to prefs.getPrefsAuth("print", act)
         )
-        val api = ServiceGenerator.createService(FinancialApiService::class.java, requireContext())
+        val api = ServiceGenerator.createService(FinancialApiService::class.java, ctx)
         api.getFinancialHealth(params).enqueue(object : Callback<FinancialHealthResponse> {
             override fun onResponse(call: Call<FinancialHealthResponse>, response: Response<FinancialHealthResponse>) {
+                val currentCtx = context ?: return
                 if (!isAdded) return
                 val body = response.body() ?: return
                 if (body.status != 1) return
@@ -844,7 +876,7 @@ class HomeFragment : Fragment() {
                 }
                 val bg = android.graphics.drawable.GradientDrawable().apply {
                     shape = android.graphics.drawable.GradientDrawable.OVAL
-                    setColor(resources.getColor(colorRes, requireContext().theme))
+                    setColor(ContextCompat.getColor(currentCtx, colorRes))
                 }
                 healthScoreValue.background = bg
                 cardHealth.visibility = View.VISIBLE
@@ -856,13 +888,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchSpendingTrends() {
+        val ctx = context ?: return
+        val act = activity ?: return
+        if (!isAdded) return
+
         val params = mapOf(
-            "varUser" to prefs.getPrefsAuth("auth", requireContext()),
-            "varDev" to prefs.getPrefsAuth("print", requireActivity())
+            "varUser" to prefs.getPrefsAuth("auth", ctx),
+            "varDev" to prefs.getPrefsAuth("print", act)
         )
-        val api = ServiceGenerator.createService(FinancialApiService::class.java, requireContext())
+        val api = ServiceGenerator.createService(FinancialApiService::class.java, ctx)
         api.getSpendingTrends(params).enqueue(object : Callback<SpendingTrendsResponse> {
             override fun onResponse(call: Call<SpendingTrendsResponse>, response: Response<SpendingTrendsResponse>) {
+                val currentCtx = context ?: return
                 if (!isAdded) return
                 val body = response.body() ?: return
                 if (body.status != 1 || body.trends == null) return
@@ -876,7 +913,7 @@ class HomeFragment : Fragment() {
                 val arrow = if (isUp) "▲" else "▼"
                 val colorRes = if (isUp) R.color.semantic_danger else R.color.semantic_success
                 trendChangePct.text = "$arrow ${"%.1f".format(pct)}%"
-                trendChangePct.setTextColor(resources.getColor(colorRes, requireContext().theme))
+                trendChangePct.setTextColor(ContextCompat.getColor(currentCtx, colorRes))
                 trendDirection.text = if (isUp) "more than last month" else "less than last month"
                 cardTrends.visibility = View.VISIBLE
             }
@@ -887,17 +924,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchSmartAlerts() {
+        val ctx = context ?: return
+        val act = activity ?: return
+        if (!isAdded) return
+
         val params = mapOf(
-            "varUser" to prefs.getPrefsAuth("auth", requireContext()),
-            "varDev" to prefs.getPrefsAuth("print", requireActivity())
+            "varUser" to prefs.getPrefsAuth("auth", ctx),
+            "varDev" to prefs.getPrefsAuth("print", act)
         )
-        val api = ServiceGenerator.createService(FinancialApiService::class.java, requireContext())
+        val api = ServiceGenerator.createService(FinancialApiService::class.java, ctx)
         api.getSmartAlerts(params).enqueue(object : Callback<SmartAlertsResponse> {
             override fun onResponse(call: Call<SmartAlertsResponse>, response: Response<SmartAlertsResponse>) {
+                val currentCtx = context ?: return
                 if (!isAdded) return
                 val body = response.body() ?: return
                 if (body.status != 1 || body.alerts.isNullOrEmpty()) return
-                val density = resources.displayMetrics.density
+                val density = currentCtx.resources.displayMetrics.density
                 alertsContainer.removeAllViews()
                 body.alerts.take(5).forEach { alert ->
                     val colorRes = when (alert.level) {
@@ -905,7 +947,7 @@ class HomeFragment : Fragment() {
                         "medium" -> R.color.semantic_warning
                         else -> R.color.brand_primary
                     }
-                    val row = LinearLayout(requireContext()).apply {
+                    val row = LinearLayout(currentCtx).apply {
                         orientation = LinearLayout.VERTICAL
                         setPadding(0, (4 * density).toInt(), 0, (4 * density).toInt())
                         layoutParams = LinearLayout.LayoutParams(
@@ -913,16 +955,16 @@ class HomeFragment : Fragment() {
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         )
                     }
-                    val titleTv = TextView(requireContext()).apply {
+                    val titleTv = TextView(currentCtx).apply {
                         text = alert.title
                         textSize = 13f
                         setTypeface(null, android.graphics.Typeface.BOLD)
-                        setTextColor(resources.getColor(colorRes, requireContext().theme))
+                        setTextColor(ContextCompat.getColor(currentCtx, colorRes))
                     }
-                    val msgTv = TextView(requireContext()).apply {
+                    val msgTv = TextView(currentCtx).apply {
                         text = alert.message
                         textSize = 12f
-                        setTextColor(resources.getColor(R.color.text_secondary, requireContext().theme))
+                        setTextColor(ContextCompat.getColor(currentCtx, R.color.text_secondary))
                     }
                     row.addView(titleTv)
                     row.addView(msgTv)
@@ -937,22 +979,27 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchRecurringPayments() {
+        val ctx = context ?: return
+        val act = activity ?: return
+        if (!isAdded) return
+
         val params = mapOf(
-            "varUser" to prefs.getPrefsAuth("auth", requireContext()),
-            "varDev" to prefs.getPrefsAuth("print", requireActivity())
+            "varUser" to prefs.getPrefsAuth("auth", ctx),
+            "varDev" to prefs.getPrefsAuth("print", act)
         )
-        val api = ServiceGenerator.createService(FinancialApiService::class.java, requireContext())
+        val api = ServiceGenerator.createService(FinancialApiService::class.java, ctx)
         api.getRecurringPayments(params).enqueue(object : Callback<RecurringPaymentsResponse> {
             override fun onResponse(call: Call<RecurringPaymentsResponse>, response: Response<RecurringPaymentsResponse>) {
+                val currentCtx = context ?: return
                 if (!isAdded) return
                 val body = response.body() ?: return
                 if (body.status != 1 || body.payments.isNullOrEmpty()) return
                 val fmt = NumberFormat.getNumberInstance(Locale.US)
                 fmt.minimumFractionDigits = 0; fmt.maximumFractionDigits = 0
-                val density = resources.displayMetrics.density
+                val density = currentCtx.resources.displayMetrics.density
                 recurringContainer.removeAllViews()
                 body.payments.take(5).forEach { payment ->
-                    val row = LinearLayout(requireContext()).apply {
+                    val row = LinearLayout(currentCtx).apply {
                         orientation = LinearLayout.HORIZONTAL
                         gravity = android.view.Gravity.CENTER_VERTICAL
                         setPadding(0, (6 * density).toInt(), 0, (6 * density).toInt())
@@ -961,23 +1008,23 @@ class HomeFragment : Fragment() {
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         )
                     }
-                    val nameTv = TextView(requireContext()).apply {
+                    val nameTv = TextView(currentCtx).apply {
                         text = payment.counterparty
                         textSize = 13f
                         setTypeface(null, android.graphics.Typeface.BOLD)
-                        setTextColor(resources.getColor(R.color.text_primary, requireContext().theme))
+                        setTextColor(ContextCompat.getColor(currentCtx, R.color.text_primary))
                         layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                     }
-                    val amtTv = TextView(requireContext()).apply {
+                    val amtTv = TextView(currentCtx).apply {
                         text = "Ksh ${fmt.format(payment.amount.toLong())}"
                         textSize = 13f
-                        setTextColor(resources.getColor(R.color.semantic_danger, requireContext().theme))
+                        setTextColor(ContextCompat.getColor(currentCtx, R.color.semantic_danger))
                         gravity = android.view.Gravity.END
                     }
-                    val occursTv = TextView(requireContext()).apply {
+                    val occursTv = TextView(currentCtx).apply {
                         text = " · ${payment.occurs}×"
                         textSize = 11f
-                        setTextColor(resources.getColor(R.color.text_secondary, requireContext().theme))
+                        setTextColor(ContextCompat.getColor(currentCtx, R.color.text_secondary))
                     }
                     row.addView(nameTv)
                     row.addView(amtTv)

@@ -98,17 +98,6 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun getMlServiceBaseUrl(): String {
-        val raw = AppPrefs.getBackendUrl(this).trim().trimEnd('/')
-        return try {
-            val uri = URI(raw)
-            val scheme = uri.scheme ?: "http"
-            val host = uri.host ?: raw.replace("http://", "").replace("https://", "").split(":")[0]
-            "$scheme://$host:8001/"
-        } catch (_: Exception) {
-            "http://127.0.0.1:8001/"
-        }
-    }
 
     private fun sendMessage(text: String) {
         val userId = prefs.getPrefsAuth("auth", this).ifBlank { "guest" }
@@ -130,8 +119,7 @@ class ChatActivity : AppCompatActivity() {
             history = historyPayload
         )
 
-        val mlBaseUrl = getMlServiceBaseUrl()
-        val api = ServiceGenerator.createCustomService(ChatApiService::class.java, mlBaseUrl, this)
+        val api = ServiceGenerator.createService(ChatApiService::class.java, this)
 
         api.sendChat(request).enqueue(object : Callback<ChatResponsePayload> {
             override fun onResponse(call: Call<ChatResponsePayload>, response: Response<ChatResponsePayload>) {
@@ -151,7 +139,7 @@ class ChatActivity : AppCompatActivity() {
                     adapter.addMessage(
                         ChatMessageItem(
                             role = "assistant",
-                            text = "Could not get advice from assistant (HTTP ${response.code()}). Make sure the ML service is online on :8001."
+                            text = "Could not get advice from assistant (HTTP ${response.code()}). Make sure the AI backend service is online."
                         )
                     )
                 }
@@ -164,7 +152,7 @@ class ChatActivity : AppCompatActivity() {
                 adapter.addMessage(
                     ChatMessageItem(
                         role = "assistant",
-                        text = "Connection error: ${t.localizedMessage ?: "Unable to connect to ML assistant (:8001)."}"
+                        text = "Connection error: ${t.localizedMessage ?: "Unable to connect to AI assistant."}"
                     )
                 )
                 rvChat.scrollToPosition(adapter.itemCount - 1)
@@ -173,8 +161,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun fetchModelInfo() {
-        val mlBaseUrl = getMlServiceBaseUrl()
-        val api = ServiceGenerator.createCustomService(ChatApiService::class.java, mlBaseUrl, this)
+        val api = ServiceGenerator.createService(ChatApiService::class.java, this)
         api.getChatInfo().enqueue(object : Callback<ChatInfoPayload> {
             override fun onResponse(call: Call<ChatInfoPayload>, response: Response<ChatInfoPayload>) {
                 if (response.isSuccessful && response.body() != null) {

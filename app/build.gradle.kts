@@ -14,8 +14,8 @@ android {
         applicationId = "com.niccher.mpesa_analyzer_app"
         minSdk = 29
         targetSdk = 35
-        versionCode = 3
-        versionName = "3.3.1"
+        versionCode = 4
+        versionName = "3.5.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

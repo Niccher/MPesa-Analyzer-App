@@ -868,14 +868,8 @@ class HomeFragment : Fragment() {
         val ctx = context ?: return
         if (!isAdded) return
         try {
-            val raw = AppPrefs.getBackendUrl(ctx).trim().trimEnd('/')
-            val uri = java.net.URI(raw)
-            val scheme = uri.scheme ?: "http"
-            val host = uri.host ?: raw.replace("http://", "").replace("https://", "").split(":")[0]
-            val mlBaseUrl = "$scheme://$host:8001/"
-            val api = ServiceGenerator.createCustomService(
+            val api = ServiceGenerator.createService(
                 com.niccher.mpesa_analyzer_app.api.ChatApiService::class.java,
-                mlBaseUrl,
                 ctx
             )
             api.getChatInfo().enqueue(object : Callback<com.niccher.mpesa_analyzer_app.api.ChatInfoPayload> {

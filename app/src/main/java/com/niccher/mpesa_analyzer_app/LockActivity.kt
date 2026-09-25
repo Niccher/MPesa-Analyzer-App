@@ -14,9 +14,11 @@ import com.niccher.mpesa_analyzer_app.helpers.BiometricHelper
 class LockActivity : AppCompatActivity() {
 
     private lateinit var biometricHelper: BiometricHelper
+    private var hasPrompted = false
 
     companion object {
         var isUnlocked: Boolean = false
+        var lastUnlockTime: Long = 0L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +46,7 @@ class LockActivity : AppCompatActivity() {
         // If neither is enabled, skip lock entirely
         if (!hasPin && !hasBio) {
             isUnlocked = true
+            lastUnlockTime = System.currentTimeMillis()
             finish()
             return
         }
@@ -53,15 +56,17 @@ class LockActivity : AppCompatActivity() {
         if (hasBio) {
             btnUnlock.visibility = android.view.View.VISIBLE
             tvSwitch.text = if (hasPin) "Use PIN instead" else ""
-            showBiometricPrompt()
         }
 
-        btnUnlock.setOnClickListener { showBiometricPrompt() }
+        btnUnlock.setOnClickListener {
+            showBiometricPrompt()
+        }
 
         btnPinUnlock.setOnClickListener {
             val entered = etPin.text.toString()
             if (entered == AppPrefs.getPinCode(this)) {
                 isUnlocked = true
+                lastUnlockTime = System.currentTimeMillis()
                 finish()
             } else {
                 Toast.makeText(this, "Wrong PIN", Toast.LENGTH_SHORT).show()
@@ -84,9 +89,12 @@ class LockActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (!isUnlocked && !biometricHelper.isShowing()) {
+        if (!isUnlocked && !hasPrompted && !biometricHelper.isShowing()) {
             val hasBio = AppPrefs.isBiometricEnabled(this)
-            if (hasBio) showBiometricPrompt()
+            if (hasBio) {
+                hasPrompted = true
+                showBiometricPrompt()
+            }
         }
     }
 
@@ -94,6 +102,7 @@ class LockActivity : AppCompatActivity() {
         biometricHelper.showBiometricPrompt(
             onSuccess = {
                 isUnlocked = true
+                lastUnlockTime = System.currentTimeMillis()
                 finish()
             },
             onError = { error ->

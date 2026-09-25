@@ -197,8 +197,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        // Reset the lock when the app is fully hidden (NOT onPause, which fires on system dialogs too)
-        LockActivity.isUnlocked = false
+        // Reset the lock when the app is backgrounded, but preserve unlock state during
+        // brief transitions (e.g., launching ChatActivity, QR scanner, or LockActivity transition)
+        val elapsed = System.currentTimeMillis() - LockActivity.lastUnlockTime
+        if (elapsed > 30_000L) {
+            LockActivity.isUnlocked = false
+        }
     }
 
     override fun onResume() {

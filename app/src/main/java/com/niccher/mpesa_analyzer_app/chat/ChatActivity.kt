@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.niccher.mpesa_analyzer_app.R
 import com.niccher.mpesa_analyzer_app.api.ChatApiService
+import com.niccher.mpesa_analyzer_app.api.ChatInfoPayload
 import com.niccher.mpesa_analyzer_app.api.ChatMessagePayload
 import com.niccher.mpesa_analyzer_app.api.ChatRequestPayload
 import com.niccher.mpesa_analyzer_app.api.ChatResponsePayload
@@ -32,6 +33,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var layoutThinking: LinearLayout
     private lateinit var adapter: ChatAdapter
     private val prefs = Prefs()
+    private var activeModelName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,12 +65,18 @@ class ChatActivity : AppCompatActivity() {
         )
 
         setupChips()
+        fetchModelInfo()
 
         btnSend.setOnClickListener {
             val text = etMessage.text.toString().trim()
             if (text.isNotEmpty()) {
                 sendMessage(text)
             }
+        }
+
+        val initialPrompt = intent.getStringExtra(EXTRA_INITIAL_PROMPT)
+        if (!initialPrompt.isNullOrBlank()) {
+            sendMessage(initialPrompt)
         }
     }
 
@@ -131,7 +139,12 @@ class ChatActivity : AppCompatActivity() {
                 btnSend.isEnabled = true
 
                 if (response.isSuccessful && response.body() != null) {
-                    val reply = response.body()!!.reply
+                    val body = response.body()!!
+                    val reply = body.reply
+                    if (!body.model.isNullOrBlank()) {
+                        activeModelName = body.model
+                        supportActionBar?.subtitle = "AI Financial Advisor • ${body.model}"
+                    }
                     adapter.addMessage(ChatMessageItem(role = "assistant", text = reply))
                 } else {
                     val err = response.errorBody()?.string().orEmpty()
@@ -159,11 +172,35 @@ class ChatActivity : AppCompatActivity() {
         })
     }
 
+    private fun fetchModelInfo() {
+        val mlBaseUrl = getMlServiceBaseUrl()
+        val api = ServiceGenerator.createCustomService(ChatApiService::class.java, mlBaseUrl, this)
+        api.getChatInfo().enqueue(object : Callback<ChatInfoPayload> {
+            override fun onResponse(call: Call<ChatInfoPayload>, response: Response<ChatInfoPayload>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val info = response.body()!!
+                    if (info.model.isNotBlank()) {
+                        activeModelName = info.model
+                        supportActionBar?.subtitle = "AI Financial Advisor • ${info.model}"
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ChatInfoPayload>, t: Throwable) {
+                // Keep default title if service info is unreachable
+            }
+        })
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             finish()
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        const val EXTRA_INITIAL_PROMPT = "extra_initial_prompt"
     }
 }

@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.niccher.mpesa_analyzer_app.R
+import com.niccher.mpesa_analyzer_app.helpers.AppPrefs
 import com.niccher.mpesa_analyzer_app.helpers.ServiceGenerator
 import com.niccher.mpesa_analyzer_app.helpers.Encryptor
 import com.niccher.mpesa_analyzer_app.helpers.Prefs
@@ -111,6 +112,7 @@ class HomeFragment : Fragment() {
     // AI Assistant Views
     private lateinit var cardAskAi: CardView
     private lateinit var btnOpenChat: View
+    private var tvAiModelBadge: TextView? = null
 
     // Financial Analyst cards
     private lateinit var cardHealth: CardView
@@ -195,9 +197,29 @@ class HomeFragment : Fragment() {
         // AI Assistant Views
         cardAskAi = solv.findViewById(R.id.card_ask_ai)
         btnOpenChat = solv.findViewById(R.id.btn_open_chat)
+        tvAiModelBadge = solv.findViewById(R.id.tv_ai_model_badge)
+
+        val openChatWithPrompt: (String?) -> Unit = { prompt ->
+            val intent = android.content.Intent(requireContext(), com.niccher.mpesa_analyzer_app.chat.ChatActivity::class.java).apply {
+                if (!prompt.isNullOrBlank()) {
+                    putExtra(com.niccher.mpesa_analyzer_app.chat.ChatActivity.EXTRA_INITIAL_PROMPT, prompt)
+                }
+            }
+            startActivity(intent)
+        }
 
         btnOpenChat.setOnClickListener {
-            startActivity(android.content.Intent(requireContext(), com.niccher.mpesa_analyzer_app.chat.ChatActivity::class.java))
+            openChatWithPrompt(null)
+        }
+
+        solv.findViewById<View>(R.id.home_chip_afford)?.setOnClickListener {
+            openChatWithPrompt("Can I afford a KES 10,000 purchase this weekend based on my bills?")
+        }
+        solv.findViewById<View>(R.id.home_chip_trends)?.setOnClickListener {
+            openChatWithPrompt("How does my spending this month compare to last month?")
+        }
+        solv.findViewById<View>(R.id.home_chip_fuliza)?.setOnClickListener {
+            openChatWithPrompt("How much have I spent on Fuliza and loan fees?")
         }
 
         btnAdjustBudget.setOnClickListener {
@@ -220,6 +242,7 @@ class HomeFragment : Fragment() {
         fetchSpendingTrends()
         fetchSmartAlerts()
         fetchRecurringPayments()
+        fetchAiModelInfo()
 
         perm_request.setOnClickListener {
             Log.e("Perm /*- ", "perm_request")
@@ -840,6 +863,40 @@ class HomeFragment : Fragment() {
     }
 
     // ─── Financial Analyst Endpoints ──────────────────────────────────────────
+
+    private fun fetchAiModelInfo() {
+        val ctx = context ?: return
+        if (!isAdded) return
+        try {
+            val raw = AppPrefs.getBackendUrl(ctx).trim().trimEnd('/')
+            val uri = java.net.URI(raw)
+            val scheme = uri.scheme ?: "http"
+            val host = uri.host ?: raw.replace("http://", "").replace("https://", "").split(":")[0]
+            val mlBaseUrl = "$scheme://$host:8001/"
+            val api = ServiceGenerator.createCustomService(
+                com.niccher.mpesa_analyzer_app.api.ChatApiService::class.java,
+                mlBaseUrl,
+                ctx
+            )
+            api.getChatInfo().enqueue(object : Callback<com.niccher.mpesa_analyzer_app.api.ChatInfoPayload> {
+                override fun onResponse(
+                    call: Call<com.niccher.mpesa_analyzer_app.api.ChatInfoPayload>,
+                    response: Response<com.niccher.mpesa_analyzer_app.api.ChatInfoPayload>
+                ) {
+                    if (isAdded && response.isSuccessful && response.body() != null) {
+                        val info = response.body()!!
+                        if (info.model.isNotBlank()) {
+                            tvAiModelBadge?.text = info.model
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<com.niccher.mpesa_analyzer_app.api.ChatInfoPayload>, t: Throwable) {
+                    // Retain default label
+                }
+            })
+        } catch (_: Exception) {}
+    }
 
     private fun fetchFinancialHealth() {
         val ctx = context ?: return

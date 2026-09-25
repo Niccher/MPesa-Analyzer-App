@@ -17,7 +17,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Ask My M-Pesa"
-        app:subtitle="AI Financial Advisor (Qwen 2.5)" />
+        app:subtitle="AI Financial Advisor" />
 
     <!-- Suggestion Chips Row -->
     <HorizontalScrollView

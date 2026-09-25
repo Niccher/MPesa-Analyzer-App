@@ -1,6 +1,12 @@
-# M-Pesa Analyzer App
+# Smart Financial SMS (Android Client)
 
-Android mobile application that captures, encrypts, and synchronizes financial M-Pesa SMS messages to a self-hosted cloud backend for financial analytics and AI classification.
+[![Release](https://img.shields.io/badge/Release-v3.5.0-blue.svg)](https://github.com/Niccher/Smart-Finance-Android/releases)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Android](https://img.shields.io/badge/Android-API_29+-green.svg)](https://developer.android.com/)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0-7F52FF.svg)](https://kotlinlang.org/)
+[![Master Platform](https://img.shields.io/badge/Master_Platform-Smart--Finance--Platform-blue.svg)](https://github.com/Niccher/Smart-Finance-Platform)
+
+Android mobile companion client that captures, encrypts, and synchronizes financial SMS alerts (M-Pesa, Commercial Banks, Digital Lenders) to the self-hosted **Smart Finance Platform** for financial analytics, ML classification, and real-time AI conversational finance.
 
 Stack: Kotlin, Android SDK 35, Jetpack Compose, Retrofit 2, OkHttp 4, Room/WorkManager
 
@@ -9,14 +15,25 @@ Software engineers: [docs/README.md](docs/README.md).
 
 ---
 
+## Master Platform Repository
+
+This Android application serves as the **mobile edge client** within the Smart Finance ecosystem. The **master repository** orchestrating database storage, Redis caching, system telemetry, and machine learning intelligence is:
+
+* 🌐 **Master Platform Repository**: [https://github.com/Niccher/Smart-Finance-Platform](https://github.com/Niccher/Smart-Finance-Platform)
+* **Role of Master Platform**: Acts as the central master orchestrator running the CodeIgniter 4 WebApp, MySQL 8.4 database, Redis 7 session & cache engine, and the FastAPI multi-model LLM microservice (Qwen 2.5, DeepSeek, Gemini). It provides the `/api/v1/chat` and `/api/v1/sync` REST endpoints consumed by this companion client.
+
+---
+
 ## What “Running” Looks Like
 
 | Piece | How to Open / Verify | Expected State |
 |-------|----------------------|----------------|
-| **Debug App** | Launch from Android Studio or APK | Splash screen loads; requests SMS permission |
+| **Android App** | Launch on phone or emulator | Splash screen loads; requests SMS permission |
 | **Home Dashboard** | Main activity screen | Shows sync count, last upload timestamp, spending chart |
-| **API Connection** | Settings $\to$ Test Connection | Successfully reaches backend on port 9002 |
-| **Foreground Sync** | Tap "Fetch & Sync" | Shows progress notification during batch encryption |
+| **AI Financial Chat** | In-App Assistant / Ask My M-Pesa | Real-time conversational finance in English & Sheng |
+| **API Connection** | Settings $\to$ Test Connection | Successfully reaches master backend on port 80 (`/api/v1`) |
+| **Foreground Sync** | Tap "Fetch & Sync" | Encrypts & synchronizes SMS to master cloud backend |
+| **Master Platform Backend** | [Smart-Finance-Platform](https://github.com/Niccher/Smart-Finance-Platform) | Master ingestion gateway, Redis cache & ML microservice |
 
 ---
 
@@ -25,27 +42,30 @@ Software engineers: [docs/README.md](docs/README.md).
 - **Android Studio**: Hedgehog (2023.1.1) or newer
 - **JDK**: 17+
 - **Device**: Android phone or emulator running Android 10.0+ (API 29+)
-- Running **M-Pesa Analyzer WebApp** server at `http://10.0.2.2:9002` (emulator) or LAN IP (phone)
+- Running **Smart Finance Platform** backend at `http://10.0.2.2/` (emulator) or LAN/Cloud IP `http://<SERVER_IP>/`
 
 ---
 
-## Setup and Run
+## Installation: Build from Source (Zero-Trust Security)
+
+> [!TIP]
+> **Why Build from Source?** Financial SMS apps handle sensitive financial data. Building from source allows you to inspect the Kotlin code, audit permissions, and verify that encryption occurs entirely on your device with zero telemetry trackers.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Niccher/MPesa-Analyzer-App.git
-   cd MPesa-Analyzer-App
+   git clone https://github.com/Niccher/Smart-Finance-Android.git
+   cd Smart-Finance-Android
    ```
-2. Open the project in Android Studio and let Gradle sync dependencies.
-3. Connect a physical Android device via USB (with USB debugging enabled) or start an emulator.
-4. Run the debug build:
+2. Open the project in Android Studio or compile via Gradle CLI:
    ```bash
    ./gradlew installDebug
    ```
-5. Launch the app on your device and configure the backend URL:
-   - **For Emulator**: `http://10.0.2.2:9002/`
-   - **For Physical Device**: `http://<YOUR_LAN_IP>:9002/`
-6. Grant SMS permissions and tap **Fetch & Sync**.
+3. Launch the app and configure your self-hosted backend URL:
+   - **For Emulator**: `http://10.0.2.2/`
+   - **For Physical Device**: `http://<YOUR_LAN_OR_SERVER_IP>/`
+4. Grant SMS permissions and tap **Fetch & Sync**.
+
+*(Alternatively, pre-compiled binaries with published SHA-256 checksums are available on [GitHub Releases](https://github.com/Niccher/Smart-Finance-Android/releases)).*
 
 ---
 
@@ -63,7 +83,7 @@ Full configuration details: [docs/user/configuration.md](docs/user/configuration
 
 ## Something Went Wrong?
 
-- **Cannot reach backend on localhost**: Use `http://10.0.2.2:9002/` on emulator instead of `localhost`.
+- **Cannot reach backend on localhost**: Use `http://10.0.2.2/` on emulator instead of `localhost`.
 - **Cleartext HTTP blocked**: Verify development uses cleartext traffic permissions.
 - **SMS messages not detected**: Verify SMS permissions are granted in system settings.
 - Operational troubleshooting: [docs/user/troubleshooting.md](docs/user/troubleshooting.md).
@@ -77,4 +97,4 @@ Full configuration details: [docs/user/configuration.md](docs/user/configuration
 - **Cryptography & Security**: [docs/engineering/security.md](docs/engineering/security.md)
 - **Making Changes & Tasks**: [docs/engineering/making-changes.md](docs/engineering/making-changes.md)
 - **Testing Guide**: [docs/engineering/testing.md](docs/engineering/testing.md)
-- **System Architecture Anchor**: [ML Mpesa Analyzer Architecture](https://github.com/Niccher/ML-Mpesa-Analyser/tree/main/docs/architecture)
+- **Master Platform Architecture**: [Smart-Finance-Platform Architecture Docs](https://github.com/Niccher/Smart-Finance-Platform/tree/main/docs/architecture)

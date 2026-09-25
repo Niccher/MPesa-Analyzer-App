@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Smart Finance</string>
+    <string name="app_name">Smart Financial SMS</string>
     <string name="widget_glance_description">Glance at your live M-Pesa balance, today\'s spend, and Safe-to-Spend allowance.</string>
 
     <string name="summary_interactions_general">Summary Interactions</string>
